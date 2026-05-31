@@ -1,1 +1,611 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assistant fondateur — cadrer ton token</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0c0e16; --ink2:#11141f; --ink3:#171b29; --raised:#1c2133;
+  --line:rgba(236,230,216,.10); --line2:rgba(236,230,216,.18);
+  --paper:#ece6d8; --muted:#8b91a6; --faint:#5a6076;
+  --amber:#e6a93c; --teal:#5fcf9e; --danger:#e8705f; --warn:#d9a441; --blue:#7aa0dd;
+  --sans:'IBM Plex Sans',sans-serif; --mono:'IBM Plex Mono',monospace; --disp:'Fraunces',serif;
+  --gridglow:radial-gradient(1100px 700px at 82% 8%, rgba(230,169,60,.07), transparent 62%),radial-gradient(900px 650px at 5% 92%, rgba(95,207,158,.05), transparent 60%);
+  --shadow:rgba(0,0,0,.4); --heroglow:rgba(230,169,60,.10); --onfg:#1a1505;
+}
+:root[data-theme="light"]{
+  --ink:#f3eddf; --ink2:#fbf7ee; --ink3:#efe7d6; --raised:#e9e0cd;
+  --line:rgba(45,38,24,.13); --line2:rgba(45,38,24,.22);
+  --paper:#2a2620; --muted:#6e675a; --faint:#9b9382;
+  --amber:#a9741a; --teal:#1f8d62; --danger:#c24a39; --warn:#a9741a; --blue:#3f64a6;
+  --gridglow:radial-gradient(1100px 700px at 82% 8%, rgba(169,116,26,.10), transparent 62%),radial-gradient(900px 650px at 5% 92%, rgba(31,141,98,.07), transparent 60%);
+  --shadow:rgba(60,45,15,.18); --heroglow:rgba(169,116,26,.12); --onfg:#fbf7ee;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--paper);font-family:var(--sans);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased;transition:background-color .35s ease,color .35s ease}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-color:var(--ink);
+  background-image:var(--gridglow),linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:cover,cover,40px 40px,40px 40px;background-position:center,center,-1px -1px,-1px -1px;transition:background-color .35s ease}
+.wrap{max-width:860px;margin:0 auto;padding:0 24px}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--amber)}
+.mono{font-family:var(--mono)}
 
+.fixui{position:fixed;top:16px;z-index:60;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper);background:color-mix(in srgb,var(--ink2) 78%,transparent);border:1px solid var(--line2);border-radius:999px;padding:7px 10px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.theme-toggle{right:16px;cursor:pointer;padding:9px 14px;transition:.2s}
+.theme-toggle:hover{border-color:var(--amber);color:var(--amber)}
+.theme-toggle .ic{font-size:14px;line-height:1}
+.lang-sel{left:16px;gap:2px;padding:5px 6px}
+.lang-sel button{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--faint);background:none;border:none;cursor:pointer;padding:4px 9px;border-radius:999px;transition:.18s}
+.lang-sel button.on{color:var(--onfg);background:var(--amber)}
+.lang-sel button:not(.on):hover{color:var(--amber)}
+@media(max-width:520px){.theme-toggle .tt-label{display:none}.theme-toggle{padding:10px 12px}}
+
+header{position:relative;padding:84px 0 40px;overflow:hidden}
+header:before{content:"";position:absolute;inset:0;background:radial-gradient(700px 350px at 70% 20%,var(--heroglow),transparent 70%);pointer-events:none}
+h1{font-family:var(--disp);font-weight:600;font-size:clamp(34px,6.5vw,64px);line-height:1.0;letter-spacing:-.02em;max-width:15ch;margin-top:18px}
+h1 em{font-style:italic;color:var(--amber)}
+.h-sub{margin-top:20px;max-width:58ch;color:var(--muted);font-size:clamp(15px,2vw,18px)}
+.disclaimer{margin-top:24px;display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line2);border-left:3px solid var(--amber);border-radius:10px;padding:14px 16px;background:var(--ink2);max-width:60ch}
+.disclaimer .d-ic{color:var(--amber);font-family:var(--disp);font-size:20px;line-height:1.2}
+.disclaimer p{font-size:13.5px;color:var(--muted)}
+.disclaimer b{color:var(--paper);font-weight:600}
+
+.progress{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--ink) 88%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:14px 0}
+.progress.hidden{display:none}
+.steps-ind{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);flex-wrap:wrap}
+.steps-ind .si{display:flex;align-items:center;gap:8px}
+.steps-ind .dot{width:22px;height:22px;border-radius:50%;border:1px solid var(--line2);display:grid;place-items:center;font-size:11px;color:var(--faint)}
+.steps-ind .si.done .dot{border-color:var(--teal);color:var(--teal)}
+.steps-ind .si.active .dot{border-color:var(--amber);color:var(--amber);background:rgba(230,169,60,.1)}
+.steps-ind .si.active{color:var(--amber)}
+.steps-ind .sep{flex:1;height:1px;background:var(--line);min-width:14px}
+@media(max-width:600px){.steps-ind .lab{display:none}.steps-ind .sep{min-width:8px}}
+
+main{padding:32px 0 80px}
+.step{display:none;animation:fade .4s ease}
+.step.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.step-h{font-family:var(--disp);font-weight:600;font-size:clamp(24px,4vw,34px);line-height:1.1;margin-bottom:6px}
+.step-h .num{font-family:var(--mono);font-size:.46em;color:var(--amber);vertical-align:super;margin-right:.6em;font-weight:500}
+.step-sub{color:var(--muted);font-size:15.5px;max-width:60ch;margin-bottom:28px}
+
+.q{padding:22px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:none;padding-top:6px}
+.q-label{font-weight:600;font-size:17px;margin-bottom:4px}
+.q-hint{color:var(--faint);font-size:13.5px;margin-bottom:14px;font-family:var(--mono)}
+.q-multi-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-left:8px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;gap:13px;align-items:flex-start;text-align:left;width:100%;background:var(--ink2);border:1px solid var(--line2);border-radius:11px;padding:13px 15px;cursor:pointer;color:var(--paper);font-family:var(--sans);font-size:15px;transition:.16s}
+.opt:hover{border-color:var(--amber)}
+.opt .mark{flex:none;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--faint);margin-top:2px;transition:.16s;position:relative}
+.opt.multi .mark{border-radius:5px}
+.opt .ot{font-weight:500;line-height:1.35}
+.opt .oe{display:block;color:var(--muted);font-size:13px;font-weight:400;margin-top:2px}
+.opt.sel{border-color:var(--amber);background:rgba(230,169,60,.08)}
+.opt.sel .mark{border-color:var(--amber);background:var(--amber)}
+.opt.sel .mark:after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--ink)}
+.opt.multi.sel .mark:after{border-radius:2px}
+.opt.unsure .ot{color:var(--muted);font-style:italic}
+
+.nav{display:flex;justify-content:space-between;gap:14px;margin-top:36px;padding-top:24px;border-top:1px solid var(--line)}
+.btn{font-family:var(--mono);font-size:13px;letter-spacing:.06em;padding:13px 22px;border-radius:10px;cursor:pointer;border:1px solid var(--line2);background:var(--ink2);color:var(--paper);transition:.18s}
+.btn:hover{border-color:var(--amber);color:var(--amber)}
+.btn.primary{background:var(--amber);color:var(--onfg);border-color:var(--amber);font-weight:600}
+.btn.primary:hover{filter:brightness(1.08);color:var(--onfg)}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.4;cursor:not-allowed;border-color:var(--line)}
+.btn:disabled:hover{color:var(--paper)}
+
+.notice{border:1px solid var(--line2);border-left:3px solid var(--blue);border-radius:12px;padding:22px 24px;background:var(--ink2);margin-top:8px}
+.notice h4{font-family:var(--disp);font-size:20px;font-weight:600;margin-bottom:8px}
+.notice p{color:var(--muted);font-size:15px;margin-bottom:10px}
+.notice .badge{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);border:1px solid rgba(122,160,221,.4);border-radius:999px;padding:4px 11px;display:inline-block;margin-bottom:14px}
+
+.dossier-head{margin-bottom:8px}
+.d-syn{border:1px solid var(--line2);border-radius:14px;background:linear-gradient(180deg,var(--ink2),var(--ink));padding:24px 26px;margin:22px 0 30px}
+.d-syn .lab{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.d-syn .cls{font-family:var(--disp);font-size:clamp(22px,3.5vw,30px);font-weight:600;color:var(--amber);line-height:1.15}
+.d-syn .reg{color:var(--muted);font-size:15px;margin-top:8px}
+.d-syn .vig{margin-top:14px;font-family:var(--mono);font-size:12.5px;color:var(--warn)}
+
+.dsec{margin-top:34px}
+.dsec-h{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:18px}
+.dsec-h .n{font-family:var(--mono);color:var(--amber);font-size:14px}
+.dsec-h h3{font-family:var(--disp);font-size:22px;font-weight:600}
+.dsec-h .src{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+
+.vecgrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+@media(max-width:560px){.vecgrid{grid-template-columns:1fr}}
+.vrow{background:var(--ink2);padding:13px 16px}
+.vrow .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:3px}
+.vrow .v{font-size:14.5px;color:var(--paper)}
+.vrow .v.conf{color:var(--warn)}
+.vrow .v .qtag{font-family:var(--mono);font-size:10px;color:var(--warn);border:1px solid rgba(217,164,65,.4);border-radius:5px;padding:1px 6px;margin-left:6px;letter-spacing:.06em}
+.simto{margin-top:14px;font-size:14.5px;color:var(--muted)}
+.simto b{color:var(--paper);font-weight:600}
+
+.obl{list-style:none;display:flex;flex-direction:column;gap:9px;margin-top:4px}
+.obl li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;color:var(--paper)}
+.obl li:before{content:"\203A";color:var(--amber);font-family:var(--mono);flex:none;margin-top:1px}
+
+.lbl{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+.rfs{display:flex;flex-direction:column;gap:12px}
+.rf{border:1px solid var(--line2);border-left:3px solid var(--danger);border-radius:11px;padding:15px 17px;background:rgba(232,112,95,.06)}
+.rf.warn{border-left-color:var(--warn);background:rgba(217,164,65,.06)}
+.rf.info{border-left-color:var(--blue);background:rgba(122,160,221,.06)}
+.rf h4{font-size:15.5px;font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:9px}
+.rf h4 .ic{font-family:var(--disp);color:var(--danger)}
+.rf.warn h4 .ic{color:var(--warn)}.rf.info h4 .ic{color:var(--blue)}
+.rf p{font-size:14px;color:var(--muted)}
+.rf-none{color:var(--teal);font-size:14.5px;font-family:var(--mono)}
+
+.legal{margin-top:16px;border:1px solid var(--line2);border-radius:10px;padding:13px 16px;background:var(--ink3);font-size:13px;color:var(--muted)}
+.legal b{color:var(--paper)}
+
+.stage{margin-top:18px;border:1px solid var(--line);border-radius:12px;background:var(--ink2);overflow:hidden}
+.stage-h{display:flex;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line);background:var(--ink3)}
+.stage-h .st-n{font-family:var(--mono);font-size:12px;color:var(--amber)}
+.stage-h .st-t{font-family:var(--disp);font-size:18px;font-weight:600}
+.stage-h .st-w{margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+.st-w.heavy{color:var(--danger);border:1px solid rgba(232,112,95,.4)}
+.st-w.light{color:var(--teal);border:1px solid rgba(95,207,158,.4)}
+.items{padding:8px 18px 16px}
+.item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line);cursor:pointer}
+.item:first-child{border-top:none}
+.item .box{flex:none;width:19px;height:19px;border-radius:5px;border:1.5px solid var(--faint);margin-top:1px;transition:.15s;position:relative}
+.item.checked .box{border-color:var(--teal);background:var(--teal)}
+.item.checked .box:after{content:"\2713";position:absolute;inset:0;display:grid;place-items:center;color:var(--ink);font-size:13px;font-weight:700}
+.item .it{font-size:14.5px;line-height:1.4}
+.item.checked .it{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--faint)}
+.item .cliquet{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--danger);border:1px solid rgba(232,112,95,.4);border-radius:5px;padding:1px 7px;margin-left:8px;vertical-align:1px}
+
+.foot{margin-top:40px;border-top:1px solid var(--line);padding-top:22px}
+.foot .scope{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+.foot p{font-size:13.5px;color:var(--muted);max-width:64ch}
+.foot .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.foot .chips span{font-family:var(--mono);font-size:11.5px;padding:4px 10px;border-radius:7px;border:1px solid var(--line2);color:var(--faint)}
+.d-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+
+@media print{
+  body::before{display:none}body{background:#fff;color:#111}
+  .fixui,.progress,.d-actions,header{display:none!important}
+  .step{display:none!important}#step-dossier{display:block!important}
+  .d-syn,.stage,.vrow,.rf,.legal,.foot{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="fixui lang-sel" id="langSel"><button data-lang="fr">FR</button><button data-lang="en">EN</button></div>
+<button class="fixui theme-toggle" id="themeBtn" aria-label="theme"><span class="ic" id="themeIc">\u2600</span><span class="tt-label" id="themeLab"></span></button>
+
+<header><div class="wrap">
+  <div class="kicker" data-i18n="heroKicker"></div>
+  <h1 data-i18n="heroTitle"></h1>
+  <p class="h-sub" data-i18n="heroSub"></p>
+  <div class="disclaimer"><span class="d-ic">\u2696</span><p data-i18n="disc"></p></div>
+</div></header>
+
+<div class="progress hidden" id="progress"><div class="wrap"><div class="steps-ind" id="stepsInd"></div></div></div>
+
+<main><div class="wrap">
+
+  <section class="step active" id="step-fork">
+    <h2 class="step-h"><span class="num">00</span><span data-i18n="forkH"></span></h2>
+    <p class="step-sub" data-i18n="forkSub"></p>
+    <div class="q" id="q-chemin"></div>
+    <div class="nav"><span></span><button class="btn primary" id="forkNext" data-i18n="btnContinue" disabled></button></div>
+  </section>
+
+  <section class="step" id="step-autres">
+    <h2 class="step-h" data-i18n="autresH"></h2>
+    <div class="notice">
+      <span class="badge" data-i18n="autresBadge"></span>
+      <h4 data-i18n="autresT"></h4>
+      <p data-i18n="autresP1"></p>
+      <p data-i18n="autresP2"></p>
+    </div>
+    <div class="nav"><button class="btn ghost" data-i18n="btnBack" onclick="goFork()"></button><span></span></div>
+  </section>
+
+  <section class="step" id="step-b1">
+    <h2 class="step-h"><span class="num">01</span><span data-i18n="b1H"></span></h2>
+    <p class="step-sub" data-i18n="b1Sub"></p>
+    <div id="b1-questions"></div>
+    <div class="nav"><button class="btn ghost" data-i18n="btnBack" onclick="goFork()"></button><button class="btn primary" id="b1Next" data-i18n="btnContinue"></button></div>
+  </section>
+
+  <section class="step" id="step-b2">
+    <h2 class="step-h"><span class="num">02</span><span data-i18n="b2H"></span></h2>
+    <p class="step-sub" data-i18n="b2Sub"></p>
+    <div id="b2-questions"></div>
+    <div class="nav"><button class="btn ghost" data-i18n="btnBack" onclick="show('step-b1')"></button><button class="btn primary" id="b2Next" data-i18n="btnGenerate"></button></div>
+  </section>
+
+  <section class="step" id="step-dossier">
+    <div id="dossier"></div>
+    <div class="d-actions"><button class="btn" id="btnPrint" onclick="window.print()"></button><button class="btn ghost" id="btnRestart" onclick="restart()"></button></div>
+  </section>
+
+</div></main>
+
+<script>
+/* ===== i18n strings ===== */
+const STR={
+ fr:{
+  docTitle:'Assistant fondateur — cadrer ton token',
+  heroKicker:'Assistant fondateur · MVP',
+  heroTitle:'Cadre ton token, <em>sans angle mort</em>.',
+  heroSub:'Réponds à quelques questions en langage clair. L\'assistant en déduit ce que tu construis, dans quelle case réglementaire tu tombes, ce que ça t\'impose, et la checklist de lancement — points de non-retour compris.',
+  disc:'Cet outil <b>structure, éduque et signale</b> — il ne donne <b>pas d\'avis juridique ni financier</b>. Cadre européen (MiCA / MiFID II). Fais valider toute décision par un conseil.',
+  forkH:'Par où tu commences',forkSub:'Premier embranchement : la nature de ton projet décide du reste.',
+  btnContinue:'Continuer →',btnBack:'← Retour',btnGenerate:'Générer le dossier →',btnPrint:'⎙ Imprimer / PDF',btnRestart:'↺ Recommencer',
+  autresH:'Construire sur les actifs des autres',autresBadge:'Hors périmètre du MVP',autresT:'Ce chemin touche l\'autorité & la custody',
+  autresP1:'Bâtir une app qui agit sur les tokens des utilisateurs (lire, proposer, autoriser, déposer) relève de la couche <b>autorité sur les actifs</b> : quel pouvoir tu prends sur le wallet de l\'utilisateur, avec quelle réversibilité, quel détenteur des clés.',
+  autresP2:'Cette partie sera traitée dans la version complète. Le MVP couvre la <b>création d\'un token</b>.',
+  b1H:'Ce que c\'est',b1Sub:'L\'identité de ton token. Si tu hésites sur une question, choisis « je ne sais pas » — on prendra l\'hypothèse prudente et on le marquera dans le dossier.',
+  b2H:'Comment tu le lances',b2Sub:'Ce qui déclenche les points de vigilance et façonne la checklist.',
+  multiTag:'choix multiple',unsure:'Je ne sais pas',
+  stepLabels:['Projet','Identité','Lancement','Dossier'],
+  alertPre:'Réponds à : « ',alertPost:' »',alertTitre:'Précise ce que le titre représente.',
+  dossierKicker:'Dossier de lancement',synLab:'Synthèse',synTpl:'Ton token ressemble à {arch}.',
+  vigSingular:'⚑ 1 point de vigilance à regarder ci-dessous.',vigPlural:'⚑ {n} points de vigilance à regarder ci-dessous.',vigNone:'✓ Aucun point de vigilance majeur détecté.',
+  sec1:'Identité du token',sec1src:'grille',classRetenue:'Classe retenue :',
+  sec2:'Classe & cadre',sec2src:'qualification',oblLab:'Obligations-clés',vigLab:'Points de vigilance',
+  rfNone:'✓ Aucun point de vigilance majeur détecté sur les règles couvertes par le MVP.',
+  legal:'<b>Rappel :</b> structurant, pas un avis juridique. Liste non exhaustive, cadre UE, à valider avec un conseil.',
+  sec3:'Checklist de lancement',sec3src:'cycle de vie',
+  sec3sub:'Étapes filtrées selon ta classe. Les <span style="color:var(--danger)">points de non-retour</span> exigent d\'avoir tout verrouillé en amont.',
+  cliquet:'point de non-retour',stageNames:['Conception','Émission','Distribution','Vie','Fin'],wHeavy:'lourd · permanent',wLight:'léger',
+  alsoAppT:'Ton projet agit aussi sur les actifs des utilisateurs',
+  alsoAppP:'Le volet « app qui manipule les tokens des users » (lire / proposer / autoriser / déposer = autorité & custody) sera traité dans la version complète. Ce dossier ne couvre que le token que tu crées.',
+  scope:'Hors périmètre de ce MVP',
+  scopeP:'Autorité & custody détaillées (couche B), modèle de business / captation de valeur, choix de la techno (XRPL : MPT, escrow, délégation…), et juridictions hors UE.',
+  chips:['pas un avis juridique','pas un avis financier','cadre UE — MiCA / MiFID II']
+ },
+ en:{
+  docTitle:'Founder assistant — frame your token',
+  heroKicker:'Founder assistant · MVP',
+  heroTitle:'Frame your token, <em>with no blind spots</em>.',
+  heroSub:'Answer a few plain-language questions. The assistant infers what you’re building, which regulatory box you fall into, what it requires of you, and the launch checklist — points of no return included.',
+  disc:'This tool <b>structures, educates and flags</b> — it gives <b>no legal or financial advice</b>. European framework (MiCA / MiFID II). Have any decision validated by counsel.',
+  forkH:'Where you start',forkSub:'First fork: the nature of your project drives everything else.',
+  btnContinue:'Continue →',btnBack:'← Back',btnGenerate:'Generate the dossier →',btnPrint:'⎙ Print / PDF',btnRestart:'↺ Start over',
+  autresH:'Building on others’ assets',autresBadge:'Outside the MVP scope',autresT:'This path touches authority & custody',
+  autresP1:'Building an app that acts on users’ tokens (read, propose, authorize, deposit) belongs to the <b>authority-over-assets</b> layer: how much power you take over the user’s wallet, with what reversibility, who holds the keys.',
+  autresP2:'This part will be covered in the full version. The MVP covers <b>creating a token</b>.',
+  b1H:'What it is',b1Sub:'Your token’s identity. If you’re unsure on a question, pick “I don’t know” — we’ll take the prudent assumption and flag it in the dossier.',
+  b2H:'How you launch it',b2Sub:'What triggers the watch points and shapes the checklist.',
+  multiTag:'multiple choice',unsure:'I don’t know',
+  stepLabels:['Project','Identity','Launch','Dossier'],
+  alertPre:'Please answer: “',alertPost:'”',alertTitre:'Specify what the claim represents.',
+  dossierKicker:'Launch dossier',synLab:'Summary',synTpl:'Your token resembles {arch}.',
+  vigSingular:'⚑ 1 watch point to review below.',vigPlural:'⚑ {n} watch points to review below.',vigNone:'✓ No major watch point detected.',
+  sec1:'Token identity',sec1src:'grid',classRetenue:'Class retained:',
+  sec2:'Class & framework',sec2src:'qualification',oblLab:'Key obligations',vigLab:'Watch points',
+  rfNone:'✓ No major watch point detected among the rules covered by the MVP.',
+  legal:'<b>Reminder:</b> structuring, not legal advice. Non-exhaustive list, EU framework, to be validated with counsel.',
+  sec3:'Launch checklist',sec3src:'lifecycle',
+  sec3sub:'Steps filtered by your class. The <span style="color:var(--danger)">points of no return</span> require everything upstream to be locked first.',
+  cliquet:'point of no return',stageNames:['Conception','Issuance','Distribution','Life','End'],wHeavy:'heavy · ongoing',wLight:'light',
+  alsoAppT:'Your project also acts on users’ assets',
+  alsoAppP:'The “app that handles users’ tokens” side (read / propose / authorize / deposit = authority & custody) will be covered in the full version. This dossier only covers the token you create.',
+  scope:'Outside this MVP’s scope',
+  scopeP:'Detailed authority & custody (layer B), business model / value capture, tech choice (XRPL: MPT, escrow, delegation…), and non-EU jurisdictions.',
+  chips:['not legal advice','not financial advice','EU framework — MiCA / MiFID II']
+ }
+};
+let LANG='fr';
+const L=()=>STR[LANG];
+
+/* ===== questions: stable value keys + per-language text ===== */
+const QDEF={
+ chemin:{type:'multi',order:['creer','autres'],tr:{
+   fr:{label:'Tu veux… (coche ce qui s\'applique)',hint:'un projet peut faire les deux',opt:{creer:['Créer ton propre token / actif','tu émets quelque chose de nouveau'],autres:['Construire une app qui agit sur les actifs des autres','tu manipules les tokens des utilisateurs']}},
+   en:{label:'You want to… (check all that apply)',hint:'a project can do both',opt:{creer:['Create your own token / asset','you issue something new'],autres:['Build an app that acts on others’ assets','you handle users’ tokens']}}}},
+ fongibilite:{type:'single',order:['fongible','semi','non-fongible'],tr:{
+   fr:{label:'Chaque unité est-elle interchangeable ?',hint:'fongibilité',opt:{fongible:['Oui, interchangeable','comme une pièce de monnaie'],semi:['Par séries / éditions','identiques au sein d\'une série'],'non-fongible':['Non, chaque exemplaire est unique','comme une œuvre ou un objet de collection']}},
+   en:{label:'Is each unit interchangeable?',hint:'fungibility',opt:{fongible:['Yes, interchangeable','like a coin'],semi:['By series / editions','identical within a series'],'non-fongible':['No, each one is unique','like an artwork or a collectible']}}}},
+ rapport:{type:'single',unsure:true,order:['natif','adosse','titre'],tr:{
+   fr:{label:'Ton token, c\'est plutôt…',hint:'rapport au sous-jacent',opt:{natif:['Une unité native','ne représente rien d\'autre que lui-même'],adosse:['Adossé à une réserve que tu détiens','ex. des euros en banque, de l\'or'],titre:['Un titre représentatif d\'un autre actif','une action, une obligation, une part, un bien existant']}},
+   en:{label:'Your token is rather…',hint:'relation to the underlying',opt:{natif:['A native unit','represents nothing but itself'],adosse:['Backed by a reserve you hold','e.g. euros in a bank, gold'],titre:['A claim representing another asset','a share, a bond, a unit, an existing asset']}}}},
+ titre_type:{type:'single',show:s=>s.rapport==='titre',order:['financier','reel','autre'],tr:{
+   fr:{label:'Il représente quoi ?',hint:'nature du sous-jacent',opt:{financier:['Un actif financier','action, obligation, part de fonds'],reel:['Un bien réel','immobilier, or, objet physique'],autre:['Un autre droit','crédit carbone, droit d\'usage…']}},
+   en:{label:'What does it represent?',hint:'nature of the underlying',opt:{financier:['A financial asset','share, bond, fund unit'],reel:['A real asset','real estate, gold, physical object'],autre:['Another right','carbon credit, usage right…']}}}},
+ couverture:{type:'single',unsure:true,show:s=>s.rapport==='adosse'||s.rapport==='titre',order:['aucune','mutualisee','dediee'],tr:{
+   fr:{label:'Qu\'est-ce qui garantit la valeur ?',hint:'couverture',opt:{aucune:['Une simple promesse de l\'émetteur','créance générale, rien de cantonné'],mutualisee:['Une réserve commune mutualisée','partagée entre tous les détenteurs'],dediee:['Une réserve dédiée à chaque détenteur','allouée unité par unité']}},
+   en:{label:'What backs the value?',hint:'coverage',opt:{aucune:['Just the issuer’s promise','general claim, nothing ring-fenced'],mutualisee:['A shared, pooled reserve','shared across all holders'],dediee:['A reserve dedicated to each holder','allocated unit by unit']}}}},
+ debiteur:{type:'single',unsure:true,order:['aucun','identifie','diffus'],tr:{
+   fr:{label:'Qui doit quelque chose au détenteur ?',hint:'débiteur — la question clé',opt:{aucun:['Personne','le token ne donne droit à rien auprès de qui que ce soit'],identifie:['Une entité identifiée','toi, ta société, un émetteur précis — qui doit rembourser ou livrer'],diffus:['C\'est diffus / décentralisé','un protocole, sans entité claire']}},
+   en:{label:'Who owes something to the holder?',hint:'debtor — the key question',opt:{aucun:['Nobody','the token grants no claim against anyone'],identifie:['An identified entity','you, your company, a specific issuer — who must redeem or deliver'],diffus:['It’s diffuse / decentralized','a protocol, no clear entity']}}}},
+ garant:{type:'single',unsure:true,order:['aucun','identifie','diffus'],tr:{
+   fr:{label:'Qui atteste de l\'authenticité ou de la réserve ?',hint:'garant / attesteur',opt:{aucun:['Personne','aucune attestation'],identifie:['Une entité identifiée','un émetteur, un auditeur, une autorité'],diffus:['C\'est diffus','attestation décentralisée / collective']}},
+   en:{label:'Who attests to authenticity or the reserve?',hint:'guarantor / attester',opt:{aucun:['Nobody','no attestation'],identifie:['An identified entity','an issuer, an auditor, an authority'],diffus:['It’s diffuse','decentralized / collective attestation']}}}},
+ transfer:{type:'single',order:['libre','gelable','permissionnee','non-transferable'],tr:{
+   fr:{label:'Les détenteurs peuvent-ils le transférer ?',hint:'transférabilité',opt:{libre:['Librement, à qui ils veulent',''],gelable:['Oui, mais tu peux geler / bloquer',''],permissionnee:['Seulement vers des comptes autorisés','whitelist'],'non-transferable':['Pas du tout','lié au détenteur']}},
+   en:{label:'Can holders transfer it?',hint:'transferability',opt:{libre:['Freely, to anyone',''],gelable:['Yes, but you can freeze / block',''],permissionnee:['Only to authorized accounts','whitelist'],'non-transferable':['Not at all','bound to the holder']}}}},
+ fonctions:{type:'multi',order:['paiement','reserve','placement','utility','gouvernance','collection','preuve'],tr:{
+   fr:{label:'À quoi sert ton token ?',hint:'coche tout ce qui s\'applique',opt:{paiement:['Payer',''],reserve:['Réserve de valeur',''],placement:['Placement / rendement',''],utility:['Accès à un service (utility)',''],gouvernance:['Gouvernance / vote',''],collection:['Collection / statut',''],preuve:['Preuve / attestation','']}},
+   en:{label:'What is your token for?',hint:'check all that apply',opt:{paiement:['Pay',''],reserve:['Store of value',''],placement:['Investment / yield',''],utility:['Service access (utility)',''],gouvernance:['Governance / vote',''],collection:['Collection / status',''],preuve:['Proof / attestation','']}}}},
+ droits:{type:'multi',order:['revenus','votes','royalties','expiration','consommable'],tr:{
+   fr:{label:'Quels droits donne-t-il ?',hint:'coche tout ce qui s\'applique',opt:{revenus:['Revenus (intérêts, dividendes, part de revenus)',''],votes:['Votes',''],royalties:['Royalties',''],expiration:['Expiration',''],consommable:['Se consomme à l\'usage','']}},
+   en:{label:'What rights does it grant?',hint:'check all that apply',opt:{revenus:['Revenues (interest, dividends, revenue share)',''],votes:['Votes',''],royalties:['Royalties',''],expiration:['Expiration',''],consommable:['Consumed on use','']}}}},
+ rendement:{type:'single',order:['oui','non'],tr:{
+   fr:{label:'Promets-tu un gain ou un rendement aux acheteurs ?',hint:'y compris via le marketing',opt:{oui:['Oui','gain financier, rendement, plus-value attendue'],non:['Non','aucune promesse de profit']}},
+   en:{label:'Do you promise a gain or yield to buyers?',hint:'including via marketing',opt:{oui:['Yes','financial gain, yield, expected upside'],non:['No','no promise of profit']}}}},
+ stabilite:{type:'single',unsure:true,order:['monnaie','panier','aucune'],tr:{
+   fr:{label:'Vise-t-il une valeur stable ?',hint:'indexation',opt:{monnaie:['Oui, sur une seule monnaie officielle','€, $…'],panier:['Oui, sur un panier ou une crypto','plusieurs actifs, matière première, autre crypto'],aucune:['Non, pas de visée de stabilité','']}},
+   en:{label:'Does it aim for a stable value?',hint:'peg',opt:{monnaie:['Yes, to a single official currency','€, $…'],panier:['Yes, to a basket or a crypto','several assets, commodity, another crypto'],aucune:['No, no stability target','']}}}},
+ distribution:{type:'single',unsure:true,order:['retail','pro','interne'],tr:{
+   fr:{label:'À qui le distribues-tu ?',hint:'cible',opt:{retail:['Au grand public (retail)',''],pro:['À des investisseurs professionnels / qualifiés seulement',''],interne:['Usage interne / cercle fermé','']}},
+   en:{label:'Who do you distribute it to?',hint:'audience',opt:{retail:['To the general public (retail)',''],pro:['To professional / qualified investors only',''],interne:['Internal use / closed circle','']}}}},
+ juridiction:{type:'single',order:['ue','hors-ue','mondial'],tr:{
+   fr:{label:'Dans quelles juridictions ?',hint:'marché visé',opt:{ue:['Union européenne',''],'hors-ue':['Hors UE',''],mondial:['Mondial','']}},
+   en:{label:'Which jurisdictions?',hint:'target market',opt:{ue:['European Union',''],'hors-ue':['Outside the EU',''],mondial:['Worldwide','']}}}},
+ custody:{type:'single',order:['oui','non'],tr:{
+   fr:{label:'Comptes-tu détenir les fonds ou les clés des utilisateurs ?',hint:'custody',opt:{oui:['Oui, à un moment',''],non:['Non, ils gardent le contrôle','']}},
+   en:{label:'Will you hold users’ funds or keys?',hint:'custody',opt:{oui:['Yes, at some point',''],non:['No, they keep control','']}}}}
+};
+
+/* ===== dossier dictionaries ===== */
+const VMAP={fr:{
+  fongibilite:{fongible:'Fongible — unités interchangeables',semi:'Semi-fongible — séries / éditions','non-fongible':'Non-fongible — chaque exemplaire unique'},
+  rapport:{natif:'Natif — ne représente que lui-même',adosse:'Adossé à une réserve détenue',titre:'Titre représentatif d\'un autre actif'},
+  couverture:{na:'—',aucune:'Créance générale (rien de cantonné)',mutualisee:'Réserve mutualisée',dediee:'Réserve dédiée par détenteur'},
+  debiteur:{aucun:'Personne ne doit rien',identifie:'Une entité identifiée doit',diffus:'Diffus / décentralisé'},
+  garant:{aucun:'Aucun attesteur',identifie:'Attesteur identifié',diffus:'Attestation diffuse'},
+  transfer:{libre:'Librement transférable',gelable:'Transférable, gelable par l\'émetteur',permissionnee:'Transférable vers comptes autorisés','non-transferable':'Non-transférable'}
+},en:{
+  fongibilite:{fongible:'Fungible — interchangeable units',semi:'Semi-fungible — series / editions','non-fongible':'Non-fungible — each one unique'},
+  rapport:{natif:'Native — represents only itself',adosse:'Backed by a held reserve',titre:'Claim representing another asset'},
+  couverture:{na:'—',aucune:'General claim (nothing ring-fenced)',mutualisee:'Pooled reserve',dediee:'Reserve dedicated per holder'},
+  debiteur:{aucun:'Nobody owes anything',identifie:'An identified entity owes',diffus:'Diffuse / decentralized'},
+  garant:{aucun:'No attester',identifie:'Identified attester',diffus:'Diffuse attestation'},
+  transfer:{libre:'Freely transferable',gelable:'Transferable, freezable by issuer',permissionnee:'Transferable to authorized accounts','non-transferable':'Non-transferable'}
+}};
+const LABS={fr:{
+  fonctions:{paiement:'Payer',reserve:'Réserve de valeur',placement:'Placement / rendement',utility:'Accès à un service',gouvernance:'Gouvernance / vote',collection:'Collection / statut',preuve:'Preuve / attestation'},
+  droits:{revenus:'Revenus',votes:'Votes',royalties:'Royalties',expiration:'Expiration',consommable:'Consommable'}
+},en:{
+  fonctions:{paiement:'Pay',reserve:'Store of value',placement:'Investment / yield',utility:'Service access',gouvernance:'Governance / vote',collection:'Collection / status',preuve:'Proof / attestation'},
+  droits:{revenus:'Revenues',votes:'Votes',royalties:'Royalties',expiration:'Expiration',consommable:'Consumable'}
+}};
+const CLS={fr:{
+  instrument:{name:'Instrument financier',arch:'une action ou une obligation tokenisée',reg:'Hors MiCA — relève de MiFID II (prospectus, agréments de marché).',obl:['Prospectus conforme au Règlement Prospectus','Régime MiFID II pour les services d\'investissement','Agrément des plateformes de négociation / règlement','Éventuel recours au régime pilote DLT']},
+  nft:{name:'NFT (hors MiCA)',arch:'un NFT d\'art ou de collection',reg:'Largement hors MiCA tant que vraiment unique (sauf série / fractionnement).',obl:['Pas d\'obligation MiCA tant que l\'unicité tient','Droit de la consommation / propriété intellectuelle selon l\'usage','LCB-FT selon les montants et la plateforme']},
+  emt:{name:'EMT — jeton de monnaie électronique',arch:'un stablecoin type USDC, calé sur une seule monnaie',reg:'MiCA Titre IV — exige un émetteur agréé (EMI ou établissement de crédit).',obl:['Émetteur = établissement de monnaie électronique ou de crédit agréé','Whitepaper crypto-actif publié','Réserve liquide 1:1, ségréguée','Droit au remboursement au pair, à tout moment','Pas d\'intérêts versés aux détenteurs','Reporting prudentiel continu']},
+  art:{name:'ART — jeton se référant à des actifs',arch:'un stablecoin adossé à un panier ou à une crypto',reg:'MiCA Titre III — agrément « asset-referenced token ».',obl:['Agrément ART auprès du régulateur','Réserve d\'actifs adéquate et ségréguée','Dispositif de gouvernance et de gestion des risques','Whitepaper approuvé','Obligations renforcées si jugé « significant »']},
+  utility:{name:'Autre crypto-actif / utility',arch:'un token utility ou de gouvernance',reg:'MiCA Titre II — crypto-actif, whitepaper notifié au régulateur.',obl:['Whitepaper crypto-actif notifié au régulateur','Communications marketing loyales et non trompeuses','Recours à un prestataire (CASP) agréé pour les services','Transparence sur les risques']}
+},en:{
+  instrument:{name:'Financial instrument',arch:'a tokenized share or bond',reg:'Outside MiCA — falls under MiFID II (prospectus, market approvals).',obl:['Prospectus compliant with the Prospectus Regulation','MiFID II regime for investment services','Authorization of trading / settlement venues','Possible use of the DLT pilot regime']},
+  nft:{name:'NFT (outside MiCA)',arch:'an art or collectible NFT',reg:'Largely outside MiCA as long as truly unique (except series / fractionalization).',obl:['No MiCA obligation as long as uniqueness holds','Consumer / IP law depending on use','AML depending on amounts and platform']},
+  emt:{name:'EMT — e-money token',arch:'a USDC-style stablecoin, pegged to a single currency',reg:'MiCA Title IV — requires an authorized issuer (EMI or credit institution).',obl:['Issuer = authorized e-money or credit institution','Published crypto-asset white paper','Liquid 1:1 reserve, segregated','Right to redemption at par, at any time','No interest paid to holders','Ongoing prudential reporting']},
+  art:{name:'ART — asset-referenced token',arch:'a stablecoin backed by a basket or a crypto',reg:'MiCA Title III — asset-referenced token authorization.',obl:['ART authorization from the regulator','Adequate, segregated asset reserve','Governance and risk-management framework','Approved white paper','Stricter obligations if deemed significant']},
+  utility:{name:'Other crypto-asset / utility',arch:'a utility or governance token',reg:'MiCA Title II — crypto-asset, white paper notified to the regulator.',obl:['Crypto-asset white paper notified to the regulator','Fair, non-misleading marketing communications','Use of an authorized provider (CASP) for services','Transparency about risks']}
+}};
+const RF={fr:{
+  limbo:['Limbo réglementaire','Ton token vise une valeur stable mais aucune entité identifiée ne le garantit (débiteur diffus ou absent). Les régimes EMT/ART supposent un émetteur que l\'on puisse agréer — sans lui, tu es en zone grise.'],
+  security:['Risque de requalification en instrument financier','Tu présentes un token utility/collection mais promets un gain ou un rendement. Une promesse de profit peut suffire à le faire requalifier en instrument financier — un régime bien plus lourd.'],
+  algo:['Stablecoin sans réserve réelle','Viser une valeur stable sans réserve d\'actifs en face = modèle algorithmique. MiCA encadre et restreint fortement ce cas.'],
+  nftserie:['Sortie possible de l\'exemption NFT','Émis en série/éditions ou tourné vers le placement, ton « NFT » peut être requalifié en crypto-actif fongible et retomber sous MiCA.'],
+  retail:['Distribution grand public = obligations maximales','Viser le retail déclenche le niveau d\'obligations le plus élevé pour ta classe — et c\'est un point de non-retour : une fois largement distribué, difficile de restreindre.'],
+  custody:['Tu entres en custody','Détenir les fonds ou les clés de tes utilisateurs te fait porter leurs actifs : risque de contrepartie pour eux, obligations de ségrégation pour toi. C\'est la couche « autorité » — à traiter au sérieux (hors périmètre de ce MVP).'],
+  juridiction:['Hors UE : qualification à refaire','Cette analyse suit le cadre européen (MiCA / MiFID II). Hors UE, la classe et les obligations changent — refais l\'analyse pour chaque juridiction visée.'],
+  incoherence:['Réponses possiblement incohérentes','Un token « natif » qui aurait pourtant un débiteur ou une réserve est contradictoire. Le dossier retient l\'hypothèse la plus prudente — à reprendre.']
+},en:{
+  limbo:['Regulatory limbo','Your token aims for a stable value but no identified entity backs it (diffuse or absent debtor). The EMT/ART regimes assume an issuer that can be authorized — without one, you’re in a grey zone.'],
+  security:['Risk of reclassification as a financial instrument','You present a utility/collectible token but promise a gain or yield. A promise of profit can be enough to get it reclassified as a financial instrument — a much heavier regime.'],
+  algo:['Stablecoin with no real reserve','Aiming for a stable value with no asset reserve behind it = algorithmic model. MiCA heavily frames and restricts this case.'],
+  nftserie:['Possible loss of the NFT exemption','Issued as a series/editions or geared toward investment, your “NFT” may be reclassified as a fungible crypto-asset and fall back under MiCA.'],
+  retail:['Retail distribution = maximum obligations','Targeting retail triggers the highest level of obligations for your class — and it’s a point of no return: once widely distributed, hard to restrict.'],
+  custody:['You enter custody','Holding your users’ funds or keys means you carry their assets: counterparty risk for them, segregation obligations for you. That’s the “authority” layer — to take seriously (outside this MVP’s scope).'],
+  juridiction:['Outside the EU: re-do the qualification','This analysis follows the European framework (MiCA / MiFID II). Outside the EU, the class and obligations change — redo the analysis for each target jurisdiction.'],
+  incoherence:['Possibly inconsistent answers','A “native” token that would nonetheless have a debtor or a reserve is contradictory. The dossier takes the most prudent assumption — to revisit.']
+}};
+const CK={fr:{
+  c_vector:'Figer le vecteur d\'identité du token',c_legal:'Faire confirmer la classe par un conseil juridique',c_value:'Définir le modèle de valeur (captation, soutenabilité)',c_custody:'Concevoir la custody / l\'autorité sur les actifs',
+  e_agrement:'Obtenir l\'agrément AVANT toute émission',e_mint:'Mint / création on-chain',e_whitepaper:'Publier le whitepaper crypto-actif',e_prospectus:'Publier le prospectus',e_kyc:'Mettre en place le KYC / LCB-FT à l\'entrée',
+  d_venues:'Choisir les lieux de mise sur le marché (DEX, plateformes, OTC)',d_marketing:'Conformité marketing grand public',d_passport:'Vérifier le passporting / les règles locales par juridiction',
+  v_reserve:'Gérer la réserve et le remboursement à vue',v_audit:'Produire attestations / audits réguliers',v_reporting:'Assurer le reporting prudentiel continu',v_nft:'Animer le marché secondaire (royalties faiblement exécutables)',v_utility:'Maintenir la transparence et le service rendu',v_instrument:'Assurer l\'information continue du marché',v_custody:'Opérer la custody : ségrégation des actifs des utilisateurs',
+  f_winddown:'Plan de wind-down / remboursement ordonné (obligatoire)',f_none:'Pas de fin réglementée — définir le sort des détenteurs (sunset, burn, abandon)'
+},en:{
+  c_vector:'Lock the token’s identity vector',c_legal:'Have the class confirmed by legal counsel',c_value:'Define the value model (capture, sustainability)',c_custody:'Design custody / authority over assets',
+  e_agrement:'Obtain authorization BEFORE any issuance',e_mint:'Mint / on-chain creation',e_whitepaper:'Publish the crypto-asset white paper',e_prospectus:'Publish the prospectus',e_kyc:'Set up KYC / AML at onboarding',
+  d_venues:'Choose go-to-market venues (DEX, platforms, OTC)',d_marketing:'Retail marketing compliance',d_passport:'Check passporting / local rules per jurisdiction',
+  v_reserve:'Manage the reserve and on-demand redemption',v_audit:'Produce regular attestations / audits',v_reporting:'Ensure ongoing prudential reporting',v_nft:'Run the secondary market (weakly enforceable royalties)',v_utility:'Maintain transparency and the service provided',v_instrument:'Ensure continuous market disclosure',v_custody:'Operate custody: segregate users’ assets',
+  f_winddown:'Wind-down / orderly redemption plan (mandatory)',f_none:'No regulated end — define holders’ fate (sunset, burn, abandonment)'
+}};
+
+/* ===== state ===== */
+const S={chemin:[],fongibilite:null,rapport:null,titre_type:null,couverture:null,debiteur:null,garant:null,transfer:null,fonctions:[],droits:[],rendement:null,stabilite:null,distribution:null,juridiction:null,custody:null};
+const B1=['fongibilite','rapport','titre_type','couverture','debiteur','garant','transfer','fonctions','droits'];
+const B2=['rendement','stabilite','distribution','juridiction','custody'];
+
+/* ===== rendering ===== */
+function renderQ(key,container){
+  const def=QDEF[key],t=def.tr[LANG],multi=def.type==='multi';
+  const wrap=document.createElement('div');wrap.className='q';wrap.dataset.key=key;
+  wrap.innerHTML='<div class="q-label">'+t.label+(multi?'<span class="q-multi-tag">'+L().multiTag+'</span>':'')+'</div>'+(t.hint?'<div class="q-hint">'+t.hint+'</div>':'');
+  const opts=document.createElement('div');opts.className='opts';
+  def.order.forEach(v=>{
+    const o=t.opt[v];const b=document.createElement('button');b.className='opt'+(multi?' multi':'');b.dataset.v=v;
+    b.innerHTML='<span class="mark"></span><span class="ot">'+o[0]+(o[1]?'<span class="oe">'+o[1]+'</span>':'')+'</span>';
+    const sel=multi?S[key].includes(v):S[key]===v;if(sel)b.classList.add('sel');
+    b.onclick=()=>{
+      if(multi){const i=S[key].indexOf(v);if(i>=0)S[key].splice(i,1);else S[key].push(v);b.classList.toggle('sel');}
+      else{S[key]=v;opts.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');onSingleChange(key);}
+    };
+    opts.appendChild(b);
+  });
+  if(def.unsure){
+    const b=document.createElement('button');b.className='opt unsure';b.dataset.v='?';
+    b.innerHTML='<span class="mark"></span><span class="ot">'+L().unsure+'</span>';
+    if(S[key]==='?')b.classList.add('sel');
+    b.onclick=()=>{S[key]='?';opts.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');onSingleChange(key);};
+    opts.appendChild(b);
+  }
+  wrap.appendChild(opts);container.appendChild(wrap);
+}
+function renderBlock(keys,id){const c=document.getElementById(id);c.innerHTML='';keys.forEach(k=>{const d=QDEF[k];if(d.show&&!d.show(S))return;renderQ(k,c);});}
+function renderFork(){const c=document.getElementById('q-chemin');c.innerHTML='';renderQ('chemin',c);}
+function onSingleChange(key){if(key==='rapport'){if(S.rapport!=='titre')S.titre_type=null;if(S.rapport!=='adosse'&&S.rapport!=='titre')S.couverture=null;renderBlock(B1,'b1-questions');}}
+
+/* ===== i18n apply ===== */
+function applyI18n(){
+  document.title=L().docTitle;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{el.innerHTML=L()[el.dataset.i18n];});
+  document.getElementById('btnPrint').textContent=L().btnPrint;
+  document.getElementById('btnRestart').textContent=L().btnRestart;
+  document.querySelectorAll('#langSel button').forEach(b=>b.classList.toggle('on',b.dataset.lang===LANG));
+}
+function activeStep(){const a=document.querySelector('.step.active');return a?a.id:'step-fork';}
+function reRender(){
+  const a=activeStep();
+  if(a==='step-fork')renderFork();
+  else if(a==='step-b1')renderBlock(B1,'b1-questions');
+  else if(a==='step-b2')renderBlock(B2,'b2-questions');
+  else if(a==='step-dossier')buildDossier();
+  if(a!=='step-fork')buildInd(a);
+}
+function setLang(l){LANG=l;document.documentElement.lang=l;applyI18n();reRender();}
+
+/* ===== navigation ===== */
+function buildInd(activeId){
+  const map={'step-fork':0,'step-b1':1,'step-autres':1,'step-b2':2,'step-dossier':3};const ai=map[activeId];
+  const ind=document.getElementById('stepsInd');ind.innerHTML='';
+  L().stepLabels.forEach((s,i)=>{
+    const si=document.createElement('div');si.className='si'+(i<ai?' done':'')+(i===ai?' active':'');
+    si.innerHTML='<span class="dot">'+(i<ai?'\u2713':(i+1))+'</span><span class="lab">'+s+'</span>';
+    ind.appendChild(si);
+    if(i<L().stepLabels.length-1){const sep=document.createElement('span');sep.className='sep';ind.appendChild(sep);}
+  });
+}
+function show(id){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const prog=document.getElementById('progress');
+  if(id==='step-fork')prog.classList.add('hidden');else{prog.classList.remove('hidden');buildInd(id);}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goFork(){show('step-fork');}
+function restart(){for(const k in S){S[k]=Array.isArray(S[k])?[]:null;}document.getElementById('forkNext').disabled=true;renderFork();show('step-fork');}
+
+/* ===== ENGINE ===== */
+function eff(){
+  const c=[];const g=(k,def)=>{if(S[k]==='?'){c.push(k);return def;}return S[k];};
+  const v={fongibilite:S.fongibilite,rapport:g('rapport','adosse'),titre_type:S.titre_type,
+    couverture:(S.rapport==='natif')?'na':g('couverture','aucune'),debiteur:g('debiteur','identifie'),garant:g('garant','identifie'),
+    transfer:S.transfer,fonctions:S.fonctions,droits:S.droits,rendement:S.rendement,
+    stabilite:g('stabilite',(S.fonctions.includes('reserve')||S.fonctions.includes('paiement'))?'monnaie':'aucune'),
+    distribution:g('distribution','retail'),juridiction:S.juridiction,custody:S.custody};
+  return {v,confirm:c};
+}
+function classify(v){
+  if(v.droits.includes('revenus')||(v.rapport==='titre'&&v.titre_type==='financier'))return 'instrument';
+  if(v.fongibilite==='non-fongible'||v.fongibilite==='semi')return 'nft';
+  if(v.stabilite==='monnaie')return 'emt';
+  if(v.stabilite==='panier')return 'art';
+  return 'utility';
+}
+function redflags(v,cls){
+  const o=[];
+  if(v.stabilite!=='aucune'&&(v.debiteur==='diffus'||v.debiteur==='aucun'))o.push(['danger','limbo']);
+  if(v.rendement==='oui'&&(cls==='utility'||cls==='nft'))o.push(['danger','security']);
+  if(v.stabilite!=='aucune'&&v.rapport==='natif')o.push(['danger','algo']);
+  if(cls==='nft'&&(v.fongibilite==='semi'||v.fonctions.includes('placement')))o.push(['warn','nftserie']);
+  if(v.distribution==='retail'&&(cls==='emt'||cls==='art'||cls==='instrument'))o.push(['warn','retail']);
+  if(v.custody==='oui')o.push(['warn','custody']);
+  if(v.juridiction!=='ue')o.push(['info','juridiction']);
+  let inc=false;
+  if(S.rapport==='natif'&&(S.debiteur==='identifie'||S.debiteur==='diffus'))inc=true;
+  if(S.rapport==='natif'&&(S.couverture==='mutualisee'||S.couverture==='dediee'))inc=true;
+  if(inc)o.push(['warn','incoherence']);
+  return o;
+}
+function buildDossier(){
+  const {v,confirm}=eff();const cls=classify(v);const tr=L();const info=CLS[LANG][cls];const vm=VMAP[LANG];const labs=LABS[LANG];
+  const rfs=redflags(v,cls);const heavy=(cls==='emt'||cls==='art');
+  const conf=k=>confirm.includes(k)?'<span class="qtag">'+(LANG==='fr'?'à confirmer':'to confirm')+'</span>':'';
+  const vrow=(k,label,val)=>'<div class="vrow"><div class="k">'+label+'</div><div class="v'+(confirm.includes(k)?' conf':'')+'">'+val+conf(k)+'</div></div>';
+  const klab=LANG==='fr'
+    ?{fongibilite:'Fongibilité',rapport:'Rapport au sous-jacent',couverture:'Couverture',debiteur:'Qui doit (débiteur)',garant:'Qui atteste (garant)',transfer:'Transférabilité',fonctions:'Fonctions',droits:'Droits'}
+    :{fongibilite:'Fungibility',rapport:'Relation to underlying',couverture:'Coverage',debiteur:'Who owes (debtor)',garant:'Who attests (guarantor)',transfer:'Transferability',fonctions:'Functions',droits:'Rights'};
+  let vec='';
+  vec+=vrow('fongibilite',klab.fongibilite,vm.fongibilite[v.fongibilite]);
+  vec+=vrow('rapport',klab.rapport,vm.rapport[v.rapport]);
+  vec+=vrow('couverture',klab.couverture,vm.couverture[v.couverture]);
+  vec+=vrow('debiteur',klab.debiteur,vm.debiteur[v.debiteur]);
+  vec+=vrow('garant',klab.garant,vm.garant[v.garant]);
+  vec+=vrow('transfer',klab.transfer,vm.transfer[v.transfer]);
+  vec+=vrow('fonctions',klab.fonctions,v.fonctions.length?v.fonctions.map(f=>labs.fonctions[f]).join(', '):'—');
+  vec+=vrow('droits',klab.droits,v.droits.length?v.droits.map(d=>labs.droits[d]).join(', '):'—');
+
+  const obl='<ul class="obl">'+info.obl.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+  const rf=rfs.length?'<div class="rfs">'+rfs.map(r=>{const txt=RF[LANG][r[1]];return '<div class="rf '+r[0]+'"><h4><span class="ic">'+(r[0]==='info'?'\u24D8':'!')+'</span>'+txt[0]+'</h4><p>'+txt[1]+'</p></div>';}).join('')+'</div>':'<div class="rf-none">'+tr.rfNone+'</div>';
+
+  const retail=v.distribution==='retail',cust=v.custody==='oui',mica=(cls==='emt'||cls==='art'||cls==='utility');
+  const it=(id,c)=>({id,c:!!c});
+  const stages=[
+    {n:'0',items:[it('c_vector'),it('c_legal'),it('c_value'),it('c_custody')]},
+    {n:'1',items:[...((heavy||cls==='instrument')?[it('e_agrement',1)]:[]),it('e_mint'),...(mica?[it('e_whitepaper')]:[]),...(cls==='instrument'?[it('e_prospectus')]:[]),...((retail||cust)?[it('e_kyc')]:[])]},
+    {n:'2',items:[it('d_venues'),...(retail?[it('d_marketing',1)]:[]),...(v.juridiction!=='ue'?[it('d_passport')]:[])]},
+    {n:'3',items:[...(heavy?[it('v_reserve'),it('v_audit'),it('v_reporting')]:[]),...(cls==='nft'?[it('v_nft')]:[]),...(cls==='utility'?[it('v_utility')]:[]),...(cls==='instrument'?[it('v_instrument')]:[]),...(cust?[it('v_custody',1)]:[])]},
+    {n:'4',items:[...(heavy?[it('f_winddown')]:[it('f_none')])]}
+  ];
+  let chk='';
+  stages.forEach((st,i)=>{
+    const w=(i===3)?(heavy?'<span class="st-w heavy">'+tr.wHeavy+'</span>':(cls==='nft'?'<span class="st-w light">'+tr.wLight+'</span>':'')):'';
+    chk+='<div class="stage"><div class="stage-h"><span class="st-n">'+st.n+'</span><span class="st-t">'+tr.stageNames[i]+'</span>'+w+'</div><div class="items">';
+    st.items.forEach(item=>{chk+='<div class="item" onclick="this.classList.toggle(\'checked\')"><span class="box"></span><span class="it">'+CK[LANG][item.id]+(item.c?'<span class="cliquet">'+tr.cliquet+'</span>':'')+'</span></div>';});
+    chk+='</div></div>';
+  });
+
+  const n=rfs.length;
+  const vig=n===0?'<div class="vig" style="color:var(--teal)">'+tr.vigNone+'</div>':'<div class="vig">'+(n===1?tr.vigSingular:tr.vigPlural.replace('{n}',n))+'</div>';
+
+  document.getElementById('dossier').innerHTML=
+    '<div class="dossier-head"><div class="kicker">'+tr.dossierKicker+'</div></div>'+
+    '<div class="d-syn"><div class="lab">'+tr.synLab+'</div><div class="cls">'+tr.synTpl.replace('{arch}',info.arch)+'</div><div class="reg">'+info.reg+'</div>'+vig+'</div>'+
+    '<div class="dsec"><div class="dsec-h"><span class="n">01</span><h3>'+tr.sec1+'</h3><span class="src">'+tr.sec1src+'</span></div><div class="vecgrid">'+vec+'</div><div class="simto">'+tr.classRetenue+' <b>'+info.name+'</b>.</div></div>'+
+    '<div class="dsec"><div class="dsec-h"><span class="n">02</span><h3>'+tr.sec2+'</h3><span class="src">'+tr.sec2src+'</span></div>'+
+      '<p style="color:var(--muted);font-size:15px;margin-bottom:16px">'+info.reg+'</p>'+
+      '<div class="lbl">'+tr.oblLab+'</div>'+obl+
+      '<div class="lbl" style="margin-top:22px">'+tr.vigLab+'</div>'+rf+
+      '<div class="legal">'+tr.legal+'</div></div>'+
+    '<div class="dsec"><div class="dsec-h"><span class="n">03</span><h3>'+tr.sec3+'</h3><span class="src">'+tr.sec3src+'</span></div>'+
+      '<p style="color:var(--muted);font-size:15px;margin-bottom:6px">'+tr.sec3sub+'</p>'+chk+'</div>'+
+    '<div class="foot">'+(S.chemin.includes('autres')?'<div class="rf info" style="margin-bottom:16px"><h4><span class="ic">\u24D8</span>'+tr.alsoAppT+'</h4><p>'+tr.alsoAppP+'</p></div>':'')+
+      '<div class="scope">'+tr.scope+'</div><p>'+tr.scopeP+'</p>'+
+      '<div class="chips">'+tr.chips.map(c=>'<span>'+c+'</span>').join('')+'</div></div>';
+}
+
+/* ===== theme ===== */
+const root=document.documentElement;let theme='dark';
+function setTheme(t){root.setAttribute('data-theme',t);document.getElementById('themeIc').textContent=t==='light'?'\u25D0':'\u2600';document.getElementById('themeLab').textContent=t==='light'?(LANG==='fr'?'Sombre':'Dark'):(LANG==='fr'?'Clair':'Light');}
+document.getElementById('themeBtn').onclick=()=>{theme=theme==='dark'?'light':'dark';setTheme(theme);};
+
+/* ===== wiring ===== */
+document.getElementById('langSel').addEventListener('click',e=>{const l=e.target.dataset.lang;if(l){setLang(l);setTheme(theme);}});
+const forkQ=document.getElementById('q-chemin');
+forkQ.addEventListener('click',()=>{document.getElementById('forkNext').disabled=S.chemin.length===0;});
+document.getElementById('forkNext').onclick=()=>{if(S.chemin.includes('creer')){renderBlock(B1,'b1-questions');show('step-b1');}else{show('step-autres');}};
+document.getElementById('b1Next').onclick=()=>{
+  for(const k of ['fongibilite','rapport','debiteur','garant','transfer'])if(!S[k]){alert(L().alertPre+QDEF[k].tr[LANG].label+L().alertPost);return;}
+  if(S.rapport==='titre'&&!S.titre_type){alert(L().alertTitre);return;}
+  if((S.rapport==='adosse'||S.rapport==='titre')&&!S.couverture){alert(L().alertPre+QDEF.couverture.tr[LANG].label+L().alertPost);return;}
+  renderBlock(B2,'b2-questions');show('step-b2');
+};
+document.getElementById('b2Next').onclick=()=>{
+  for(const k of ['rendement','stabilite','distribution','juridiction','custody'])if(!S[k]){alert(L().alertPre+QDEF[k].tr[LANG].label+L().alertPost);return;}
+  buildDossier();show('step-dossier');
+};
+
+/* ===== init ===== */
+applyI18n();setTheme(theme);renderFork();
+</script>
+</body>
+</html>
