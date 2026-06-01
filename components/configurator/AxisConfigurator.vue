@@ -35,14 +35,18 @@ function val(axis: string, v: string): string {
     <!-- Categorical axes -->
     <div class="flex flex-col gap-4">
       <div v-for="axis in axes" :key="axis" class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-2 sm:gap-4 sm:items-center">
-        <div class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low">{{ AXIS_GROUP[loc][axis] }}</div>
-        <div class="flex flex-wrap gap-1.5">
+        <div class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low">
+          {{ AXIS_GROUP[loc][axis] }}<span class="text-ink-low/60"> · {{ t('configurator.pickOne') }}</span>
+        </div>
+        <div class="flex flex-wrap gap-1.5" role="radiogroup">
           <button
             v-for="v in AXIS_ORDER[axis]"
             :key="v"
             type="button"
-            class="rounded-md border px-2.5 py-1.5 text-[13px] transition"
-            :class="config[axis] === v ? 'border-accent bg-accent/10 text-ink-high' : 'border-border-subtle text-ink-mid hover:border-border-accent'"
+            role="radio"
+            :aria-checked="config[axis] === v"
+            class="rounded-full border px-2.5 py-1.5 text-[13px] transition"
+            :class="config[axis] === v ? 'border-accent bg-accent text-accent-on font-medium' : 'border-border-subtle text-ink-mid hover:border-border-accent'"
             @click="toggleAxis(axis, v)"
           >{{ val(axis, v) }}</button>
         </div>
@@ -51,30 +55,34 @@ function val(axis: string, v: string): string {
       <!-- Flags -->
       <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-2 sm:gap-4">
         <div class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low">
-          {{ t('configurator.fonctionsLab') }}<span class="block text-ink-low/60 normal-case tracking-normal">{{ t('configurator.flagsHint') }}</span>
+          {{ t('configurator.fonctionsLab') }}<span class="text-ink-low/60"> · {{ t('configurator.flagsHint') }}</span>
         </div>
         <div class="flex flex-wrap gap-1.5">
           <button
             v-for="f in FONCTIONS_ORDER"
             :key="f"
             type="button"
-            class="rounded-md border px-2.5 py-1.5 text-[13px] transition"
-            :class="config.fonctions.includes(f as Fonction) ? 'border-accent bg-accent/10 text-ink-high' : 'border-border-subtle text-ink-mid hover:border-border-accent'"
+            :aria-pressed="config.fonctions.includes(f as Fonction)"
+            class="inline-flex items-center rounded-md border px-2.5 py-1.5 text-[13px] transition"
+            :class="config.fonctions.includes(f as Fonction) ? 'border-accent text-accent bg-accent/10' : 'border-border-subtle text-ink-mid hover:border-border-accent'"
             @click="toggleFonction(f as Fonction)"
-          >{{ LABS[loc].fonctions[f] ?? f }}</button>
+          ><span class="font-mono text-[11px] mr-1.5 text-accent leading-none" aria-hidden="true">{{ config.fonctions.includes(f as Fonction) ? '✓' : '+' }}</span>{{ LABS[loc].fonctions[f] ?? f }}</button>
         </div>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-2 sm:gap-4">
-        <div class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low">{{ t('configurator.droitsLab') }}</div>
+        <div class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low">
+          {{ t('configurator.droitsLab') }}<span class="text-ink-low/60"> · {{ t('configurator.flagsHint') }}</span>
+        </div>
         <div class="flex flex-wrap gap-1.5">
           <button
             v-for="d in DROITS_ORDER"
             :key="d"
             type="button"
-            class="rounded-md border px-2.5 py-1.5 text-[13px] transition"
-            :class="config.droits.includes(d as Droit) ? 'border-accent bg-accent/10 text-ink-high' : 'border-border-subtle text-ink-mid hover:border-border-accent'"
+            :aria-pressed="config.droits.includes(d as Droit)"
+            class="inline-flex items-center rounded-md border px-2.5 py-1.5 text-[13px] transition"
+            :class="config.droits.includes(d as Droit) ? 'border-accent text-accent bg-accent/10' : 'border-border-subtle text-ink-mid hover:border-border-accent'"
             @click="toggleDroit(d as Droit)"
-          >{{ LABS[loc].droits[d] ?? d }}</button>
+          ><span class="font-mono text-[11px] mr-1.5 text-accent leading-none" aria-hidden="true">{{ config.droits.includes(d as Droit) ? '✓' : '+' }}</span>{{ LABS[loc].droits[d] ?? d }}</button>
         </div>
       </div>
     </div>
