@@ -217,7 +217,10 @@
     "genericError": "Something went wrong. Please try again.",
     "localFirstHint": "Local-first — your answers stay in this browser until you sign in.",
     "signIn": "Sign in",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "signInWithXrplWallet": "Sign in with wallet",
+    "walletConnecting": "Connecting wallet…",
+    "walletHint": "XRPL wallet (Crossmark, GemWallet, Xaman). No email — losing the wallet means losing the account."
   },
   "cloud": {
     "signInToSave": "Sign in to save this dossier to the cloud.",

@@ -9,5 +9,7 @@
     <main class="flex-1">
       <slot />
     </main>
+    <!-- XRPL wallet picker — mounted once so any page can open it. -->
+    <WalletConnectorModal />
   </div>
 </template>

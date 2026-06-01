@@ -5,10 +5,10 @@
  */
 const { t } = useI18n()
 const localePath = useLocalePath()
-const { sendMagicLink, signInWithGoogle, isAuthenticated } = useAuth()
+const { sendMagicLink, signInWithGoogle, signInWithXrplWallet, isAuthenticated } = useAuth()
 
 const email = ref('')
-const status = ref<'idle' | 'sending' | 'sent' | 'error' | 'oauth'>('idle')
+const status = ref<'idle' | 'sending' | 'sent' | 'error' | 'oauth' | 'wallet'>('idle')
 const errorMessage = ref<string | null>(null)
 
 useHead({ title: () => `${t('login.title')} — Token Design` })
@@ -40,6 +40,18 @@ async function handleGoogle() {
   errorMessage.value = null
   try {
     await signInWithGoogle()
+  } catch (e) {
+    status.value = 'error'
+    errorMessage.value = e instanceof Error ? e.message : t('login.genericError')
+  }
+}
+
+async function handleWallet() {
+  status.value = 'wallet'
+  errorMessage.value = null
+  try {
+    await signInWithXrplWallet()
+    // On success isAuthenticated flips → watchEffect navigates home.
   } catch (e) {
     status.value = 'error'
     errorMessage.value = e instanceof Error ? e.message : t('login.genericError')
@@ -97,10 +109,29 @@ async function handleGoogle() {
             class="w-full rounded-lg border border-border-subtle bg-bg-elevated px-4 py-2.5 text-ink-high placeholder:text-ink-low focus:outline-none focus:border-accent transition-colors"
             :placeholder="t('login.emailPlaceholder')"
           >
-          <button type="submit" class="btn-primary w-full justify-center" :disabled="status === 'sending' || status === 'oauth'">
+          <button type="submit" class="btn-primary w-full justify-center" :disabled="status === 'sending' || status === 'oauth' || status === 'wallet'">
             {{ status === 'sending' ? t('login.sending') : t('login.sendLink') }}
           </button>
         </form>
+
+        <!-- divider -->
+        <div class="flex items-center gap-3">
+          <div class="flex-1 border-t border-border-subtle" />
+          <span class="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-low">{{ t('login.or') }}</span>
+          <div class="flex-1 border-t border-border-subtle" />
+        </div>
+
+        <!-- XRPL wallet -->
+        <button
+          type="button"
+          class="w-full inline-flex items-center justify-center gap-3 px-4 py-2.5 rounded-lg border border-accent/40 bg-bg-elevated text-ink-high hover:border-accent transition-colors disabled:opacity-50"
+          :disabled="status === 'oauth' || status === 'sending' || status === 'wallet'"
+          @click="handleWallet"
+        >
+          <span class="glyph text-accent" aria-hidden="true">◈</span>
+          <span>{{ status === 'wallet' ? t('login.walletConnecting') : t('login.signInWithXrplWallet') }}</span>
+        </button>
+        <p class="text-[12px] text-ink-low">{{ t('login.walletHint') }}</p>
 
         <p v-if="errorMessage" class="text-sm text-danger">{{ errorMessage }}</p>
       </template>

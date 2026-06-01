@@ -217,7 +217,10 @@
     "genericError": "Une erreur est survenue. Réessaie.",
     "localFirstHint": "Local-first — tes réponses restent dans ce navigateur tant que tu n'es pas connecté.",
     "signIn": "Connexion",
-    "signOut": "Déconnexion"
+    "signOut": "Déconnexion",
+    "signInWithXrplWallet": "Se connecter avec un wallet",
+    "walletConnecting": "Connexion du wallet…",
+    "walletHint": "Wallet XRPL (Crossmark, GemWallet, Xaman). Pas d'email — perdre le wallet = perdre le compte."
   },
   "cloud": {
     "signInToSave": "Connecte-toi pour sauvegarder ce dossier dans le cloud.",

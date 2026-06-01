@@ -24,6 +24,7 @@
     "nuxt": "^3.14.1592",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
+    "ripple-keypairs": "^2.0.0",
     "vue": "^3.5.13",
     "vue-router": "^4.4.5",
     "ws": "^8.21.0",

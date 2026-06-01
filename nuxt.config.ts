@@ -43,6 +43,13 @@ export default defineNuxtConfig({
     { path: '~/components', pathPrefix: false }
   ],
 
+  // xrpl-connect registers a <xrpl-wallet-connector> custom element.
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag) => tag === 'xrpl-wallet-connector'
+    }
+  },
+
   typescript: {
     strict: true,
     typeCheck: false
