@@ -239,7 +239,89 @@ export function redflags(v: Vector, cls: TokenClass, state: ProjectState): RedFl
   return out
 }
 
+// ── Layer D — launch checklist (lifecycle + ratchets) ────────────────────────
+
+export type ChecklistItemId =
+  | 'c_vector' | 'c_legal' | 'c_value' | 'c_custody'
+  | 'e_agrement' | 'e_mint' | 'e_whitepaper' | 'e_prospectus' | 'e_kyc'
+  | 'd_venues' | 'd_marketing' | 'd_passport'
+  | 'v_reserve' | 'v_audit' | 'v_reporting' | 'v_nft' | 'v_utility' | 'v_instrument' | 'v_custody'
+  | 'f_winddown' | 'f_none'
+
+export type StageId = 'conception' | 'issuance' | 'distribution' | 'life' | 'end'
+export type StageWeight = 'heavy' | 'light' | null
+
+export interface ChecklistItem {
+  id: ChecklistItemId
+  /** A ratchet — a point of no return (must be locked upstream). */
+  cliquet: boolean
+}
+
+export interface Stage {
+  index: number
+  id: StageId
+  items: ChecklistItem[]
+  weight: StageWeight
+}
+
+const STAGE_IDS: StageId[] = ['conception', 'issuance', 'distribution', 'life', 'end']
+
+/**
+ * Build the lifecycle checklist filtered by class + launch conditions
+ * (spec §4 / §2 layer D). Ratchets: authorization-before-issuance,
+ * retail-distribution, taking-custody. Mirrors the `stages` array of the
+ * prototype's buildDossier().
+ */
+export function buildChecklist(v: Vector, cls: TokenClass): Stage[] {
+  const retail = v.distribution === 'retail'
+  const cust = v.custody === 'oui'
+  const heavy = cls === 'emt' || cls === 'art'
+  const mica = cls === 'emt' || cls === 'art' || cls === 'utility'
+
+  const it = (id: ChecklistItemId, cliquet = false): ChecklistItem => ({ id, cliquet })
+
+  const itemsByStage: ChecklistItem[][] = [
+    // 0 — Conception
+    [it('c_vector'), it('c_legal'), it('c_value'), it('c_custody')],
+    // 1 — Issuance
+    [
+      ...(heavy || cls === 'instrument' ? [it('e_agrement', true)] : []),
+      it('e_mint'),
+      ...(mica ? [it('e_whitepaper')] : []),
+      ...(cls === 'instrument' ? [it('e_prospectus')] : []),
+      ...(retail || cust ? [it('e_kyc')] : [])
+    ],
+    // 2 — Distribution
+    [
+      it('d_venues'),
+      ...(retail ? [it('d_marketing', true)] : []),
+      ...(v.juridiction !== 'ue' ? [it('d_passport')] : [])
+    ],
+    // 3 — Life
+    [
+      ...(heavy ? [it('v_reserve'), it('v_audit'), it('v_reporting')] : []),
+      ...(cls === 'nft' ? [it('v_nft')] : []),
+      ...(cls === 'utility' ? [it('v_utility')] : []),
+      ...(cls === 'instrument' ? [it('v_instrument')] : []),
+      ...(cust ? [it('v_custody', true)] : [])
+    ],
+    // 4 — End
+    [...(heavy ? [it('f_winddown')] : [it('f_none')])]
+  ]
+
+  return itemsByStage.map((items, index) => ({
+    index,
+    id: STAGE_IDS[index] as StageId,
+    items,
+    weight: index === 3 ? (heavy ? 'heavy' : cls === 'nft' ? 'light' : null) : null
+  }))
+}
+
 // ── Top-level convenience ────────────────────────────────────────────────────
+
+export interface Dossier extends Qualification {
+  stages: Stage[]
+}
 
 /** Run the full Layer A qualification: defaults → class → red flags. */
 export function qualify(state: ProjectState): Qualification {
@@ -247,4 +329,10 @@ export function qualify(state: ProjectState): Qualification {
   const cls = classify(vector)
   const flags = redflags(vector, cls, state)
   return { vector, confirm, cls, flags }
+}
+
+/** Full dossier model: qualification + lifecycle checklist. */
+export function buildDossier(state: ProjectState): Dossier {
+  const q = qualify(state)
+  return { ...q, stages: buildChecklist(q.vector, q.cls) }
 }

@@ -5,9 +5,12 @@ import {
   classify,
   redflags,
   qualify,
+  buildChecklist,
+  buildDossier,
   UNSURE,
   type ProjectState,
-  type Vector
+  type Vector,
+  type ChecklistItemId
 } from './engine'
 
 /** Build a state from the empty baseline with overrides. */
@@ -144,6 +147,62 @@ describe('redflags — cumulative overlays', () => {
     const r = keys(state({ fongibilite: 'fongible', stabilite: 'aucune', rendement: 'non', juridiction: 'ue', custody: 'non', distribution: 'pro' }))
     expect(r.cls).toBe('utility')
     expect(r.keys).toEqual([])
+  })
+})
+
+describe('buildChecklist — lifecycle + ratchets', () => {
+  function ids(s: ProjectState): ChecklistItemId[] {
+    const { vector, cls } = qualify(s)
+    return buildChecklist(vector, cls).flatMap((st) => st.items.map((i) => i.id))
+  }
+  function ratchets(s: ProjectState): ChecklistItemId[] {
+    const { vector, cls } = qualify(s)
+    return buildChecklist(vector, cls).flatMap((st) => st.items.filter((i) => i.cliquet).map((i) => i.id))
+  }
+
+  it('always has 5 stages with the conception items', () => {
+    const stages = buildChecklist(eff(emptyState()).vector, 'utility')
+    expect(stages).toHaveLength(5)
+    expect(stages[0]!.items.map((i) => i.id)).toEqual(['c_vector', 'c_legal', 'c_value', 'c_custody'])
+  })
+
+  it('heavy class (emt) requires authorization-before-issuance ratchet + reserve ops + wind-down', () => {
+    const s = state({ fongibilite: 'fongible', stabilite: 'monnaie', distribution: 'pro', juridiction: 'ue', custody: 'non' })
+    const got = ids(s)
+    expect(got).toContain('e_agrement')
+    expect(got).toContain('e_whitepaper')
+    expect(got).toEqual(expect.arrayContaining(['v_reserve', 'v_audit', 'v_reporting', 'f_winddown']))
+    expect(ratchets(s)).toContain('e_agrement')
+  })
+
+  it('retail distribution adds the marketing ratchet + KYC', () => {
+    const s = state({ fongibilite: 'fongible', stabilite: 'monnaie', distribution: 'retail', juridiction: 'ue', custody: 'non' })
+    expect(ratchets(s)).toContain('d_marketing')
+    expect(ids(s)).toContain('e_kyc')
+  })
+
+  it('custody adds the custody ops ratchet + KYC', () => {
+    const s = state({ fongibilite: 'fongible', stabilite: 'aucune', distribution: 'pro', juridiction: 'ue', custody: 'oui' })
+    expect(ratchets(s)).toContain('v_custody')
+    expect(ids(s)).toContain('e_kyc')
+  })
+
+  it('non-EU jurisdiction adds passporting', () => {
+    const s = state({ fongibilite: 'fongible', stabilite: 'aucune', distribution: 'pro', juridiction: 'hors-ue', custody: 'non' })
+    expect(ids(s)).toContain('d_passport')
+  })
+
+  it('utility (light) ends with f_none, not wind-down; life stage weight is null', () => {
+    const s = state({ fongibilite: 'fongible', stabilite: 'aucune', distribution: 'pro', juridiction: 'ue', custody: 'non' })
+    const { vector, cls } = qualify(s)
+    const stages = buildChecklist(vector, cls)
+    expect(stages[4]!.items.map((i) => i.id)).toEqual(['f_none'])
+    expect(stages[3]!.weight).toBeNull()
+  })
+
+  it('nft life stage is weighted "light"', () => {
+    const { vector, cls } = qualify(state({ fongibilite: 'non-fongible' }))
+    expect(buildChecklist(vector, cls)[3]!.weight).toBe('light')
   })
 })
 
