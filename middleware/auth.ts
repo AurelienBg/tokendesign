@@ -6,8 +6,13 @@
  */
 export default defineNuxtRouteMiddleware((to) => {
   const user = useSupabaseUser()
-  if (!user.value) {
-    const localePath = useLocalePath()
-    return navigateTo({ path: localePath('/login'), query: { next: to.fullPath } })
-  }
+  if (user.value) return
+
+  // Strategy 'prefix' → every route is /en/* or /fr/*. Derive the locale from
+  // the current path so we always redirect to a *prefixed* /login (avoids the
+  // "No match for /login" router warning that localePath can produce inside
+  // middleware before i18n is fully resolved).
+  const seg = to.path.split('/')[1]
+  const locale = seg === 'fr' ? 'fr' : 'en'
+  return navigateTo({ path: `/${locale}/login`, query: { next: to.fullPath } })
 })
