@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 const angles = [
   { key: 'create', to: '/create', glyph: '◈', available: true },
@@ -35,6 +36,12 @@ const angles = [
           :cta="t(`angles.${a.key}.cta`)"
         />
       </div>
+      <NuxtLink
+        :to="localePath('/configurator')"
+        class="inline-flex items-center gap-2 mt-4 font-mono text-xs uppercase tracking-[0.14em] text-ink-low hover:text-accent no-underline"
+      >
+        <span class="glyph text-accent" aria-hidden="true">⊞</span>{{ t('configurator.fromCreate') }}
+      </NuxtLink>
     </section>
 
     <!-- Disclaimer -->

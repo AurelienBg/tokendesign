@@ -7,6 +7,7 @@ type Step = 'fork' | 'b1' | 'autres' | 'b2' | 'dossier'
 
 const store = useProjectStore()
 const { t, locale } = useI18n()
+const localePath = useLocalePath()
 
 const step = ref<Step>('fork')
 const error = ref<string | null>(null)
@@ -100,7 +101,13 @@ const blockB2 = BLOCK_B2
     <!-- Block 1 — identity -->
     <section v-else-if="step === 'b1'" class="wrap max-w-3xl py-10 sm:py-14">
       <p class="kicker mb-2">{{ t('create.b1H') }}</p>
-      <p class="text-ink-mid mb-9 max-w-xl">{{ t('create.b1Sub') }}</p>
+      <p class="text-ink-mid mb-3 max-w-xl">{{ t('create.b1Sub') }}</p>
+      <NuxtLink
+        :to="localePath('/configurator')"
+        class="inline-flex items-center gap-2 mb-9 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-accent no-underline"
+      >
+        <span class="glyph text-accent" aria-hidden="true">⊞</span>{{ t('configurator.fromCreate') }}
+      </NuxtLink>
       <IntakeBlock :keys="blockB1" />
       <p v-if="error" class="mt-6 text-sm text-danger">{{ error }}</p>
       <div class="mt-8 flex justify-between gap-3 border-t border-border-subtle pt-6">

@@ -317,6 +317,76 @@ export function buildChecklist(v: Vector, cls: TokenClass): Stage[] {
   }))
 }
 
+// ── Configurator coherence (Module 2 — live constraint check) ────────────────
+
+/**
+ * Morphological config used by the live configurator (axes A1–A6 + flags).
+ * Unlike ProjectState it carries no launch answers (B2) — the configurator
+ * checks identity coherence only, not the regulatory class.
+ */
+export interface ConfigState {
+  fongibilite: Fongibilite | null
+  rapport: Rapport | null
+  couverture: Couverture | null
+  debiteur: Debiteur | null
+  garant: Garant | null
+  transfer: Transfer | null
+  fonctions: Fonction[]
+  droits: Droit[]
+}
+
+export type CoherenceLevel = 'err' | 'warn' | 'ok'
+export type CoherenceKey =
+  | 'natif_couverture' | 'natif_debiteur'
+  | 'adosse_couverture_na' | 'mutualisee_sans_debiteur'
+  | 'attestation_sans_garant' | 'titre_garant_valide'
+
+export interface CoherenceMessage {
+  level: CoherenceLevel
+  key: CoherenceKey
+}
+
+export function emptyConfig(): ConfigState {
+  return {
+    fongibilite: null,
+    rapport: null,
+    couverture: null,
+    debiteur: null,
+    garant: null,
+    transfer: null,
+    fonctions: [],
+    droits: []
+  }
+}
+
+/**
+ * Live coherence check (spec §2 constraints / forbidden cells). Ported from
+ * the grille-conception prototype's validate(). Returns errors (contradictory),
+ * warnings (near-empty), and a positive note for the valid off-diagonal case.
+ */
+export function coherence(c: ConfigState): CoherenceMessage[] {
+  const out: CoherenceMessage[] = []
+  const { rapport, couverture, debiteur, garant, fonctions } = c
+
+  if (rapport === 'natif') {
+    if (couverture && couverture !== 'na') out.push({ level: 'err', key: 'natif_couverture' })
+    if (debiteur && debiteur !== 'aucun') out.push({ level: 'err', key: 'natif_debiteur' })
+  }
+  if (rapport === 'adosse' || rapport === 'titre') {
+    if (couverture === 'na') out.push({ level: 'err', key: 'adosse_couverture_na' })
+    if (rapport === 'adosse' && couverture === 'mutualisee' && debiteur === 'aucun') {
+      out.push({ level: 'warn', key: 'mutualisee_sans_debiteur' })
+    }
+  }
+  if (fonctions.includes('preuve') && garant === 'aucun') {
+    out.push({ level: 'err', key: 'attestation_sans_garant' })
+  }
+  if (rapport === 'titre' && debiteur === 'aucun' && garant === 'identifie') {
+    out.push({ level: 'ok', key: 'titre_garant_valide' })
+  }
+  return out
+}
+
 // ── Top-level convenience ────────────────────────────────────────────────────
 
 export interface Dossier extends Qualification {

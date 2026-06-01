@@ -7,6 +7,9 @@ import {
   qualify,
   buildChecklist,
   buildDossier,
+  coherence,
+  emptyConfig,
+  type ConfigState,
   UNSURE,
   type ProjectState,
   type Vector,
@@ -203,6 +206,40 @@ describe('buildChecklist — lifecycle + ratchets', () => {
   it('nft life stage is weighted "light"', () => {
     const { vector, cls } = qualify(state({ fongibilite: 'non-fongible' }))
     expect(buildChecklist(vector, cls)[3]!.weight).toBe('light')
+  })
+})
+
+describe('coherence — configurator constraints', () => {
+  function cfg(overrides: Partial<ConfigState> = {}): ConfigState {
+    return { ...emptyConfig(), ...overrides }
+  }
+  const keys = (c: ConfigState) => coherence(c).map((m) => m.key)
+
+  it('native token cannot have coverage or a debtor', () => {
+    expect(keys(cfg({ rapport: 'natif', couverture: 'mutualisee' }))).toContain('natif_couverture')
+    expect(keys(cfg({ rapport: 'natif', debiteur: 'identifie' }))).toContain('natif_debiteur')
+  })
+
+  it('native token with na coverage and no debtor is clean', () => {
+    expect(coherence(cfg({ rapport: 'natif', couverture: 'na', debiteur: 'aucun' }))).toEqual([])
+  })
+
+  it('backed/claim token requires a coverage (not na)', () => {
+    expect(keys(cfg({ rapport: 'adosse', couverture: 'na' }))).toContain('adosse_couverture_na')
+  })
+
+  it('pooled reserve with no debtor is a near-empty warning', () => {
+    const m = coherence(cfg({ rapport: 'adosse', couverture: 'mutualisee', debiteur: 'aucun' }))
+    expect(m.some((x) => x.key === 'mutualisee_sans_debiteur' && x.level === 'warn')).toBe(true)
+  })
+
+  it('attestation function requires a guarantor', () => {
+    expect(keys(cfg({ fonctions: ['preuve'], garant: 'aucun' }))).toContain('attestation_sans_garant')
+  })
+
+  it('claim + identified guarantor + no debtor is explicitly valid (off-diagonal)', () => {
+    const m = coherence(cfg({ rapport: 'titre', debiteur: 'aucun', garant: 'identifie' }))
+    expect(m.some((x) => x.key === 'titre_garant_valide' && x.level === 'ok')).toBe(true)
   })
 })
 
