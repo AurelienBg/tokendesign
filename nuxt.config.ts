@@ -27,6 +27,15 @@ export default defineNuxtConfig({
     redirect: false
   },
 
+  // Public runtime config. Nuxt fills walletconnectProjectId from
+  // NUXT_PUBLIC_WALLETCONNECT_PROJECT_ID (used by xrpl-connect for the XRPL
+  // wallet sign-in, esp. Xaman / WalletConnect QR flows).
+  runtimeConfig: {
+    public: {
+      walletconnectProjectId: ''
+    }
+  },
+
   css: ['~/assets/css/main.css'],
 
   components: [
