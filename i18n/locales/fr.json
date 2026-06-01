@@ -197,5 +197,25 @@
     "custodyChecklist": "Checklist custody",
     "legal": "<b>Rappel :</b> structurant, pas un avis juridique. Les choix d'autorité/custody ont un poids réglementaire (custody MiCA / CASP) — à valider avec un conseil. Les primitives XRPL sont indicatives ; vérifie le statut des amendements (ex. Permission Delegation / XLS-75).",
     "chips": ["pas un avis juridique", "cadre UE — MiCA", "XRPL — vérifier le statut des amendements"]
+  },
+  "login": {
+    "kicker": "Compte optionnel",
+    "title": "Sauvegarde ton travail",
+    "subtitle": "Token Design fonctionne entièrement sans compte. Connecte-toi seulement pour sauvegarder et synchroniser tes dossiers entre appareils.",
+    "signInWithGoogle": "Continuer avec Google",
+    "redirecting": "Redirection…",
+    "or": "ou",
+    "emailLabel": "Email",
+    "emailPlaceholder": "toi@entreprise.com",
+    "sendLink": "Envoyer le lien magique",
+    "sending": "Envoi…",
+    "sentTitle": "Vérifie ta boîte mail",
+    "sentBody": "On a envoyé un lien de connexion à {email}. Ouvre-le sur cet appareil pour continuer.",
+    "useDifferentEmail": "Utiliser un autre email",
+    "invalidEmail": "Saisis une adresse email valide.",
+    "genericError": "Une erreur est survenue. Réessaie.",
+    "localFirstHint": "Local-first — tes réponses restent dans ce navigateur tant que tu n'es pas connecté.",
+    "signIn": "Connexion",
+    "signOut": "Déconnexion"
   }
 }
