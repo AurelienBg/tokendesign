@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useAuthorityDossier } from '~/composables/useAuthorityDossier'
+import { useAuthorityStore } from '~/stores/authority'
 
 defineEmits<{ (e: 'restart'): void }>()
 
 const { t, tm, rt } = useI18n()
+const authorityStore = useAuthorityStore()
 const { assessment, band, flags, checklist, xrpl } = useAuthorityDossier()
 
 const chips = computed(() =>
@@ -38,6 +40,9 @@ function print() {
         <button class="btn-ghost text-sm px-3.5 py-2" @click="$emit('restart')">{{ t('create.btnRestart') }}</button>
       </div>
     </div>
+
+    <!-- Cloud save (opt-in) -->
+    <CloudSaveBar angle="build" :state="authorityStore.$state" :suggested-name="band.name" class="mb-8" />
 
     <!-- Risk band -->
     <div class="card border-l-2 p-6 mb-8" :class="bandTone[assessment.band]">

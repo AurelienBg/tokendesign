@@ -217,5 +217,21 @@
     "localFirstHint": "Local-first — tes réponses restent dans ce navigateur tant que tu n'es pas connecté.",
     "signIn": "Connexion",
     "signOut": "Déconnexion"
+  },
+  "cloud": {
+    "signInToSave": "Connecte-toi pour sauvegarder ce dossier dans le cloud.",
+    "namePlaceholder": "Nomme ce dossier…",
+    "save": "Sauvegarder",
+    "saving": "Sauvegarde…",
+    "saved": "Sauvegardé ✓",
+    "viewAll": "Mes dossiers",
+    "nameRequired": "Donne-lui un nom.",
+    "error": "Une erreur est survenue.",
+    "myDossiers": "Mes dossiers",
+    "loading": "Chargement…",
+    "empty": "Aucun dossier sauvegardé. Sauvegarde-en un depuis n'importe quel angle.",
+    "open": "Ouvrir",
+    "delete": "Supprimer",
+    "deleteConfirm": "Supprimer ce dossier sauvegardé ?"
   }
 }

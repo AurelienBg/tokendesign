@@ -21,13 +21,18 @@ async function logout() {
       </NuxtLink>
       <div class="flex items-center gap-2">
         <ClientOnly>
-          <button
-            v-if="user"
-            type="button"
-            class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-danger transition-colors"
-            :title="user.email ?? ''"
-            @click="logout"
-          >{{ t('login.signOut') }}</button>
+          <template v-if="user">
+            <NuxtLink
+              :to="localePath('/dossiers')"
+              class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-accent no-underline transition-colors"
+            >{{ t('cloud.myDossiers') }}</NuxtLink>
+            <button
+              type="button"
+              class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-danger transition-colors"
+              :title="user.email ?? ''"
+              @click="logout"
+            >{{ t('login.signOut') }}</button>
+          </template>
           <NuxtLink
             v-else
             :to="localePath('/login')"

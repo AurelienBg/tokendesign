@@ -50,6 +50,9 @@ function print() {
       </div>
     </div>
 
+    <!-- Cloud save (opt-in) -->
+    <CloudSaveBar :angle="props.mode" :state="store.$state" :suggested-name="classInfo.name" class="mb-8" />
+
     <!-- Synthesis -->
     <div class="card p-6 mb-8">
       <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-low mb-2">{{ t('create.synLab') }}</p>

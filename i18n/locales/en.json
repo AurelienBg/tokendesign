@@ -217,5 +217,21 @@
     "localFirstHint": "Local-first — your answers stay in this browser until you sign in.",
     "signIn": "Sign in",
     "signOut": "Sign out"
+  },
+  "cloud": {
+    "signInToSave": "Sign in to save this dossier to the cloud.",
+    "namePlaceholder": "Name this dossier…",
+    "save": "Save to cloud",
+    "saving": "Saving…",
+    "saved": "Saved ✓",
+    "viewAll": "My dossiers",
+    "nameRequired": "Please give it a name.",
+    "error": "Something went wrong.",
+    "myDossiers": "My dossiers",
+    "loading": "Loading…",
+    "empty": "No saved dossiers yet. Save one from any angle.",
+    "open": "Open",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this saved dossier?"
   }
 }
