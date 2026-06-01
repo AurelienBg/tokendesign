@@ -181,13 +181,13 @@ main{padding:32px 0 80px}
 </head>
 <body>
 <div class="fixui lang-sel" id="langSel"><button data-lang="fr">FR</button><button data-lang="en">EN</button></div>
-<button class="fixui theme-toggle" id="themeBtn" aria-label="theme"><span class="ic" id="themeIc">\u2600</span><span class="tt-label" id="themeLab"></span></button>
+<button class="fixui theme-toggle" id="themeBtn" aria-label="theme"><span class="ic" id="themeIc">☀</span><span class="tt-label" id="themeLab"></span></button>
 
 <header><div class="wrap">
   <div class="kicker" data-i18n="heroKicker"></div>
   <h1 data-i18n="heroTitle"></h1>
   <p class="h-sub" data-i18n="heroSub"></p>
-  <div class="disclaimer"><span class="d-ic">\u2696</span><p data-i18n="disc"></p></div>
+  <div class="disclaimer"><span class="d-ic">⚖</span><p data-i18n="disc"></p></div>
 </div></header>
 
 <div class="progress hidden" id="progress"><div class="wrap"><div class="steps-ind" id="stepsInd"></div></div></div>
@@ -585,7 +585,7 @@ function buildDossier(){
 
 /* ===== theme ===== */
 const root=document.documentElement;let theme='dark';
-function setTheme(t){root.setAttribute('data-theme',t);document.getElementById('themeIc').textContent=t==='light'?'\u25D0':'\u2600';document.getElementById('themeLab').textContent=t==='light'?(LANG==='fr'?'Sombre':'Dark'):(LANG==='fr'?'Clair':'Light');}
+function setTheme(t){root.setAttribute('data-theme',t);document.getElementById('themeIc').textContent=t==='light'?'\u25D0':'☀';document.getElementById('themeLab').textContent=t==='light'?(LANG==='fr'?'Sombre':'Dark'):(LANG==='fr'?'Clair':'Light');}
 document.getElementById('themeBtn').onclick=()=>{theme=theme==='dark'?'light':'dark';setTheme(theme);};
 
 /* ===== wiring ===== */
