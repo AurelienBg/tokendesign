@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,12 +35,11 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--amber)}
 .mono{font-family:var(--mono)}
 
-.fixbar{position:fixed;top:16px;right:16px;z-index:60;display:flex;align-items:center;gap:8px}
-.fixui{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper);background:color-mix(in srgb,var(--ink2) 78%,transparent);border:1px solid var(--line2);border-radius:999px;padding:7px 10px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-.theme-toggle{cursor:pointer;padding:9px 14px;transition:.2s}
+.fixui{position:fixed;top:16px;z-index:60;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper);background:color-mix(in srgb,var(--ink2) 78%,transparent);border:1px solid var(--line2);border-radius:999px;padding:7px 10px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.theme-toggle{right:16px;cursor:pointer;padding:9px 14px;transition:.2s}
 .theme-toggle:hover{border-color:var(--amber);color:var(--amber)}
 .theme-toggle .ic{font-size:14px;line-height:1}
-.lang-sel{gap:2px;padding:5px 6px}
+.lang-sel{left:16px;gap:2px;padding:5px 6px}
 .lang-sel button{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--faint);background:none;border:none;cursor:pointer;padding:4px 9px;border-radius:999px;transition:.18s}
 .lang-sel button.on{color:var(--onfg);background:var(--amber)}
 .lang-sel button:not(.on):hover{color:var(--amber)}
@@ -181,10 +180,8 @@ main{padding:32px 0 80px}
 </style>
 </head>
 <body>
-<div class="fixbar">
-  <div class="fixui lang-sel" id="langSel"><button data-lang="fr">FR</button><button data-lang="en">EN</button></div>
-  <button class="fixui theme-toggle" id="themeBtn" aria-label="theme"><span class="ic" id="themeIc">\u2600</span><span class="tt-label" id="themeLab"></span></button>
-</div>
+<div class="fixui lang-sel" id="langSel"><button data-lang="fr">FR</button><button data-lang="en">EN</button></div>
+<button class="fixui theme-toggle" id="themeBtn" aria-label="theme"><span class="ic" id="themeIc">\u2600</span><span class="tt-label" id="themeLab"></span></button>
 
 <header><div class="wrap">
   <div class="kicker" data-i18n="heroKicker"></div>
@@ -302,7 +299,7 @@ const STR={
   chips:['not legal advice','not financial advice','EU framework — MiCA / MiFID II']
  }
 };
-let LANG='en';
+let LANG='fr';
 const L=()=>STR[LANG];
 
 /* ===== questions: stable value keys + per-language text ===== */
