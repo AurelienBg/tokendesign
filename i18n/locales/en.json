@@ -206,7 +206,7 @@
     "redirecting": "Redirecting…",
     "or": "or",
     "emailLabel": "Email",
-    "emailPlaceholder": "you@company.com",
+    "emailPlaceholder": "you{'@'}company.com",
     "sendLink": "Send magic link",
     "sending": "Sending…",
     "sentTitle": "Check your inbox",

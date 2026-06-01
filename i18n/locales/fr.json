@@ -206,7 +206,7 @@
     "redirecting": "Redirection…",
     "or": "ou",
     "emailLabel": "Email",
-    "emailPlaceholder": "toi@entreprise.com",
+    "emailPlaceholder": "toi{'@'}entreprise.com",
     "sendLink": "Envoyer le lien magique",
     "sending": "Envoi…",
     "sentTitle": "Vérifie ta boîte mail",
