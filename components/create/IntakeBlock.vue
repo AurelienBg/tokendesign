@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useProjectStore } from '~/stores/project'
+import { useActiveProjectStore } from '~/composables/useActiveProjectStore'
 import { INTAKE } from '~/utils/content/intake'
 import type { QuestionKey } from '~/utils/content/types'
 
 const props = defineProps<{ keys: QuestionKey[] }>()
 
-const store = useProjectStore()
+const store = useActiveProjectStore()
 
 // Filter by each question's conditional `show` predicate (reactive on state).
 const visibleKeys = computed(() =>

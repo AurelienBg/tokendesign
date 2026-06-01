@@ -155,5 +155,17 @@
     "count": "{n} / {total} cases",
     "emptyLib": "No case matches — empty or forbidden combination?",
     "colCase": "Case"
+  },
+  "analyze": {
+    "title": "Analyze a token",
+    "sub": "Describe an existing token; the same engine returns its likely class, watch points and what it would require — in diagnosis mode.",
+    "identH": "The token's identity",
+    "identSub": "Describe what the token is. Unsure on a question? Pick “I don't know” — we'll take the prudent assumption and flag it.",
+    "condH": "Its conditions",
+    "condSub": "How it's issued and distributed — what shapes the watch points and obligations.",
+    "stepLabels": ["Identity", "Conditions", "Diagnosis"],
+    "diagnose": "Diagnose →",
+    "diagnosisKicker": "Diagnosis",
+    "banner": "Diagnosis mode — read-only analysis of an existing token. Not legal advice; EU framework (MiCA / MiFID II)."
   }
 }

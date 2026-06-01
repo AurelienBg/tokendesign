@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { useProjectStore } from '~/stores/project'
+import { useActiveProjectStore } from '~/composables/useActiveProjectStore'
 import { useDossier } from '~/composables/useDossier'
 
+const props = withDefaults(defineProps<{ mode?: 'create' | 'analyze' }>(), { mode: 'create' })
 defineEmits<{ (e: 'restart'): void }>()
 
-const store = useProjectStore()
+const store = useActiveProjectStore()
 const { t, tm, rt } = useI18n()
-const { classInfo, vectorRows, flags, stages, flagsCount } = useDossier()
+const { classInfo, vectorRows, flags, stages, flagsCount } = useDossier(store)
+
+const kicker = computed(() => (props.mode === 'analyze' ? t('analyze.diagnosisKicker') : t('create.dossierKicker')))
 
 const chips = computed(() =>
   (tm('create.chips') as unknown[]).map((m) => rt(m as Parameters<typeof rt>[0]))
@@ -32,9 +35,14 @@ function print() {
 
 <template>
   <section class="wrap max-w-3xl py-10 sm:py-14">
+    <!-- Diagnostic-mode banner -->
+    <div v-if="props.mode === 'analyze'" class="card border-l-2 border-l-info p-3.5 mb-6 print:hidden">
+      <p class="text-[13px] text-ink-mid"><span class="glyph text-info mr-1.5" aria-hidden="true">ⓘ</span>{{ t('analyze.banner') }}</p>
+    </div>
+
     <!-- Head + actions -->
     <div class="flex items-center justify-between gap-4 mb-6 print:hidden">
-      <p class="kicker">{{ t('create.dossierKicker') }}</p>
+      <p class="kicker">{{ kicker }}</p>
       <div class="flex items-center gap-2">
         <button class="btn-ghost text-sm px-3.5 py-2" @click="print">{{ t('create.btnPrint') }}</button>
         <button class="btn-ghost text-sm px-3.5 py-2" @click="$emit('restart')">{{ t('create.btnRestart') }}</button>

@@ -1,9 +1,11 @@
 <script setup lang="ts">
-const props = defineProps<{ activeIndex: number }>()
+const props = withDefaults(defineProps<{ activeIndex: number; labelsKey?: string }>(), {
+  labelsKey: 'create.stepLabels'
+})
 const { tm, rt } = useI18n()
 
 const labels = computed(() =>
-  (tm('create.stepLabels') as unknown[]).map((m) => rt(m as Parameters<typeof rt>[0]))
+  (tm(props.labelsKey) as unknown[]).map((m) => rt(m as Parameters<typeof rt>[0]))
 )
 </script>
 

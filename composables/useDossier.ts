@@ -4,7 +4,7 @@
  * presentation glue: no rules live here (they're in utils/engine.ts).
  */
 import { storeToRefs } from 'pinia'
-import { useProjectStore } from '~/stores/project'
+import { useProjectStore, type ProjectStore } from '~/stores/project'
 import type { RedFlagLevel, RedFlagKey, StageId } from '~/utils/engine'
 import { CLASSES, type ClassInfo } from '~/utils/content/classes'
 import { REDFLAGS } from '~/utils/content/redflags'
@@ -36,8 +36,7 @@ export interface StageView {
   items: ChecklistItemView[]
 }
 
-export function useDossier() {
-  const store = useProjectStore()
+export function useDossier(store: ProjectStore = useProjectStore()) {
   const { dossier } = storeToRefs(store)
   const { locale } = useI18n()
   const loc = computed<Locale>(() => (locale.value === 'fr' ? 'fr' : 'en'))

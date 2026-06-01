@@ -155,5 +155,17 @@
     "count": "{n} / {total} cas",
     "emptyLib": "Aucun cas ne correspond — combinaison vide ou interdite ?",
     "colCase": "Cas"
+  },
+  "analyze": {
+    "title": "Analyser un token",
+    "sub": "Décris un token existant ; le même moteur en déduit sa classe probable, ses points de vigilance et ce qu'il impliquerait — en mode diagnostic.",
+    "identH": "L'identité du token",
+    "identSub": "Décris ce qu'est le token. Tu hésites ? Choisis « je ne sais pas » — on prendra l'hypothèse prudente et on le marquera.",
+    "condH": "Ses conditions",
+    "condSub": "Comment il est émis et distribué — ce qui façonne les points de vigilance et les obligations.",
+    "stepLabels": ["Identité", "Conditions", "Diagnostic"],
+    "diagnose": "Diagnostiquer →",
+    "diagnosisKicker": "Diagnostic",
+    "banner": "Mode diagnostic — analyse en lecture seule d'un token existant. Pas un avis juridique ; cadre UE (MiCA / MiFID II)."
   }
 }

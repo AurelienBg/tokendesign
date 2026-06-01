@@ -4,7 +4,7 @@ const localePath = useLocalePath()
 
 const angles = [
   { key: 'create', to: '/create', glyph: '◈', available: true },
-  { key: 'analyze', to: '/analyze', glyph: '◎', available: false },
+  { key: 'analyze', to: '/analyze', glyph: '◎', available: true },
   { key: 'build', to: '/build', glyph: '⬡', available: false }
 ] as const
 </script>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useProjectStore } from '~/stores/project'
+import { useActiveProjectStore } from '~/composables/useActiveProjectStore'
 import { INTAKE } from '~/utils/content/intake'
 import type { QuestionKey } from '~/utils/content/types'
 import type { ProjectState, Fonction, Droit } from '~/utils/engine'
 
 const props = defineProps<{ questionKey: QuestionKey; index?: number }>()
 
-const store = useProjectStore()
+const store = useActiveProjectStore()
 const { locale } = useI18n()
 const { t } = useI18n()
 

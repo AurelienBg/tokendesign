@@ -35,9 +35,7 @@ function val(axis: string, v: string): string {
     <!-- Categorical axes -->
     <div class="flex flex-col gap-4">
       <div v-for="axis in axes" :key="axis" class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-2 sm:gap-4 sm:items-center">
-        <div class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low">
-          {{ AXIS_GROUP[loc][axis] }}<span class="text-ink-low/60"> · {{ t('configurator.pickOne') }}</span>
-        </div>
+        <div class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low">{{ AXIS_GROUP[loc][axis] }}</div>
         <div class="flex flex-wrap gap-1.5" role="radiogroup">
           <button
             v-for="v in AXIS_ORDER[axis]"
@@ -54,9 +52,7 @@ function val(axis: string, v: string): string {
 
       <!-- Flags -->
       <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-2 sm:gap-4">
-        <div class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low">
-          {{ t('configurator.fonctionsLab') }}<span class="text-ink-low/60"> · {{ t('configurator.flagsHint') }}</span>
-        </div>
+        <div class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low">{{ t('configurator.fonctionsLab') }}</div>
         <div class="flex flex-wrap gap-1.5">
           <button
             v-for="f in FONCTIONS_ORDER"
@@ -70,9 +66,7 @@ function val(axis: string, v: string): string {
         </div>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-2 sm:gap-4">
-        <div class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low">
-          {{ t('configurator.droitsLab') }}<span class="text-ink-low/60"> · {{ t('configurator.flagsHint') }}</span>
-        </div>
+        <div class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low">{{ t('configurator.droitsLab') }}</div>
         <div class="flex flex-wrap gap-1.5">
           <button
             v-for="d in DROITS_ORDER"
