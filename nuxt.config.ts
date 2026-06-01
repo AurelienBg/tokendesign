@@ -3,18 +3,27 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
   devtools: { enabled: true },
 
-  // Sprint 0 foundations. Supabase / xrpl / Anthropic / Puppeteer are added
-  // in their respective sprints (auth = S5, coach = S6) so dev + typecheck
-  // stay green without external credentials.
+  // Anthropic / Puppeteer are added in their sprints (coach = S6). Supabase
+  // (S5) is wired below; it needs SUPABASE_* env (see .env.example).
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/i18n',
+    '@nuxtjs/supabase',
     '@vueuse/nuxt',
     // Auto page-view tracking on Vercel; no-op locally + on other hosts.
     '@vercel/analytics/nuxt'
   ],
+
+  supabase: {
+    url: process.env.SUPABASE_URL,
+    key: process.env.SUPABASE_ANON_KEY,
+    serviceKey: process.env.SUPABASE_SERVICE_ROLE,
+    // Local-first: auth is OPT-IN. Disable the global redirect so anonymous
+    // users browse freely; /login is reached via the header link only.
+    redirect: false
+  },
 
   css: ['~/assets/css/main.css'],
 
