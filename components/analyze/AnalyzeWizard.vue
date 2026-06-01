@@ -49,6 +49,11 @@ function restart() {
   error.value = null
   step.value = 'b1'
 }
+
+function resetAll() {
+  if (typeof window !== 'undefined' && !window.confirm(t('create.resetConfirm'))) return
+  restart()
+}
 watch(step, () => {
   error.value = null
   if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -62,8 +67,12 @@ const blockB2 = BLOCK_B2
   <div>
     <div class="sticky top-[57px] z-30 border-b border-border-subtle/70 backdrop-blur-md print:hidden"
          style="background-color: rgb(var(--bg-base) / 0.7)">
-      <div class="wrap max-w-3xl py-3">
+      <div class="wrap max-w-3xl py-3 flex items-center justify-between gap-3">
         <StepIndicator :active-index="activeIndex" labels-key="analyze.stepLabels" />
+        <button
+          class="shrink-0 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-danger transition-colors"
+          @click="resetAll"
+        >{{ t('create.btnRestart') }}</button>
       </div>
     </div>
 

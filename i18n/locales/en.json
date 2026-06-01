@@ -47,6 +47,7 @@
     "btnGenerate": "Generate the dossier →",
     "btnPrint": "⎙ Print / PDF",
     "btnRestart": "↺ Start over",
+    "resetConfirm": "Reset all answers and start over?",
     "backHub": "← Hub",
     "autresH": "Building on others’ assets",
     "autresBadge": "Outside the MVP scope",
@@ -167,5 +168,21 @@
     "diagnose": "Diagnose →",
     "diagnosisKicker": "Diagnosis",
     "banner": "Diagnosis mode — read-only analysis of an existing token. Not legal advice; EU framework (MiCA / MiFID II)."
+  },
+  "build": {
+    "title": "Build an app",
+    "sub": "An app that acts on users' assets. Map how much authority you take → risk profile, custody checklist, and the XRPL primitives to use.",
+    "questionsH": "Authority over assets",
+    "questionsSub": "Answer in plain terms — the power you take, its scope, duration, revocability, consent, and who holds the keys.",
+    "assess": "Assess →",
+    "alert": "Please answer: “{q}”",
+    "dossierKicker": "Authority profile",
+    "riskProfile": "Risk profile",
+    "watchPoints": "Watch points",
+    "xrplMapping": "XRPL mapping",
+    "primitivesLab": "Suggested primitives",
+    "custodyChecklist": "Custody checklist",
+    "legal": "<b>Reminder:</b> structuring, not legal advice. Authority/custody choices carry regulatory weight (MiCA custody / CASP) — validate with counsel. XRPL primitives are indicative; verify amendment status (e.g. Permission Delegation / XLS-75).",
+    "chips": ["not legal advice", "EU framework — MiCA", "XRPL — verify amendment status"]
   }
 }

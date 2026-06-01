@@ -74,6 +74,11 @@ function restart() {
   step.value = 'fork'
 }
 
+function resetAll() {
+  if (typeof window !== 'undefined' && !window.confirm(t('create.resetConfirm'))) return
+  restart()
+}
+
 // Scroll to top on every step change.
 watch(step, () => {
   error.value = null
@@ -89,8 +94,12 @@ const blockB2 = BLOCK_B2
     <!-- Progress (hidden on the fork) -->
     <div v-if="step !== 'fork'" class="sticky top-[57px] z-30 border-b border-border-subtle/70 backdrop-blur-md print:hidden"
          style="background-color: rgb(var(--bg-base) / 0.7)">
-      <div class="wrap max-w-3xl py-3">
+      <div class="wrap max-w-3xl py-3 flex items-center justify-between gap-3">
         <StepIndicator :active-index="activeIndex" />
+        <button
+          class="shrink-0 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-danger transition-colors"
+          @click="resetAll"
+        >{{ t('create.btnRestart') }}</button>
       </div>
     </div>
 

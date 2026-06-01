@@ -47,6 +47,7 @@
     "btnGenerate": "Générer le dossier →",
     "btnPrint": "⎙ Imprimer / PDF",
     "btnRestart": "↺ Recommencer",
+    "resetConfirm": "Effacer toutes les réponses et recommencer ?",
     "backHub": "← Hub",
     "autresH": "Construire sur les actifs des autres",
     "autresBadge": "Hors périmètre du MVP",
@@ -167,5 +168,21 @@
     "diagnose": "Diagnostiquer →",
     "diagnosisKicker": "Diagnostic",
     "banner": "Mode diagnostic — analyse en lecture seule d'un token existant. Pas un avis juridique ; cadre UE (MiCA / MiFID II)."
+  },
+  "build": {
+    "title": "Construire une app",
+    "sub": "Une app qui agit sur les actifs des utilisateurs. Mesure le pouvoir que tu prends → profil de risque, checklist custody, et les primitives XRPL à utiliser.",
+    "questionsH": "Autorité sur les actifs",
+    "questionsSub": "Réponds simplement — le pouvoir que tu prends, sa portée, sa durée, sa révocabilité, le consentement et qui détient les clés.",
+    "assess": "Évaluer →",
+    "alert": "Réponds à : « {q} »",
+    "dossierKicker": "Profil d'autorité",
+    "riskProfile": "Profil de risque",
+    "watchPoints": "Points de vigilance",
+    "xrplMapping": "Mapping XRPL",
+    "primitivesLab": "Primitives suggérées",
+    "custodyChecklist": "Checklist custody",
+    "legal": "<b>Rappel :</b> structurant, pas un avis juridique. Les choix d'autorité/custody ont un poids réglementaire (custody MiCA / CASP) — à valider avec un conseil. Les primitives XRPL sont indicatives ; vérifie le statut des amendements (ex. Permission Delegation / XLS-75).",
+    "chips": ["pas un avis juridique", "cadre UE — MiCA", "XRPL — vérifier le statut des amendements"]
   }
 }
