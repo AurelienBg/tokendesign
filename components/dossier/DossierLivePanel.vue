@@ -21,6 +21,8 @@ const missing = computed(() =>
   requiredKeys.value.filter((k) => store.$state[k as keyof ProjectState] == null).length
 )
 const complete = computed(() => missing.value === 0)
+// Nothing answered yet → stay neutral instead of implying a default class.
+const untouched = computed(() => missing.value === requiredKeys.value.length)
 const itemCount = computed(() => stages.value.reduce((n, s) => n + s.items.length, 0))
 </script>
 
@@ -37,20 +39,24 @@ const itemCount = computed(() => stages.value.reduce((n, s) => n + s.items.lengt
       <span>{{ complete ? t('create.complete') : t('create.missing', { n: missing }) }}</span>
     </div>
 
-    <!-- Likely class -->
-    <div class="mb-4">
-      <div class="flex items-center gap-2">
-        <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low">{{ t('create.likelyClass') }}</p>
-        <span v-if="!complete" class="font-mono text-[10px] uppercase tracking-[0.12em] text-warn">· {{ t('create.provisional') }}</span>
-      </div>
-      <p class="font-display text-xl font-semibold mt-1" :class="complete ? 'text-ink-high' : 'text-ink-mid'">{{ classInfo.name }}</p>
-      <p v-if="secondaryNames.length" class="mt-1 text-[12px] text-warn">
-        <span aria-hidden="true">⚑</span> {{ t('create.alsoPlausibleShort', { classes: secondaryNames.join(' · ') }) }}
-      </p>
-    </div>
+    <!-- Untouched → neutral prompt; no default class implied -->
+    <p v-if="untouched" class="text-[13px] text-ink-low mb-4">{{ t('create.startHint') }}</p>
 
-    <!-- Watch points -->
-    <div class="mb-4">
+    <template v-else>
+      <!-- Likely class -->
+      <div class="mb-4">
+        <div class="flex items-center gap-2">
+          <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low">{{ t('create.likelyClass') }}</p>
+          <span v-if="!complete" class="font-mono text-[10px] uppercase tracking-[0.12em] text-warn">· {{ t('create.provisional') }}</span>
+        </div>
+        <p class="font-display text-xl font-semibold mt-1" :class="complete ? 'text-ink-high' : 'text-ink-mid'">{{ classInfo.name }}</p>
+        <p v-if="secondaryNames.length" class="mt-1 text-[12px] text-warn">
+          <span aria-hidden="true">⚑</span> {{ t('create.alsoPlausibleShort', { classes: secondaryNames.join(' · ') }) }}
+        </p>
+      </div>
+
+      <!-- Watch points -->
+      <div class="mb-4">
       <p class="text-[13px] mb-2" :class="flagsCount ? 'text-warn' : 'text-teal'">
         {{ flagsCount ? `⚑ ${t('create.watchCount', { n: flagsCount })}` : t('create.vigNone') }}
       </p>
@@ -59,7 +65,8 @@ const itemCount = computed(() => stages.value.reduce((n, s) => n + s.items.lengt
           <span class="text-warn leading-tight" aria-hidden="true">›</span><span>{{ f.title }}</span>
         </li>
       </ul>
-    </div>
+      </div>
+    </template>
 
     <!-- Counts + CTA -->
     <div class="flex items-center gap-3 text-[12px] text-ink-low border-t border-border-subtle pt-3 mb-4">

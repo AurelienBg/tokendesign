@@ -136,3 +136,54 @@
     font-feature-settings: 'tnum' on, 'lnum' on;
   }
 }
+
+/* ============================================================
+ * Print — clean dossier PDF (browser "Save as PDF").
+ * Force a light palette (saves ink, stays legible even in dark
+ * mode), drop the technical-grid background and screen-only chrome.
+ * ============================================================ */
+@media print {
+  :root,
+  .dark {
+    --bg-base: 255 255 255;
+    --bg-card: 255 255 255;
+    --bg-elevated: 247 245 240;
+    --bg-raised: 240 237 230;
+    --border-subtle: 208 202 190;
+    --border-accent: 180 170 150;
+    --ink-high: 20 18 15;
+    --ink-mid: 70 65 58;
+    --ink-low: 120 113 100;
+    --accent: 150 100 20;
+    --on-accent: 255 255 255;
+    --ok: 22 120 80;
+    --danger: 170 60 45;
+    --warn: 150 100 20;
+    --info: 50 85 150;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  /* Drop the fixed blueprint grid + glow. */
+  body::before {
+    display: none !important;
+  }
+
+  /* Avoid splitting cards / list items across pages. */
+  .card,
+  section,
+  li,
+  h2,
+  h3,
+  h4 {
+    break-inside: avoid;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+}

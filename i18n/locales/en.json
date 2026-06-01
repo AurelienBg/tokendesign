@@ -53,6 +53,7 @@
     "launchGroup": "Launch",
     "livePanel": "Live dossier",
     "likelyClass": "Likely class",
+    "startHint": "Start setting the axes to see your likely class.",
     "fullDossier": "Full dossier →",
     "backBoard": "← Edit answers",
     "provisional": "provisional",
