@@ -243,6 +243,26 @@ describe('coherence — configurator constraints', () => {
   })
 })
 
+describe('secondary classes — boundary overlaps', () => {
+  it('a monnaie-pegged token that also pays revenues retains instrument but flags EMT as plausible', () => {
+    const q = qualify(state({ fongibilite: 'fongible', stabilite: 'monnaie', droits: ['revenus'] }))
+    expect(q.cls).toBe('instrument')
+    expect(q.secondary).toContain('emt')
+  })
+
+  it('a non-fungible token that also pays revenues retains instrument but flags NFT as plausible', () => {
+    const q = qualify(state({ fongibilite: 'non-fongible', droits: ['revenus'] }))
+    expect(q.cls).toBe('instrument')
+    expect(q.secondary).toContain('nft')
+  })
+
+  it('an unambiguous utility has no secondary classes', () => {
+    const q = qualify(state({ fongibilite: 'fongible', stabilite: 'aucune', droits: [] }))
+    expect(q.cls).toBe('utility')
+    expect(q.secondary).toEqual([])
+  })
+})
+
 describe('qualify — end to end', () => {
   it('classic USDC-style stablecoin → emt + retail flag', () => {
     const q = qualify(state({

@@ -7,7 +7,8 @@ defineEmits<{ (e: 'restart'): void }>()
 
 const store = useActiveProjectStore()
 const { t, tm, rt } = useI18n()
-const { classInfo, vectorRows, flags, stages, flagsCount } = useDossier(store)
+const localePath = useLocalePath()
+const { classInfo, secondaryNames, vectorRows, flags, stages, flagsCount } = useDossier(store)
 
 const kicker = computed(() => (props.mode === 'analyze' ? t('analyze.diagnosisKicker') : t('create.dossierKicker')))
 
@@ -54,6 +55,12 @@ function print() {
       <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-low mb-2">{{ t('create.synLab') }}</p>
       <p class="font-display text-2xl font-semibold mb-2">{{ t('create.synTpl', { arch: classInfo.arch }) }}</p>
       <p class="text-ink-mid text-[15px]">{{ classInfo.reg }}</p>
+      <p
+        v-if="secondaryNames.length"
+        class="mt-3 text-[13px] text-warn border border-warn/30 rounded-md px-3 py-2"
+      >
+        <span class="glyph mr-1" aria-hidden="true">⚑</span>{{ t('create.alsoPlausible', { classes: secondaryNames.join(' · ') }) }}
+      </p>
       <p class="mt-3 text-sm" :class="flagsCount === 0 ? 'text-ok' : 'text-warn'">{{ vigText }}</p>
     </div>
 
@@ -144,6 +151,10 @@ function print() {
           <span class="glyph text-info text-sm" aria-hidden="true">ⓘ</span>{{ t('create.alsoAppT') }}
         </h4>
         <p class="text-[14px] text-ink-mid leading-relaxed">{{ t('create.alsoAppP') }}</p>
+        <NuxtLink
+          :to="localePath('/build')"
+          class="inline-block mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-accent hover:underline"
+        >{{ t('angles.build.title') }} →</NuxtLink>
       </div>
 
       <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-low mb-1">{{ t('create.scope') }}</p>

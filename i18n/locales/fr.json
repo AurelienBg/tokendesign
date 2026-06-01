@@ -77,6 +77,8 @@
     "dossierKicker": "Dossier de lancement",
     "synLab": "Synthèse",
     "synTpl": "Ton token ressemble à {arch}.",
+    "alsoPlausible": "Sur une frontière de classe — aussi plausible : {classes}. On retient la plus lourde ; fais-la confirmer.",
+    "alsoPlausibleShort": "aussi : {classes}",
     "vigSingular": "⚑ 1 point de vigilance à regarder ci-dessous.",
     "vigPlural": "⚑ {n} points de vigilance à regarder ci-dessous.",
     "vigNone": "✓ Aucun point de vigilance majeur détecté.",

@@ -77,6 +77,8 @@
     "dossierKicker": "Launch dossier",
     "synLab": "Summary",
     "synTpl": "Your token resembles {arch}.",
+    "alsoPlausible": "On a class boundary — also plausibly: {classes}. We retain the heaviest; have it confirmed.",
+    "alsoPlausibleShort": "also: {classes}",
     "vigSingular": "⚑ 1 watch point to review below.",
     "vigPlural": "⚑ {n} watch points to review below.",
     "vigNone": "✓ No major watch point detected.",

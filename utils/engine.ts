@@ -109,6 +109,8 @@ export interface EffectiveResult {
 
 export interface Qualification extends EffectiveResult {
   cls: TokenClass
+  /** Other plausible classes (boundary overlaps); empty when unambiguous. */
+  secondary: TokenClass[]
   flags: RedFlag[]
 }
 
@@ -194,6 +196,28 @@ export function classify(v: Vector): TokenClass {
   if (v.stabilite === 'monnaie') return 'emt'
   if (v.stabilite === 'panier') return 'art'
   return 'utility'
+}
+
+/**
+ * Every class-defining signal present in the vector, in classify()'s
+ * precedence order. classify() returns the first; the others are "also
+ * plausible" — the token sits on a class boundary and the prudent (heaviest)
+ * one is retained, but the overlaps must be surfaced rather than hidden.
+ * 'utility' is a fallback, not a positive signal, so it never appears here.
+ */
+export function classSignals(v: Vector): TokenClass[] {
+  const out: TokenClass[] = []
+  if (v.droits.includes('revenus') || (v.rapport === 'titre' && v.titre_type === 'financier')) out.push('instrument')
+  if (v.fongibilite === 'non-fongible' || v.fongibilite === 'semi') out.push('nft')
+  if (v.stabilite === 'monnaie') out.push('emt')
+  if (v.stabilite === 'panier') out.push('art')
+  return out
+}
+
+/** Plausible classes other than the retained one (boundary overlaps). */
+export function secondaryClasses(v: Vector): TokenClass[] {
+  const primary = classify(v)
+  return classSignals(v).filter((c) => c !== primary)
 }
 
 // ── Layer A.3 — red flags (cumulative overlays) ──────────────────────────────
@@ -398,7 +422,7 @@ export function qualify(state: ProjectState): Qualification {
   const { vector, confirm } = eff(state)
   const cls = classify(vector)
   const flags = redflags(vector, cls, state)
-  return { vector, confirm, cls, flags }
+  return { vector, confirm, cls, secondary: secondaryClasses(vector), flags }
 }
 
 /** Full dossier model: qualification + lifecycle checklist. */

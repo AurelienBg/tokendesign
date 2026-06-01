@@ -9,7 +9,7 @@ defineEmits<{ (e: 'open'): void }>()
 
 const store = useActiveProjectStore()
 const { t } = useI18n()
-const { classInfo, flags, flagsCount, stages, confirmCount } = useDossier(store)
+const { classInfo, secondaryNames, flags, flagsCount, stages, confirmCount } = useDossier(store)
 
 const requiredKeys = computed<QuestionKey[]>(() => {
   const req: QuestionKey[] = [...REQUIRED_B1, ...REQUIRED_B2]
@@ -44,6 +44,9 @@ const itemCount = computed(() => stages.value.reduce((n, s) => n + s.items.lengt
         <span v-if="!complete" class="font-mono text-[10px] uppercase tracking-[0.12em] text-warn">· {{ t('create.provisional') }}</span>
       </div>
       <p class="font-display text-xl font-semibold mt-1" :class="complete ? 'text-ink-high' : 'text-ink-mid'">{{ classInfo.name }}</p>
+      <p v-if="secondaryNames.length" class="mt-1 text-[12px] text-warn">
+        <span aria-hidden="true">⚑</span> {{ t('create.alsoPlausibleShort', { classes: secondaryNames.join(' · ') }) }}
+      </p>
     </div>
 
     <!-- Watch points -->

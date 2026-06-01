@@ -43,6 +43,11 @@ export function useDossier(store: ProjectStore = useProjectStore()) {
 
   const classInfo = computed<ClassInfo>(() => CLASSES[loc.value][dossier.value.cls])
 
+  /** Names of other plausible classes (boundary overlaps). */
+  const secondaryNames = computed<string[]>(() =>
+    dossier.value.secondary.map((c) => CLASSES[loc.value][c].name)
+  )
+
   const vectorRows = computed<VectorRow[]>(() => {
     const { vector: v, confirm } = dossier.value
     const vm = VMAP[loc.value]
@@ -88,6 +93,7 @@ export function useDossier(store: ProjectStore = useProjectStore()) {
   return {
     dossier,
     classInfo,
+    secondaryNames,
     vectorRows,
     flags,
     stages,
