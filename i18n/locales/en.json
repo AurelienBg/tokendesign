@@ -1,0 +1,42 @@
+{
+  "app": {
+    "name": "Token Design",
+    "tagline": "Frame your token — without blind spots."
+  },
+  "controls": {
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "language": "Language"
+  },
+  "hub": {
+    "kicker": "Founder's assistant",
+    "title": "Frame your token, <em>without blind spots</em>.",
+    "subtitle": "Answer a few plain-language questions. The assistant infers what you're building, which regulatory box it falls into (EU — MiCA / MiFID II), what that requires, and the launch checklist — points of no return included.",
+    "chooseAngle": "Where do you start?",
+    "disclaimer": "This tool <b>structures, educates and flags</b> — it is <b>not legal or financial advice</b>. EU framework (MiCA / MiFID II). Have every decision validated by counsel."
+  },
+  "angles": {
+    "create": {
+      "title": "Create a token",
+      "desc": "Design a new token. Intake → engine → launch dossier.",
+      "cta": "Start"
+    },
+    "analyze": {
+      "title": "Analyze a token",
+      "desc": "Diagnose an existing token with the same engine, in audit mode.",
+      "cta": "Open"
+    },
+    "build": {
+      "title": "Build an app",
+      "desc": "An app that acts on users' assets: authority scale → risk profile + custody checklist (XRPL).",
+      "cta": "Open"
+    },
+    "soon": "Coming soon"
+  },
+  "stub": {
+    "badge": "In progress",
+    "body": "This angle is being built. The deterministic engine that powers it already lives in {engine} and is unit-tested.",
+    "back": "← Back to the hub"
+  }
+}

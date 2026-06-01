@@ -1,0 +1,42 @@
+{
+  "app": {
+    "name": "Token Design",
+    "tagline": "Cadre ton token — sans angle mort."
+  },
+  "controls": {
+    "theme": "Thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "language": "Langue"
+  },
+  "hub": {
+    "kicker": "Assistant fondateur",
+    "title": "Cadre ton token, <em>sans angle mort</em>.",
+    "subtitle": "Réponds à quelques questions en langage clair. L'assistant en déduit ce que tu construis, dans quelle case réglementaire tu tombes (UE — MiCA / MiFID II), ce que ça t'impose, et la checklist de lancement — points de non-retour compris.",
+    "chooseAngle": "Par où tu commences ?",
+    "disclaimer": "Cet outil <b>structure, éduque et signale</b> — il ne donne <b>ni avis juridique ni financier</b>. Cadre européen (MiCA / MiFID II). Fais valider toute décision par un conseil."
+  },
+  "angles": {
+    "create": {
+      "title": "Créer un token",
+      "desc": "Concevoir un nouveau token. Intake → moteur → dossier de lancement.",
+      "cta": "Commencer"
+    },
+    "analyze": {
+      "title": "Analyser un token",
+      "desc": "Diagnostiquer un token existant avec le même moteur, en mode audit.",
+      "cta": "Ouvrir"
+    },
+    "build": {
+      "title": "Construire une app",
+      "desc": "Une app qui agit sur les actifs des utilisateurs : échelle d'autorité → profil de risque + checklist custody (XRPL).",
+      "cta": "Ouvrir"
+    },
+    "soon": "Bientôt"
+  },
+  "stub": {
+    "badge": "En cours",
+    "body": "Cet angle est en construction. Le moteur déterministe qui l'alimente vit déjà dans {engine} et est couvert par des tests.",
+    "back": "← Retour au hub"
+  }
+}

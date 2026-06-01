@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /*
+   * Blueprint theme tokens (spec §11). Values are RGB triplets
+   * (space-separated) so Tailwind can compose alpha via `<alpha-value>`.
+   *
+   * Default :root = LIGHT. .dark overrides → dark-first blueprint identity.
+   * Ported from the index.html prototype palette.
+   */
+  :root {
+    --bg-base: 243 237 223;       /* #f3eddf */
+    --bg-card: 251 247 238;       /* #fbf7ee */
+    --bg-elevated: 239 231 214;   /* #efe7d6 */
+    --bg-raised: 233 224 205;     /* #e9e0cd */
+    --border-subtle: 221 213 196; /* #ddd5c4 */
+    --border-accent: 203 191 166; /* #cbbfa6 */
+    --ink-high: 42 38 32;         /* #2a2620 */
+    --ink-mid: 110 103 90;        /* #6e675a */
+    --ink-low: 155 147 130;       /* #9b9382 */
+    --accent: 169 116 26;         /* #a9741a */
+    --on-accent: 251 247 238;     /* #fbf7ee */
+    --ok: 31 141 98;              /* #1f8d62 */
+    --danger: 194 74 57;          /* #c24a39 */
+    --warn: 169 116 26;           /* #a9741a */
+    --info: 63 100 166;           /* #3f64a6 */
+  }
+
+  .dark {
+    --bg-base: 12 14 22;          /* #0c0e16 */
+    --bg-card: 17 20 31;          /* #11141f */
+    --bg-elevated: 23 27 41;      /* #171b29 */
+    --bg-raised: 28 33 51;        /* #1c2133 */
+    --border-subtle: 38 41 52;    /* ~paper @10% on ink */
+    --border-accent: 52 56 70;    /* ~paper @18% on ink */
+    --ink-high: 236 230 216;      /* #ece6d8 */
+    --ink-mid: 139 145 166;       /* #8b91a6 */
+    --ink-low: 90 96 118;         /* #5a6076 */
+    --accent: 230 169 60;         /* #e6a93c */
+    --on-accent: 26 21 5;         /* #1a1505 */
+    --ok: 95 207 158;             /* #5fcf9e */
+    --danger: 232 112 95;         /* #e8705f */
+    --warn: 217 164 65;           /* #d9a441 */
+    --info: 122 160 221;          /* #7aa0dd */
+  }
+
+  html {
+    background-color: rgb(var(--bg-base));
+    color: rgb(var(--ink-high));
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 350ms ease, color 350ms ease;
+  }
+
+  body {
+    @apply bg-bg-base text-ink-high;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* Blueprint "technical grid" background — fixed behind everything. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: rgb(var(--bg-base));
+    background-image:
+      radial-gradient(1100px 700px at 82% 8%, rgb(var(--accent) / 0.06), transparent 62%),
+      radial-gradient(900px 650px at 5% 92%, rgb(var(--ok) / 0.045), transparent 60%),
+      linear-gradient(rgb(var(--ink-high) / 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--ink-high) / 0.045) 1px, transparent 1px);
+    background-size: cover, cover, 40px 40px, 40px 40px;
+    background-position: center, center, -1px -1px, -1px -1px;
+    transition: background-color 350ms ease;
+  }
+
+  ::selection {
+    background-color: rgb(var(--accent) / 0.3);
+    color: rgb(var(--ink-high));
+  }
+}
+
+@layer components {
+  .wrap {
+    @apply mx-auto w-full max-w-3xl px-6;
+  }
+
+  .kicker {
+    @apply font-mono text-xs uppercase tracking-kicker text-accent;
+  }
+
+  .card {
+    @apply bg-bg-card border border-border-subtle rounded-xl shadow-card;
+    transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+  }
+
+  .card-hover {
+    @apply card;
+  }
+  .card-hover:hover {
+    @apply border-accent shadow-glow-accent;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg
+           bg-accent text-accent-on font-medium
+           hover:opacity-90
+           focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 focus:ring-offset-bg-base
+           transition;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg
+           bg-transparent text-ink-high border border-border-subtle
+           hover:border-accent hover:text-accent
+           transition-colors;
+  }
+
+  /* Fixed top-right control pill (lang + theme), blueprint style. */
+  .fixui {
+    @apply inline-flex items-center gap-2 font-mono text-[11px] uppercase
+           tracking-[0.14em] text-ink-high border border-border-accent rounded-full;
+    background-color: rgb(var(--bg-card) / 0.78);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+
+  .glyph {
+    @apply inline-flex items-center justify-center font-mono;
+    font-feature-settings: 'tnum' on, 'lnum' on;
+  }
+}
