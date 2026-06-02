@@ -51,6 +51,11 @@ const angles = [
       </div>
     </section>
 
+    <!-- Lifecycle orientation -->
+    <section class="mt-14">
+      <LifecycleFrieze />
+    </section>
+
     <!-- Disclaimer -->
     <section class="mt-16 max-w-2xl">
       <div class="card border-l-2 border-l-warn p-4 text-sm text-ink-mid">

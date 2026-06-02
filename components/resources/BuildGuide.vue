@@ -33,6 +33,14 @@ const bands: { key: RiskBand; tone: string }[] = [
 ]
 const flagKeys: AuthorityFlagKey[] = ['deposit_custody', 'custodian_keys', 'blanket_broad', 'irrevocable', 'indefinite_lock']
 const checklist = computed(() => Object.values(AUTH_CHECKLIST[loc.value]))
+
+// Branching flow — escalating authority.
+const flow: { q: string; yes: string; tone: string }[] = [
+  { q: 'Only reads balances / history (no action)?', yes: 'Read — low', tone: 'text-ok border-ok/40' },
+  { q: 'Only builds transactions the user signs themselves?', yes: 'Propose — low', tone: 'text-ok border-ok/40' },
+  { q: 'Acts within limits the user delegated (user keeps the keys)?', yes: 'Authorize — medium+', tone: 'text-warn border-warn/40' }
+]
+const flowFallback = { label: 'Hold / deposit — custody (high–critical)', tone: 'text-danger border-danger/40' }
 </script>
 
 <template>
@@ -42,6 +50,26 @@ const checklist = computed(() => Object.values(AUTH_CHECKLIST[loc.value]))
       <h2 class="font-display text-3xl font-semibold leading-tight mb-3">Power over users' assets → risk & custody</h2>
       <p class="text-ink-mid leading-relaxed">For apps that act on users' tokens, the question isn't the token's class but how much <b>authority</b> you take over the wallet — with what reversibility, and who holds the keys. Not legal advice.</p>
     </header>
+
+    <!-- Decision flow (escalating authority) -->
+    <section class="mb-12">
+      <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-low mb-3">Decision flow — escalating authority</p>
+      <div class="flex flex-col gap-2">
+        <template v-for="(n, i) in flow" :key="i">
+          <div class="card p-3.5 flex flex-wrap items-center gap-3">
+            <span class="font-mono text-[11px] text-ink-low shrink-0">{{ i + 1 }}</span>
+            <span class="flex-1 min-w-[180px] text-[14px] text-ink-high">{{ n.q }}</span>
+            <span class="font-mono text-[11px] text-ok shrink-0" aria-hidden="true">→ yes</span>
+            <span class="rounded-full border px-2.5 py-1 text-[12px] font-medium shrink-0" :class="n.tone">{{ n.yes }}</span>
+          </div>
+          <div class="text-center font-mono text-[10px] text-ink-low" aria-hidden="true">↓ no</div>
+        </template>
+        <div class="flex items-center gap-3">
+          <span class="font-mono text-[11px] text-ink-low shrink-0">→</span>
+          <span class="rounded-full border px-2.5 py-1 text-[12px] font-medium" :class="flowFallback.tone">{{ flowFallback.label }}</span>
+        </div>
+      </div>
+    </section>
 
     <nav class="card p-4 mb-10">
       <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-low mb-2">In this guide</p>

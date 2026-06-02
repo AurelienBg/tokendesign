@@ -40,6 +40,15 @@ const rules = [
 
 const redFlagKeys = ['security', 'algo', 'limbo', 'nftserie', 'retail', 'custody', 'juridiction', 'incoherence'] as const
 const stages = ['Conception', 'Issuance', 'Distribution', 'Life', 'End']
+
+// Branching flow — follows the engine precedence (first match wins).
+const flow: { q: string; yes: string; tone: string }[] = [
+  { q: 'Grants revenues, or a claim on a financial asset?', yes: 'Instrument', tone: 'text-danger border-danger/40' },
+  { q: 'Non-fungible / one-of-a-kind (or by series)?', yes: 'NFT', tone: 'text-info border-info/40' },
+  { q: 'Stable value pegged to ONE official currency?', yes: 'EMT', tone: 'text-accent border-accent/40' },
+  { q: 'Pegged to a basket / a crypto?', yes: 'ART', tone: 'text-accent border-accent/40' }
+]
+const flowFallback = { label: 'Utility / other crypto-asset', tone: 'text-ok border-ok/40' }
 </script>
 
 <template>
@@ -49,6 +58,26 @@ const stages = ['Conception', 'Issuance', 'Distribution', 'Life', 'End']
       <h2 class="font-display text-3xl font-semibold leading-tight mb-3">From answers to a regulatory class</h2>
       <p class="text-ink-mid leading-relaxed">How the deterministic engine turns a few plain-language answers into a likely EU class, watch points and a launch checklist. Substance over form — never the technical standard. Not legal advice.</p>
     </header>
+
+    <!-- Decision flow (branching) -->
+    <section class="mb-12">
+      <p class="font-mono text-[10px] uppercase tracking-[0.16em] text-ink-low mb-3">Decision flow — first match wins</p>
+      <div class="flex flex-col gap-2">
+        <template v-for="(n, i) in flow" :key="i">
+          <div class="card p-3.5 flex flex-wrap items-center gap-3">
+            <span class="font-mono text-[11px] text-ink-low shrink-0">{{ i + 1 }}</span>
+            <span class="flex-1 min-w-[180px] text-[14px] text-ink-high">{{ n.q }}</span>
+            <span class="font-mono text-[11px] text-ok shrink-0" aria-hidden="true">→ yes</span>
+            <span class="rounded-full border px-2.5 py-1 text-[12px] font-medium shrink-0" :class="n.tone">{{ n.yes }}</span>
+          </div>
+          <div class="text-center font-mono text-[10px] text-ink-low" aria-hidden="true">↓ no</div>
+        </template>
+        <div class="flex items-center gap-3">
+          <span class="font-mono text-[11px] text-ink-low shrink-0">→</span>
+          <span class="rounded-full border px-2.5 py-1 text-[12px] font-medium" :class="flowFallback.tone">{{ flowFallback.label }}</span>
+        </div>
+      </div>
+    </section>
 
     <!-- TOC -->
     <nav class="card p-4 mb-10">

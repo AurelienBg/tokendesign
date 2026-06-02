@@ -14,6 +14,8 @@
     "title": "Frame your token, <em>without blind spots</em>.",
     "subtitle": "Answer a few plain-language questions. The assistant infers what you're building, which regulatory box it falls into (EU — MiCA / MiFID II), what that requires, and the launch checklist — points of no return included.",
     "chooseAngle": "Where do you start?",
+    "lifecycleKicker": "Where this fits",
+    "lifecycleNote": "Token Design helps at Conception — high-level framing. “Build an app” is a parallel track (authority & custody), not a stage.",
     "disclaimer": "This tool <b>structures, educates and flags</b> — it is <b>not legal or financial advice</b>. EU framework (MiCA / MiFID II). Have every decision validated by counsel."
   },
   "angles": {
