@@ -76,6 +76,11 @@
       "tokenomicsDesc": "Concevoir l'offre, la distribution, la captation de valeur (Tokenlab).",
       "regulation": "Régulation",
       "regulationDesc": "Plongée réglementaire UE détaillée (Regul8).",
+      "pitch": "Pitch",
+      "pitchDesc": "Construis ton pitch investisseurs / demo-day (PitchCraft).",
+      "gamification": "Gamification",
+      "gamificationDesc": "Conçois l'engagement & les mécaniques communautaires (Gameframe).",
+      "recommended": "Recommandé",
       "open": "Ouvrir",
       "note": "Apps distinctes de la suite. Pas un avis juridique ou financier."
     },

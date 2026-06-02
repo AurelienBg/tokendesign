@@ -8,7 +8,7 @@ defineEmits<{ (e: 'restart'): void }>()
 const store = useActiveProjectStore()
 const { t, tm, rt } = useI18n()
 const localePath = useLocalePath()
-const { classInfo, secondaryNames, vectorRows, flags, stages, flagsCount } = useDossier(store)
+const { dossier, classInfo, secondaryNames, vectorRows, flags, stages, flagsCount } = useDossier(store)
 
 const kicker = computed(() => (props.mode === 'analyze' ? t('analyze.diagnosisKicker') : t('create.dossierKicker')))
 
@@ -182,6 +182,6 @@ function print() {
     </footer>
 
     <!-- Hand-off to the deeper apps of the suite -->
-    <SuiteHandoff />
+    <SuiteHandoff :cls="dossier.cls" />
   </section>
 </template>

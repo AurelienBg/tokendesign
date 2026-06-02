@@ -76,6 +76,11 @@
       "tokenomicsDesc": "Design supply, distribution and value capture (Tokenlab).",
       "regulation": "Regulation",
       "regulationDesc": "Detailed EU regulatory deep-dive (Regul8).",
+      "pitch": "Pitch",
+      "pitchDesc": "Craft your investor/demo-day pitch (PitchCraft).",
+      "gamification": "Gamification",
+      "gamificationDesc": "Design engagement & community mechanics (Gameframe).",
+      "recommended": "Recommended",
       "open": "Open",
       "note": "Separate apps in the suite. Not legal or financial advice."
     },
