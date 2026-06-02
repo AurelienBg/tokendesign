@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { CloudProject } from '~/composables/useCloudProjects'
-import { useProjectStore, useAnalyzeStore } from '~/stores/project'
+import { useProjectStore } from '~/stores/project'
 import { useAuthorityStore } from '~/stores/authority'
 
 definePageMeta({ middleware: 'auth' })
@@ -10,7 +10,6 @@ const localePath = useLocalePath()
 const { list, remove } = useCloudProjects()
 
 const projectStore = useProjectStore()
-const analyzeStore = useAnalyzeStore()
 const authorityStore = useAuthorityStore()
 
 useHead({ title: () => `${t('cloud.myDossiers')} — Token Design` })
@@ -38,15 +37,13 @@ function fmtDate(iso: string) {
 
 function open(p: CloudProject) {
   const state = { ...p.state } as never
-  if (p.angle === 'create') {
-    projectStore.$patch(state)
-    navigateTo(localePath('/create'))
-  } else if (p.angle === 'analyze') {
-    analyzeStore.$patch(state)
-    navigateTo(localePath('/analyze'))
-  } else {
+  // 'create' and 'analyze' share the unified /create flow now (same store).
+  if (p.angle === 'build') {
     authorityStore.$patch(state)
     navigateTo(localePath('/build'))
+  } else {
+    projectStore.$patch(state)
+    navigateTo(localePath('/create'))
   }
 }
 

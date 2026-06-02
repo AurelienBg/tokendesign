@@ -4,7 +4,6 @@ const localePath = useLocalePath()
 
 const angles = [
   { key: 'create', to: '/create', glyph: '◈', available: true },
-  { key: 'analyze', to: '/analyze', glyph: '◎', available: true },
   { key: 'build', to: '/build', glyph: '⬡', available: true }
 ] as const
 </script>
@@ -24,7 +23,7 @@ const angles = [
       <p class="font-mono text-xs uppercase tracking-[0.16em] text-ink-low mb-4">
         {{ t('hub.chooseAngle') }}
       </p>
-      <div class="grid gap-4 sm:grid-cols-3">
+      <div class="grid gap-4 sm:grid-cols-2">
         <AngleCard
           v-for="a in angles"
           :key="a.key"

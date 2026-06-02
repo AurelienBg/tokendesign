@@ -18,8 +18,8 @@
   },
   "angles": {
     "create": {
-      "title": "Create a token",
-      "desc": "Design a new token. Intake → engine → launch dossier.",
+      "title": "Frame a token",
+      "desc": "Design a new token — or diagnose an existing one. Identity → regulatory class → red flags → launch checklist.",
       "cta": "Start"
     },
     "analyze": {
@@ -49,6 +49,9 @@
     "btnRestart": "↺ Start over",
     "resetConfirm": "Reset all answers and start over?",
     "backHub": "← Hub",
+    "frameTitle": "Frame your token",
+    "modeNew": "New token",
+    "modeExisting": "Existing token",
     "identityGroup": "Identity",
     "launchGroup": "Launch",
     "livePanel": "Live dossier",

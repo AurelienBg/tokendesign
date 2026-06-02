@@ -18,8 +18,8 @@
   },
   "angles": {
     "create": {
-      "title": "Créer un token",
-      "desc": "Concevoir un nouveau token. Intake → moteur → dossier de lancement.",
+      "title": "Cadrer un token",
+      "desc": "Concevoir un nouveau token — ou diagnostiquer un existant. Identité → classe réglementaire → red flags → checklist.",
       "cta": "Commencer"
     },
     "analyze": {
@@ -49,6 +49,9 @@
     "btnRestart": "↺ Recommencer",
     "resetConfirm": "Effacer toutes les réponses et recommencer ?",
     "backHub": "← Hub",
+    "frameTitle": "Cadre ton token",
+    "modeNew": "Nouveau token",
+    "modeExisting": "Token existant",
     "identityGroup": "Identité",
     "launchGroup": "Lancement",
     "livePanel": "Dossier en direct",
