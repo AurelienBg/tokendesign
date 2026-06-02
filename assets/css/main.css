@@ -4,56 +4,58 @@
 
 @layer base {
   /*
-   * Blueprint theme tokens (spec §11). Values are RGB triplets
-   * (space-separated) so Tailwind can compose alpha via `<alpha-value>`.
+   * Token Design — adopting the 7powers visual identity (per product decision).
+   * Neutral surfaces (zinc-like) + LOCKED brand blue #378ADD and gold #EF9F27.
+   * Inter type. RGB triplets so Tailwind composes alpha via <alpha-value>.
    *
-   * Default :root = LIGHT. .dark overrides → dark-first blueprint identity.
-   * Ported from the index.html prototype palette.
+   * Default :root = LIGHT. .dark restores the dark-first identity.
+   * accent (blue) is LOCKED across themes; the ok/danger/warn/info semantics
+   * stay theme-aware for legibility.
    */
   :root {
-    --bg-base: 243 237 223;       /* #f3eddf */
-    --bg-card: 251 247 238;       /* #fbf7ee */
-    --bg-elevated: 239 231 214;   /* #efe7d6 */
-    --bg-raised: 233 224 205;     /* #e9e0cd */
-    --border-subtle: 221 213 196; /* #ddd5c4 */
-    --border-accent: 203 191 166; /* #cbbfa6 */
-    --ink-high: 42 38 32;         /* #2a2620 */
-    --ink-mid: 110 103 90;        /* #6e675a */
-    --ink-low: 155 147 130;       /* #9b9382 */
-    --accent: 169 116 26;         /* #a9741a */
-    --on-accent: 251 247 238;     /* #fbf7ee */
-    --ok: 31 141 98;              /* #1f8d62 */
-    --danger: 194 74 57;          /* #c24a39 */
-    --warn: 169 116 26;           /* #a9741a */
-    --info: 63 100 166;           /* #3f64a6 */
+    --bg-base: 250 250 250;       /* #fafafa */
+    --bg-card: 255 255 255;       /* #ffffff */
+    --bg-elevated: 244 244 246;   /* #f4f4f6 */
+    --bg-raised: 235 235 238;     /* #ebebee */
+    --border-subtle: 229 229 231; /* #e5e5e7 */
+    --border-accent: 212 212 216; /* #d4d4d8 */
+    --ink-high: 10 10 15;         /* #0a0a0f */
+    --ink-mid: 82 82 91;          /* #52525b */
+    --ink-low: 161 161 170;       /* #a1a1aa */
+    --accent: 55 138 221;         /* #378ADD — brand blue (locked) */
+    --on-accent: 255 255 255;
+    --ok: 22 120 80;              /* green */
+    --danger: 220 38 38;          /* #dc2626 */
+    --warn: 239 159 39;           /* #EF9F27 — brand gold */
+    --info: 55 138 221;           /* blue */
   }
 
   .dark {
-    --bg-base: 12 14 22;          /* #0c0e16 */
-    --bg-card: 17 20 31;          /* #11141f */
-    --bg-elevated: 23 27 41;      /* #171b29 */
-    --bg-raised: 28 33 51;        /* #1c2133 */
-    --border-subtle: 38 41 52;    /* ~paper @10% on ink */
-    --border-accent: 52 56 70;    /* ~paper @18% on ink */
-    --ink-high: 236 230 216;      /* #ece6d8 */
-    --ink-mid: 139 145 166;       /* #8b91a6 */
-    --ink-low: 90 96 118;         /* #5a6076 */
-    --accent: 230 169 60;         /* #e6a93c */
-    --on-accent: 26 21 5;         /* #1a1505 */
-    --ok: 95 207 158;             /* #5fcf9e */
-    --danger: 232 112 95;         /* #e8705f */
-    --warn: 217 164 65;           /* #d9a441 */
-    --info: 122 160 221;          /* #7aa0dd */
+    --bg-base: 10 10 15;          /* #0a0a0f */
+    --bg-card: 17 17 26;          /* #11111a */
+    --bg-elevated: 22 22 34;      /* #161622 */
+    --bg-raised: 28 28 42;        /* #1c1c2a */
+    --border-subtle: 31 31 46;    /* #1f1f2e */
+    --border-accent: 42 42 64;    /* #2a2a40 */
+    --ink-high: 245 245 247;      /* #f5f5f7 */
+    --ink-mid: 161 161 170;       /* #a1a1aa */
+    --ink-low: 82 82 91;          /* #52525b */
+    --accent: 55 138 221;         /* #378ADD — locked */
+    --on-accent: 255 255 255;
+    --ok: 52 211 153;             /* #34d399 */
+    --danger: 248 113 113;        /* #f87171 */
+    --warn: 245 180 80;           /* #f5b450 — gold-bright */
+    --info: 91 163 232;           /* #5BA3E8 */
   }
 
   html {
     background-color: rgb(var(--bg-base));
     color: rgb(var(--ink-high));
-    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-family: 'Inter', 'Geist', system-ui, sans-serif;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    transition: background-color 350ms ease, color 350ms ease;
+    transition: background-color 150ms ease, color 150ms ease;
   }
 
   body {
@@ -62,26 +64,8 @@
     line-height: 1.6;
   }
 
-  /* Blueprint "technical grid" background — fixed behind everything. */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background-color: rgb(var(--bg-base));
-    background-image:
-      radial-gradient(1100px 700px at 82% 8%, rgb(var(--accent) / 0.06), transparent 62%),
-      radial-gradient(900px 650px at 5% 92%, rgb(var(--ok) / 0.045), transparent 60%),
-      linear-gradient(rgb(var(--ink-high) / 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(var(--ink-high) / 0.045) 1px, transparent 1px);
-    background-size: cover, cover, 40px 40px, 40px 40px;
-    background-position: center, center, -1px -1px, -1px -1px;
-    transition: background-color 350ms ease;
-  }
-
   ::selection {
-    background-color: rgb(var(--accent) / 0.3);
+    background-color: rgba(55, 138, 221, 0.3);
     color: rgb(var(--ink-high));
   }
 }
@@ -104,7 +88,8 @@
     @apply card;
   }
   .card-hover:hover {
-    @apply border-accent shadow-glow-accent;
+    @apply shadow-glow-accent;
+    border-color: rgb(var(--accent));
   }
 
   .btn-primary {
@@ -118,11 +103,14 @@
   .btn-ghost {
     @apply inline-flex items-center justify-center px-5 py-2.5 rounded-lg
            bg-transparent text-ink-high border border-border-subtle
-           hover:border-accent hover:text-accent
            transition-colors;
   }
+  .btn-ghost:hover {
+    border-color: rgb(var(--accent));
+    color: rgb(var(--accent));
+  }
 
-  /* Fixed top-right control pill (lang + theme), blueprint style. */
+  /* Top-right control pill (lang + theme). */
   .fixui {
     @apply inline-flex items-center gap-2 font-mono text-[11px] uppercase
            tracking-[0.14em] text-ink-high border border-border-accent rounded-full;
@@ -138,28 +126,26 @@
 }
 
 /* ============================================================
- * Print — clean dossier PDF (browser "Save as PDF").
- * Force a light palette (saves ink, stays legible even in dark
- * mode), drop the technical-grid background and screen-only chrome.
+ * Print — clean dossier PDF. Force a light, neutral palette.
  * ============================================================ */
 @media print {
   :root,
   .dark {
     --bg-base: 255 255 255;
     --bg-card: 255 255 255;
-    --bg-elevated: 247 245 240;
-    --bg-raised: 240 237 230;
-    --border-subtle: 208 202 190;
-    --border-accent: 180 170 150;
-    --ink-high: 20 18 15;
-    --ink-mid: 70 65 58;
-    --ink-low: 120 113 100;
-    --accent: 150 100 20;
+    --bg-elevated: 247 247 248;
+    --bg-raised: 240 240 242;
+    --border-subtle: 224 224 228;
+    --border-accent: 200 200 206;
+    --ink-high: 10 10 15;
+    --ink-mid: 70 70 78;
+    --ink-low: 120 120 130;
+    --accent: 55 138 221;
     --on-accent: 255 255 255;
     --ok: 22 120 80;
-    --danger: 170 60 45;
-    --warn: 150 100 20;
-    --info: 50 85 150;
+    --danger: 190 40 40;
+    --warn: 180 120 20;
+    --info: 55 138 221;
   }
 
   html,
@@ -167,12 +153,6 @@
     background: #fff !important;
   }
 
-  /* Drop the fixed blueprint grid + glow. */
-  body::before {
-    display: none !important;
-  }
-
-  /* Avoid splitting cards / list items across pages. */
   .card,
   section,
   li,

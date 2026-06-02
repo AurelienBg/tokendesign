@@ -73,7 +73,7 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'Self-serve assistant that helps a web3 founder frame a token — identity, EU regulatory class, obligations, red flags, launch checklist. Not legal advice.' },
-        { name: 'theme-color', content: '#0c0e16' },
+        { name: 'theme-color', content: '#0a0a0f' },
         { property: 'og:title', content: 'Token Design' },
         { property: 'og:description', content: 'Frame your token: identity, EU regulatory class (MiCA / MiFID II), obligations, red flags, launch checklist.' },
         { property: 'og:type', content: 'website' },
@@ -86,7 +86,7 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap'
+          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap'
         }
       ]
     }

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-// The blueprint "technical grid" background is painted on body::before
-// (assets/css/main.css), so the layout itself stays transparent.
+// Clean neutral background (7powers identity); the layout stays transparent.
 </script>
 
 <template>

@@ -11,7 +11,9 @@ Contexte persistant pour le projet **Token Design**. À lire entièrement en dé
 **Live (target):** `aurelienbg.github.io/tokendesign` (dev) → Vercel ensuite.
 **Status:** Greenfield. On construit depuis `tokendesign-spec.md` (racine du repo).
 
-App de la suite post-atelier (7Powers, Regul8, PitchCraft, Tokenlab…). Même philosophie : **méthode → modules → coach IA context-aware → export structuré**, **local-first, auth opt-in**. Identité visuelle **propre** (blueprint ambre, cf. spec §11) — pas de modèle commun imposé.
+App de la suite post-atelier (7Powers, Regul8, PitchCraft, Tokenlab…). Même philosophie : **méthode → modules → coach IA context-aware → export structuré**, **local-first, auth opt-in**.
+
+**Identité visuelle — DÉCISION (remplace la spec §11) :** on adopte le **look complet de 7powers** (choix produit explicite, 2026-06-02). Surfaces neutres (zinc), accent **bleu #378ADD** + or **#EF9F27** (verrouillés), police **Inter** (+ JetBrains Mono pour le mono), cartes `shadow`/glow, **pas de grille blueprint**. L'ancien « blueprint ambre + Fraunces » de la §11 est abandonné — ne pas le restaurer. Tokens dans `assets/css/main.css` (mêmes noms : accent/ok/danger/warn/info, theme-aware sauf accent verrouillé).
 
 ---
 

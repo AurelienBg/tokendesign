@@ -53,9 +53,11 @@ export default <Partial<Config>>{
         info: 'rgb(var(--info) / <alpha-value>)'
       },
       fontFamily: {
-        display: ['Fraunces', 'Georgia', 'serif'],
-        sans: ['IBM Plex Sans', 'system-ui', 'sans-serif'],
-        mono: ['IBM Plex Mono', 'ui-monospace', 'monospace']
+        // 7powers identity: Inter everywhere (headings included), Geist Mono /
+        // JetBrains Mono for mono labels.
+        display: ['Inter', 'Geist', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'Geist', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Geist Mono', 'ui-monospace', 'monospace']
       },
       letterSpacing: {
         kicker: '0.22em'
