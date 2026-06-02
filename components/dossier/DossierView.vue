@@ -55,7 +55,12 @@ function print() {
 
     <!-- Synthesis -->
     <div class="card p-6 mb-8">
-      <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-low mb-2">{{ t('create.synLab') }}</p>
+      <div class="flex items-center justify-between gap-3 flex-wrap mb-3">
+        <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-low">{{ t('create.synLab') }}</p>
+        <span class="inline-flex items-center rounded-full border border-accent/40 bg-accent/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-accent">
+          {{ classInfo.name }}
+        </span>
+      </div>
       <p class="font-display text-2xl font-semibold mb-2">{{ t('create.synTpl', { arch: classInfo.arch }) }}</p>
       <p class="text-ink-mid text-[15px]">{{ classInfo.reg }}</p>
       <p
@@ -124,6 +129,10 @@ function print() {
             <span class="glyph text-sm" :class="f.level === 'info' ? 'text-info' : f.level === 'warn' ? 'text-warn' : 'text-danger'" aria-hidden="true">
               {{ f.level === 'info' ? 'ⓘ' : '!' }}
             </span>
+            <span
+              class="font-mono text-[9px] uppercase tracking-[0.14em] border rounded-full px-1.5 py-0.5 shrink-0"
+              :class="f.level === 'info' ? 'text-info border-info/40' : f.level === 'warn' ? 'text-warn border-warn/40' : 'text-danger border-danger/40'"
+            >{{ t(`create.sev.${f.level}`) }}</span>
             {{ f.title }}
           </h4>
           <p class="text-[14px] text-ink-mid leading-relaxed">{{ f.body }}</p>

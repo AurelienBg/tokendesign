@@ -16,7 +16,7 @@ const flags = computed(() => [
 </script>
 
 <template>
-  <div class="card p-4">
+  <div class="card p-4 transition hover:border-accent/50 hover:-translate-y-0.5">
     <h4 class="font-display text-lg font-semibold mb-3">{{ props.case.name[loc] }}</h4>
     <dl class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-[13px] mb-3">
       <template v-for="axis in axes" :key="axis">

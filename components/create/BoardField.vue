@@ -4,7 +4,7 @@ import { INTAKE, QUESTION_LABEL } from '~/utils/content/intake'
 import type { QuestionKey } from '~/utils/content/types'
 import type { ProjectState, Fonction, Droit } from '~/utils/engine'
 
-const props = defineProps<{ questionKey: QuestionKey }>()
+const props = defineProps<{ questionKey: QuestionKey; required?: boolean }>()
 
 const store = useActiveProjectStore()
 const { t, locale } = useI18n()
@@ -18,6 +18,10 @@ const isMulti = computed(() => def.value.type === 'multi')
 const tipOpen = ref(false)
 
 const answer = computed(() => store.$state[props.questionKey as keyof ProjectState])
+const unanswered = computed(() => {
+  const a = answer.value
+  return Array.isArray(a) ? a.length === 0 : a == null
+})
 function isSelected(value: string): boolean {
   const a = answer.value
   return Array.isArray(a) ? (a as string[]).includes(value) : a === value
@@ -39,7 +43,12 @@ function select(value: string) {
       @mouseenter="tipOpen = true"
       @mouseleave="tipOpen = false"
     >
-      <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low whitespace-nowrap">{{ category }}</span>
+      <span
+        v-if="required && unanswered"
+        class="h-1.5 w-1.5 rounded-full bg-warn shrink-0"
+        aria-hidden="true"
+      />
+      <span class="font-mono text-[11px] uppercase tracking-[0.1em] whitespace-nowrap" :class="required && unanswered ? 'text-ink-mid' : 'text-ink-low'">{{ category }}</span>
       <button
         type="button"
         class="grid h-4 w-4 place-items-center rounded-full border border-border-accent text-[10px] leading-none text-ink-low hover:border-accent hover:text-accent transition-colors"

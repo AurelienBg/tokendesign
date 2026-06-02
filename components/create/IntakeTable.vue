@@ -6,11 +6,18 @@
  */
 import type { QuestionKey } from '~/utils/content/types'
 
-defineProps<{ keys: QuestionKey[] }>()
+const props = withDefaults(defineProps<{ keys: QuestionKey[]; requiredKeys?: QuestionKey[] }>(), {
+  requiredKeys: () => []
+})
 </script>
 
 <template>
   <div class="card p-5 sm:p-6 flex flex-col gap-4">
-    <BoardField v-for="k in keys" :key="k" :question-key="k" />
+    <BoardField
+      v-for="k in keys"
+      :key="k"
+      :question-key="k"
+      :required="props.requiredKeys.includes(k)"
+    />
   </div>
 </template>

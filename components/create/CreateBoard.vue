@@ -29,6 +29,9 @@ const requiredKeys = computed<QuestionKey[]>(() => {
   return req
 })
 const missing = computed(() => requiredKeys.value.filter((k) => store.$state[k as keyof ProjectState] == null).length)
+const total = computed(() => requiredKeys.value.length)
+const answered = computed(() => total.value - missing.value)
+const progressPct = computed(() => (total.value ? Math.round((answered.value / total.value) * 100) : 0))
 const untouched = computed(() => missing.value === requiredKeys.value.length)
 const complete = computed(() => missing.value === 0)
 
@@ -66,12 +69,12 @@ function restart() {
 
         <section class="mb-10">
           <p class="kicker mb-4">{{ t('create.identityGroup') }}</p>
-          <IntakeTable :keys="visibleB1" />
+          <IntakeTable :keys="visibleB1" :required-keys="requiredKeys" />
         </section>
 
         <section class="mb-8">
           <p class="kicker mb-4">{{ t('create.launchGroup') }}</p>
-          <IntakeTable :keys="blockB2" />
+          <IntakeTable :keys="blockB2" :required-keys="requiredKeys" />
         </section>
       </div>
 
@@ -91,6 +94,12 @@ function restart() {
     <div class="fixed inset-x-0 bottom-0 z-40 border-t border-border-subtle bg-bg-card/90 backdrop-blur-md print:hidden">
       <div class="wrap max-w-4xl flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="min-w-0">
+          <div class="flex items-center gap-2 mb-1">
+            <div class="h-1 w-24 rounded-full bg-border-subtle overflow-hidden">
+              <div class="h-full bg-accent transition-all duration-300" :style="{ width: progressPct + '%' }" />
+            </div>
+            <span class="font-mono text-[10px] text-ink-low">{{ t('create.progress', { done: answered, total }) }}</span>
+          </div>
           <p v-if="untouched" class="text-[13px] text-ink-low">{{ t('create.startHint') }}</p>
           <template v-else>
             <p class="text-[13px] leading-tight">

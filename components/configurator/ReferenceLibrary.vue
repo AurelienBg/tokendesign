@@ -37,6 +37,8 @@ const filtered = computed(() => {
   })
 })
 
+const activeCount = computed(() => facetAxes.filter((a) => filters[a]).length + (query.value.trim() ? 1 : 0))
+
 const matrixAxes = ['fongibilite', 'rapport', 'couverture', 'debiteur', 'garant', 'transfer'] as const
 </script>
 
@@ -65,7 +67,11 @@ const matrixAxes = ['fongibilite', 'rapport', 'couverture', 'debiteur', 'garant'
           :placeholder="t('configurator.search')"
           class="flex-1 min-w-[160px] rounded-lg border border-border-subtle bg-bg-base px-3 py-2 text-sm text-ink-high placeholder:text-ink-low focus:outline-none focus:border-accent"
         >
-        <button class="btn-ghost text-sm px-3.5 py-2" @click="resetFilters">{{ t('configurator.resetFilters') }}</button>
+        <button
+          class="btn-ghost text-sm px-3.5 py-2"
+          :class="activeCount ? 'border-accent text-accent' : ''"
+          @click="resetFilters"
+        >{{ t('configurator.resetFilters') }}<span v-if="activeCount"> ({{ activeCount }})</span></button>
         <div class="inline-flex rounded-lg border border-border-subtle overflow-hidden">
           <button
             type="button"
