@@ -282,7 +282,7 @@ export const XRPL_MAP: Record<Locale, Record<AuthorityLevel, XrplMap>> = {
     authorize: {
       title: 'Autorité cantonnée, appliquée par le registre',
       body: 'XRPL n\'a pas d\'« allowance » globale type ERC-20. Délègue étroitement et laisse le registre faire respecter les limites.',
-      primitives: ['Permission Delegation (XLS-75 — vérifier le statut de l\'amendement)', 'Regular key / SignerList (signature cantonnée)', 'Escrow, Payment Channel, AMM (natifs, bornés)']
+      primitives: ['Permission Delegation (XLS-75 — proposé, PAS encore actif sur mainnet)', 'Regular key / SignerList (signature cantonnée)', 'Escrow, Payment Channel, AMM (natifs, bornés)']
     },
     deposit: {
       title: 'Custody — à éviter si possible',
@@ -304,7 +304,7 @@ export const XRPL_MAP: Record<Locale, Record<AuthorityLevel, XrplMap>> = {
     authorize: {
       title: 'Scoped authority, enforced by the ledger',
       body: 'XRPL has no ERC-20 blanket allowance. Delegate narrowly and let the ledger enforce the limits.',
-      primitives: ['Permission Delegation (XLS-75 — verify amendment status)', 'Regular key / SignerList (scoped signing)', 'Escrow, Payment Channel, AMM (native, bounded)']
+      primitives: ['Permission Delegation (XLS-75 — proposed, NOT yet live on mainnet)', 'Regular key / SignerList (scoped signing)', 'Escrow, Payment Channel, AMM (native, bounded)']
     },
     deposit: {
       title: 'Custody — avoid if you can',

@@ -22,6 +22,7 @@ async function logout() {
       <div class="flex items-center gap-2">
         <ClientOnly>
           <template v-if="user">
+            <WalletBadge />
             <NuxtLink
               :to="localePath('/dossiers')"
               class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-accent no-underline transition-colors"

@@ -196,8 +196,8 @@
     "xrplMapping": "Mapping XRPL",
     "primitivesLab": "Primitives suggérées",
     "custodyChecklist": "Checklist custody",
-    "legal": "<b>Rappel :</b> structurant, pas un avis juridique. Les choix d'autorité/custody ont un poids réglementaire (custody MiCA / CASP) — à valider avec un conseil. Les primitives XRPL sont indicatives ; vérifie le statut des amendements (ex. Permission Delegation / XLS-75).",
-    "chips": ["pas un avis juridique", "cadre UE — MiCA", "XRPL — vérifier le statut des amendements"]
+    "legal": "<b>Rappel :</b> structurant, pas un avis juridique. Les choix d'autorité/custody ont un poids réglementaire (custody MiCA / CASP) — à valider avec un conseil. Les primitives XRPL sont indicatives ; vérifie le statut des amendements avant de t'y fier — ex. Permission Delegation (XLS-75) est proposé, pas encore actif sur mainnet.",
+    "chips": ["pas un avis juridique", "cadre UE — MiCA", "XRPL — XLS-75 pas encore actif"]
   },
   "login": {
     "kicker": "Compte optionnel",
@@ -221,6 +221,14 @@
     "signInWithXrplWallet": "Se connecter avec un wallet",
     "walletConnecting": "Connexion du wallet…",
     "walletHint": "Wallet XRPL (Crossmark, GemWallet, Xaman). Pas d'email — perdre le wallet = perdre le compte."
+  },
+  "wallet": {
+    "link": "Lier un wallet",
+    "connecting": "Connexion…",
+    "linkedAddress": "Adresse liée",
+    "statusConnected": "Connecté cette session",
+    "statusOffline": "Lié (hors ligne)",
+    "unlink": "Délier le wallet"
   },
   "cloud": {
     "signInToSave": "Connecte-toi pour sauvegarder ce dossier dans le cloud.",
