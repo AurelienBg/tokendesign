@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { useProjectStore } from '~/stores/project'
 import { provideProjectStore } from '~/composables/useActiveProjectStore'
-import { INTAKE, BLOCK_B1, BLOCK_B2 } from '~/utils/content/intake'
+import { useDossier } from '~/composables/useDossier'
+import { INTAKE, BLOCK_B1, BLOCK_B2, REQUIRED_B1, REQUIRED_B2 } from '~/utils/content/intake'
+import type { ProjectState } from '~/utils/engine'
+import type { QuestionKey } from '~/utils/content/types'
 
 const store = useProjectStore()
 provideProjectStore(store)
 const { t } = useI18n()
 const localePath = useLocalePath()
+const { classInfo, flagsCount, secondaryNames } = useDossier(store)
 
 const view = ref<'board' | 'dossier'>('board')
 const blockB2 = BLOCK_B2
@@ -18,6 +22,16 @@ const visibleB1 = computed(() =>
     return !show || show(store.$state)
   })
 )
+
+const requiredKeys = computed<QuestionKey[]>(() => {
+  const req: QuestionKey[] = [...REQUIRED_B1, ...REQUIRED_B2]
+  if (store.rapport === 'titre') req.push('titre_type')
+  if (store.rapport === 'adosse' || store.rapport === 'titre') req.push('couverture')
+  return req
+})
+const missing = computed(() => requiredKeys.value.filter((k) => store.$state[k as keyof ProjectState] == null).length)
+const untouched = computed(() => missing.value === requiredKeys.value.length)
+const complete = computed(() => missing.value === 0)
 
 function scrollTop() {
   if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -40,48 +54,69 @@ function restart() {
 
 <template>
   <div>
-    <!-- ── Design board ───────────────────────────────────────── -->
-    <div v-if="view === 'board'" class="wrap max-w-5xl py-8 sm:py-10">
+    <!-- ── Question grid ──────────────────────────────────────── -->
+    <div v-if="view === 'board'" class="wrap max-w-5xl py-8 sm:py-10 pb-28">
       <NuxtLink
         :to="localePath('/')"
         class="font-mono text-xs uppercase tracking-[0.14em] text-ink-low hover:text-accent no-underline"
       >{{ t('create.backHub') }}</NuxtLink>
 
-      <div class="flex items-start justify-between gap-4 mt-4 mb-9">
-        <div>
-          <h1 class="font-display text-2xl sm:text-3xl font-semibold">{{ t('angles.create.title') }}</h1>
-          <p class="text-ink-mid mt-1.5 max-w-xl">{{ t('create.b1Sub') }}</p>
-        </div>
-        <button
-          class="shrink-0 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-danger transition-colors"
-          @click="restart"
-        >{{ t('create.btnRestart') }}</button>
+      <div class="mt-4 mb-9">
+        <h1 class="font-display text-2xl sm:text-3xl font-semibold">{{ t('angles.create.title') }}</h1>
+        <p class="text-ink-mid mt-1.5 max-w-2xl">{{ t('create.b1Sub') }}</p>
       </div>
 
-      <div class="grid lg:grid-cols-[1fr_360px] gap-8 lg:gap-10 items-start">
-        <!-- inputs -->
-        <div class="space-y-10 min-w-0">
-          <section class="space-y-6">
-            <p class="kicker">{{ t('create.identityGroup') }}</p>
-            <BoardField v-for="k in visibleB1" :key="k" :question-key="k" />
-          </section>
-          <section class="space-y-6">
-            <p class="kicker">{{ t('create.launchGroup') }}</p>
-            <BoardField v-for="k in blockB2" :key="k" :question-key="k" />
-          </section>
-          <label class="flex items-center gap-2.5 text-[13px] text-ink-mid cursor-pointer pt-3 border-t border-border-subtle">
-            <input
-              type="checkbox"
-              class="accent-accent h-4 w-4"
-              :checked="store.chemin.includes('autres')"
-              @change="store.toggleChemin('autres')"
-            >
-            <span>{{ t('create.alsoBuild') }}</span>
-          </label>
+      <!-- Identity -->
+      <section class="mb-10">
+        <p class="kicker mb-4">{{ t('create.identityGroup') }}</p>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-start">
+          <BoardField v-for="k in visibleB1" :key="k" :question-key="k" />
         </div>
+      </section>
 
-        <!-- live dossier -->
-        <DossierLivePanel @open="openDossier" />
+      <!-- Launch -->
+      <section class="mb-8">
+        <p class="kicker mb-4">{{ t('create.launchGroup') }}</p>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-start">
+          <BoardField v-for="k in blockB2" :key="k" :question-key="k" />
+        </div>
+      </section>
+
+      <label class="flex items-center gap-2.5 text-[13px] text-ink-mid cursor-pointer pt-3 border-t border-border-subtle">
+        <input
+          type="checkbox"
+          class="accent-accent h-4 w-4"
+          :checked="store.chemin.includes('autres')"
+          @change="store.toggleChemin('autres')"
+        >
+        <span>{{ t('create.alsoBuild') }}</span>
+      </label>
+
+      <!-- Sticky live summary bar -->
+      <div class="fixed inset-x-0 bottom-0 z-40 border-t border-border-subtle bg-bg-card/90 backdrop-blur-md print:hidden">
+        <div class="wrap max-w-5xl flex items-center justify-between gap-4 py-3">
+          <div class="min-w-0">
+            <p v-if="untouched" class="text-[13px] text-ink-low">{{ t('create.startHint') }}</p>
+            <template v-else>
+              <p class="text-[13px] leading-tight">
+                <span class="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-low">{{ t('create.likelyClass') }}</span>
+                <span class="ml-2 font-semibold text-ink-high">{{ classInfo.name }}</span>
+                <span v-if="!complete" class="ml-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-warn">· {{ t('create.provisional') }}</span>
+              </p>
+              <p class="text-[12px] mt-0.5" :class="flagsCount ? 'text-warn' : 'text-ok'">
+                {{ flagsCount ? `⚑ ${t('create.watchCount', { n: flagsCount })}` : t('create.vigNone') }}
+                <span v-if="secondaryNames.length" class="text-warn"> · {{ t('create.alsoPlausibleShort', { classes: secondaryNames.join(' · ') }) }}</span>
+              </p>
+            </template>
+          </div>
+          <div class="flex items-center gap-3 shrink-0">
+            <button
+              class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-danger transition-colors"
+              @click="restart"
+            >{{ t('create.btnRestart') }}</button>
+            <button class="btn-primary px-4 py-2 text-sm" @click="openDossier">{{ t('create.fullDossier') }}</button>
+          </div>
+        </div>
       </div>
     </div>
 
