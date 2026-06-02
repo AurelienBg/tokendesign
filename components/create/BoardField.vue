@@ -15,6 +15,8 @@ const text = computed(() => def.value.text[loc.value])
 const category = computed(() => QUESTION_LABEL[loc.value][props.questionKey])
 const isMulti = computed(() => def.value.type === 'multi')
 
+const tipOpen = ref(false)
+
 const answer = computed(() => store.$state[props.questionKey as keyof ProjectState])
 function isSelected(value: string): boolean {
   const a = answer.value
@@ -31,14 +33,24 @@ function select(value: string) {
 
 <template>
   <div class="grid grid-cols-1 sm:grid-cols-[210px_1fr] gap-2 sm:gap-5 sm:items-start py-3.5">
-    <!-- Category label (question in tooltip) -->
-    <div class="flex items-center gap-1.5 sm:pt-1.5">
-      <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low" :title="text.label">{{ category }}</span>
-      <span
-        class="grid h-3.5 w-3.5 place-items-center rounded-full border border-border-accent text-[9px] text-ink-low cursor-help"
-        :title="text.label"
-        aria-hidden="true"
-      >?</span>
+    <!-- Category label + custom tooltip popover holding the full question -->
+    <div class="relative flex items-center gap-1.5 sm:pt-1.5">
+      <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low">{{ category }}</span>
+      <button
+        type="button"
+        class="grid h-4 w-4 place-items-center rounded-full border border-border-accent text-[10px] leading-none text-ink-low hover:border-accent hover:text-accent transition-colors"
+        :aria-label="text.label"
+        @mouseenter="tipOpen = true"
+        @mouseleave="tipOpen = false"
+        @focus="tipOpen = true"
+        @blur="tipOpen = false"
+        @click="tipOpen = !tipOpen"
+      >?</button>
+      <div
+        v-if="tipOpen"
+        role="tooltip"
+        class="absolute left-0 top-full mt-1.5 z-50 w-64 rounded-lg border border-border-subtle bg-bg-card shadow-lg p-2.5 text-[12.5px] text-ink-high leading-snug"
+      >{{ text.label }}</div>
     </div>
 
     <!-- Options -->
