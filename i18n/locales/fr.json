@@ -14,6 +14,8 @@
     "title": "Cadre ton token, <em>sans angle mort</em>.",
     "subtitle": "Réponds à quelques questions en langage clair. L'assistant en déduit ce que tu construis, dans quelle case réglementaire tu tombes (UE — MiCA / MiFID II), ce que ça t'impose, et la checklist de lancement — points de non-retour compris.",
     "chooseAngle": "Par où tu commences ?",
+    "guideFrame": "Guide · Cadrer un token",
+    "guideBuild": "Guide · Construire une app",
     "lifecycleKicker": "Où ça s'inscrit",
     "lifecycleNote": "Token Design aide à la Conception — cadrage haut niveau. « Build an app » est un track parallèle (autorité & custody), pas une étape.",
     "disclaimer": "Cet outil <b>structure, éduque et signale</b> — il ne donne <b>ni avis juridique ni financier</b>. Cadre européen (MiCA / MiFID II). Fais valider toute décision par un conseil."

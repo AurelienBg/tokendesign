@@ -43,10 +43,16 @@ const angles = [
           <span class="glyph text-accent" aria-hidden="true">⊞</span>{{ t('configurator.fromCreate') }}
         </NuxtLink>
         <NuxtLink
-          :to="localePath('/resources')"
+          :to="localePath('/learn/frame')"
           class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.14em] text-ink-low hover:text-accent no-underline"
         >
-          <span class="glyph text-accent" aria-hidden="true">⌥</span>Resources · guides (sandbox)
+          <span class="glyph text-accent" aria-hidden="true">⌥</span>{{ t('hub.guideFrame') }}
+        </NuxtLink>
+        <NuxtLink
+          :to="localePath('/learn/build')"
+          class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.14em] text-ink-low hover:text-accent no-underline"
+        >
+          <span class="glyph text-accent" aria-hidden="true">⬡</span>{{ t('hub.guideBuild') }}
         </NuxtLink>
       </div>
     </section>

@@ -37,16 +37,10 @@ const b2 = BLOCK_B2
     </NuxtLink>
 
     <div class="card border-l-2 border-l-warn p-3.5 mt-4 mb-12">
-      <p class="text-[13px] text-ink-mid"><span class="glyph text-warn mr-1.5" aria-hidden="true">⚑</span>Internal design sandbox — not linked from the hub. UI mockup &amp; the two path guides.</p>
+      <p class="text-[13px] text-ink-mid"><span class="glyph text-warn mr-1.5" aria-hidden="true">⚑</span>Internal design sandbox — UI mockup only. The path guides now live at <NuxtLink :to="localePath('/learn/frame')" class="text-accent">/learn/frame</NuxtLink> &amp; <NuxtLink :to="localePath('/learn/build')" class="text-accent">/learn/build</NuxtLink>.</p>
     </div>
 
-    <!-- Two path guides -->
-    <FrameGuide />
-    <hr class="border-border-subtle my-16">
-    <BuildGuide />
-
     <!-- Intake mockup (configurator style) -->
-    <hr class="border-border-subtle my-16">
     <section>
       <p class="kicker mb-2">Mockup · configurator style</p>
       <h2 class="font-display text-2xl font-semibold mb-1">Intake — label + pills</h2>
