@@ -12,9 +12,6 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const { classInfo, flagsCount, secondaryNames } = useDossier(store)
 
-// Merged flow: one intake, two framings (design a new token / diagnose an
-// existing one). Same engine + dossier — the toggle only flips the framing.
-const mode = ref<'create' | 'analyze'>('create')
 const showDossier = ref(false)
 const blockB2 = BLOCK_B2
 
@@ -65,25 +62,9 @@ function restart() {
           class="font-mono text-xs uppercase tracking-[0.14em] text-ink-low hover:text-accent no-underline"
         >{{ t('create.backHub') }}</NuxtLink>
 
-        <div class="mt-4 mb-5">
+        <div class="mt-4 mb-9">
           <h1 class="font-display text-2xl sm:text-3xl font-semibold">{{ t('create.frameTitle') }}</h1>
-          <p class="text-ink-mid mt-1.5 max-w-2xl">{{ mode === 'analyze' ? t('analyze.sub') : t('create.b1Sub') }}</p>
-        </div>
-
-        <!-- Mode toggle: design a new token / diagnose an existing one -->
-        <div class="inline-flex rounded-lg border border-border-subtle overflow-hidden mb-9">
-          <button
-            type="button"
-            class="px-3.5 py-2 text-[12px] font-mono uppercase tracking-[0.1em] transition"
-            :class="mode === 'create' ? 'bg-accent text-accent-on' : 'text-ink-mid hover:text-accent'"
-            @click="mode = 'create'"
-          >{{ t('create.modeNew') }}</button>
-          <button
-            type="button"
-            class="px-3.5 py-2 text-[12px] font-mono uppercase tracking-[0.1em] transition"
-            :class="mode === 'analyze' ? 'bg-accent text-accent-on' : 'text-ink-mid hover:text-accent'"
-            @click="mode = 'analyze'"
-          >{{ t('create.modeExisting') }}</button>
+          <p class="text-ink-mid mt-1.5 max-w-2xl">{{ t('create.b1Sub') }}</p>
         </div>
 
         <section class="mb-10">
@@ -105,7 +86,7 @@ function restart() {
             @click="backToQuestions"
           >↑ {{ t('create.backToQuestions') }}</button>
         </div>
-        <DossierView :mode="mode" @restart="restart" />
+        <DossierView mode="create" @restart="restart" />
       </div>
     </div>
 
@@ -137,7 +118,7 @@ function restart() {
             class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-danger transition-colors"
             @click="restart"
           >{{ t('create.btnRestart') }}</button>
-          <button class="btn-primary px-4 py-2 text-sm" @click="revealDossier">{{ mode === 'analyze' ? t('analyze.diagnose') : t('create.fullDossier') }}</button>
+          <button class="btn-primary px-4 py-2 text-sm" @click="revealDossier">{{ t('create.fullDossier') }}</button>
         </div>
       </div>
     </div>
