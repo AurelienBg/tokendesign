@@ -78,7 +78,7 @@ function select(value: string) {
         :class="[
           isMulti ? 'rounded-md' : 'rounded-full',
           isSelected(value)
-            ? (isMulti ? 'border-accent text-accent bg-accent/10' : 'border-accent bg-accent text-accent-on font-medium')
+            ? 'border-accent text-accent bg-accent/10 font-medium'
             : 'border-border-subtle text-ink-mid hover:border-accent/60 hover:text-ink-high'
         ]"
         @click="select(value)"
