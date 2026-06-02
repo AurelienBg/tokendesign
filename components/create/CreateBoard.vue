@@ -43,7 +43,7 @@ function restart() {
 
 <template>
   <div>
-    <div class="wrap max-w-5xl py-8 sm:py-10">
+    <div class="wrap max-w-6xl py-8 sm:py-10">
       <NuxtLink
         :to="localePath('/')"
         class="font-mono text-xs uppercase tracking-[0.14em] text-ink-low hover:text-accent no-underline"
