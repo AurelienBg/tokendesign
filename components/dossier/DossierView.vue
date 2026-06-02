@@ -180,5 +180,8 @@ function print() {
         >{{ c }}</span>
       </div>
     </footer>
+
+    <!-- Hand-off to the deeper apps of the suite -->
+    <SuiteHandoff />
   </section>
 </template>
