@@ -32,10 +32,10 @@ function select(value: string) {
 </script>
 
 <template>
-  <div class="grid grid-cols-1 sm:grid-cols-[210px_1fr] gap-2 sm:gap-5 sm:items-start py-3.5">
+  <div class="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-2 sm:gap-4 sm:items-center">
     <!-- Category label + custom tooltip popover holding the full question -->
-    <div class="relative flex items-center gap-1.5 sm:pt-1.5">
-      <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low">{{ category }}</span>
+    <div class="relative flex items-center gap-1.5">
+      <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low whitespace-nowrap">{{ category }}</span>
       <button
         type="button"
         class="grid h-4 w-4 place-items-center rounded-full border border-border-accent text-[10px] leading-none text-ink-low hover:border-accent hover:text-accent transition-colors"

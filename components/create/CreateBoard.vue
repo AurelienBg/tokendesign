@@ -50,7 +50,7 @@ function restart() {
 <template>
   <div>
     <div class="pb-28">
-      <div class="wrap max-w-5xl py-8 sm:py-10">
+      <div class="wrap max-w-4xl py-8 sm:py-10">
         <NuxtLink
           :to="localePath('/')"
           class="font-mono text-xs uppercase tracking-[0.14em] text-ink-low hover:text-accent no-underline"
@@ -80,7 +80,7 @@ function restart() {
 
     <!-- Sticky live summary bar -->
     <div class="fixed inset-x-0 bottom-0 z-40 border-t border-border-subtle bg-bg-card/90 backdrop-blur-md print:hidden">
-      <div class="wrap max-w-5xl flex items-center justify-between gap-4 py-3">
+      <div class="wrap max-w-4xl flex items-center justify-between gap-4 py-3">
         <div class="min-w-0">
           <p v-if="untouched" class="text-[13px] text-ink-low">{{ t('create.startHint') }}</p>
           <template v-else>

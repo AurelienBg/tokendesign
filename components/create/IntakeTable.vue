@@ -10,7 +10,7 @@ defineProps<{ keys: QuestionKey[] }>()
 </script>
 
 <template>
-  <div class="card px-5 sm:px-6 divide-y divide-border-subtle">
+  <div class="card p-5 sm:p-6 flex flex-col gap-4">
     <BoardField v-for="k in keys" :key="k" :question-key="k" />
   </div>
 </template>
