@@ -20,6 +20,7 @@ async function logout() {
         <AppLogo />
       </NuxtLink>
       <div class="flex items-center gap-2">
+        <AppNav />
         <ClientOnly>
           <template v-if="user">
             <WalletBadge />

@@ -16,6 +16,11 @@
     "chooseAngle": "Par où tu commences ?",
     "guideFrame": "Guide · Cadrer un token",
     "guideBuild": "Guide · Construire une app",
+    "navHome": "Accueil",
+    "navMenu": "Menu",
+    "navResources": "Resources (sandbox)",
+    "navLifecycle": "Cycle de vie",
+    "navHere": "tu es ici",
     "lifecycleKicker": "Où ça s'inscrit",
     "lifecycleNote": "Token Design aide à la Conception — cadrage haut niveau. « Build an app » est un track parallèle (autorité & custody), pas une étape.",
     "disclaimer": "Cet outil <b>structure, éduque et signale</b> — il ne donne <b>ni avis juridique ni financier</b>. Cadre européen (MiCA / MiFID II). Fais valider toute décision par un conseil."

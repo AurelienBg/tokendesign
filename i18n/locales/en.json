@@ -16,6 +16,11 @@
     "chooseAngle": "Where do you start?",
     "guideFrame": "Guide · Frame a token",
     "guideBuild": "Guide · Build an app",
+    "navHome": "Hub",
+    "navMenu": "Menu",
+    "navResources": "Resources (sandbox)",
+    "navLifecycle": "Lifecycle",
+    "navHere": "you are here",
     "lifecycleKicker": "Where this fits",
     "lifecycleNote": "Token Design helps at Conception — high-level framing. “Build an app” is a parallel track (authority & custody), not a stage.",
     "disclaimer": "This tool <b>structures, educates and flags</b> — it is <b>not legal or financial advice</b>. EU framework (MiCA / MiFID II). Have every decision validated by counsel."
