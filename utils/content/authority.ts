@@ -18,6 +18,8 @@ export interface AuthQuestionText {
 export interface AuthQuestionDef {
   key: keyof AuthorityState
   order: string[]
+  /** Multi-select (cumulative) — only the `actions` question. */
+  multi?: boolean
   /** Only shown once the level takes real power (authorize / deposit). */
   dimensioned?: boolean
   text: Record<Locale, AuthQuestionText>
@@ -25,12 +27,13 @@ export interface AuthQuestionDef {
 
 export const AUTH_QUESTIONS: AuthQuestionDef[] = [
   {
-    key: 'level',
+    key: 'actions',
+    multi: true,
     order: ['read', 'propose', 'authorize', 'deposit'],
     text: {
       fr: {
-        label: 'Quel pouvoir prends-tu sur les actifs de l\'utilisateur ?',
-        hint: 'échelle d\'autorité',
+        label: 'Que fait ton app sur les actifs des utilisateurs ?',
+        hint: 'coche tout ce qui s\'applique — le niveau retenu = le plus élevé',
         options: {
           read: { title: 'Lire / observer', example: 'soldes, historique — aucune action' },
           propose: { title: 'Proposer', example: 'tu construis une transaction, l\'utilisateur signe chaque fois' },
@@ -39,8 +42,8 @@ export const AUTH_QUESTIONS: AuthQuestionDef[] = [
         }
       },
       en: {
-        label: 'How much power do you take over the user\'s assets?',
-        hint: 'authority scale',
+        label: 'What does your app do with users\' assets?',
+        hint: 'check all that apply — the retained level is the highest',
         options: {
           read: { title: 'Read / observe', example: 'balances, history — no action' },
           propose: { title: 'Propose', example: 'you build a transaction, the user signs each time' },

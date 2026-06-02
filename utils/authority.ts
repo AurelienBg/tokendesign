@@ -21,12 +21,26 @@ export type Consent = 'peraction' | 'blanket'
 export type Keyholder = 'user' | 'shared' | 'custodian'
 
 export interface AuthorityState {
-  level: AuthorityLevel | null
+  /** What the app does — cumulative. The effective authority level is the
+   * highest selected (read < propose < authorize < deposit). */
+  actions: AuthorityLevel[]
   scope: Scope | null
   duration: Duration | null
   revocability: Revocability | null
   consent: Consent | null
   keyholder: Keyholder | null
+}
+
+const LEVEL_ORDER: AuthorityLevel[] = ['read', 'propose', 'authorize', 'deposit']
+
+/** Highest authority among the selected actions (defaults to 'read'). */
+export function effectiveLevel(actions: AuthorityLevel[]): AuthorityLevel {
+  let best = 0
+  for (const a of actions) {
+    const i = LEVEL_ORDER.indexOf(a)
+    if (i > best) best = i
+  }
+  return LEVEL_ORDER[best] as AuthorityLevel
 }
 
 export type RiskBand = 'low' | 'medium' | 'high' | 'critical'
@@ -50,7 +64,7 @@ export interface AuthorityAssessment {
 export const DIMENSIONED_LEVELS: AuthorityLevel[] = ['authorize', 'deposit']
 
 export function emptyAuthority(): AuthorityState {
-  return { level: null, scope: null, duration: null, revocability: null, consent: null, keyholder: null }
+  return { actions: [], scope: null, duration: null, revocability: null, consent: null, keyholder: null }
 }
 
 const LEVEL_BASE: Record<AuthorityLevel, number> = { read: 0, propose: 1, authorize: 2, deposit: 3 }
@@ -103,7 +117,7 @@ function checklist(s: AuthorityState, level: AuthorityLevel): AuthorityCheckId[]
 }
 
 export function assessAuthority(s: AuthorityState): AuthorityAssessment {
-  const level: AuthorityLevel = s.level ?? 'read'
+  const level: AuthorityLevel = effectiveLevel(s.actions)
   const n = score(s, level)
   return { level, band: band(n), score: n, flags: flags(s, level), checklist: checklist(s, level) }
 }

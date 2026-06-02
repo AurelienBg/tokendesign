@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useAuthorityStore } from '~/stores/authority'
-import { AUTH_QUESTIONS } from '~/utils/content/authority'
-import type { AuthorityState } from '~/utils/authority'
+import { AUTH_QUESTIONS, type AuthQuestionDef } from '~/utils/content/authority'
+import type { AuthorityState, AuthorityLevel } from '~/utils/authority'
+
+type DimensionKey = Exclude<keyof AuthorityState, 'actions'>
 
 const store = useAuthorityStore()
 const { t, locale } = useI18n()
@@ -10,12 +12,24 @@ const loc = computed<'en' | 'fr'>(() => (locale.value === 'fr' ? 'fr' : 'en'))
 const showResult = ref(false)
 const error = ref<string | null>(null)
 
-const dimensioned = computed(() => store.level === 'authorize' || store.level === 'deposit')
+// Dimensions appear once the effective (highest) authority is authorize/deposit.
+const dimensioned = computed(() => store.assessment.level === 'authorize' || store.assessment.level === 'deposit')
 const visibleQuestions = computed(() => AUTH_QUESTIONS.filter((q) => !q.dimensioned || dimensioned.value))
+
+function isSelected(q: AuthQuestionDef, v: string): boolean {
+  return q.multi ? store.actions.includes(v as AuthorityLevel) : store.$state[q.key] === v
+}
+function onSelect(q: AuthQuestionDef, v: string) {
+  if (q.multi) store.toggleAction(v as AuthorityLevel)
+  else store.setSingle(q.key as DimensionKey, v)
+}
+function answered(q: AuthQuestionDef): boolean {
+  return q.multi ? store.actions.length > 0 : store.$state[q.key] != null
+}
 
 function assess() {
   for (const q of visibleQuestions.value) {
-    if (store.$state[q.key] == null) {
+    if (!answered(q)) {
       error.value = t('build.alert', { q: q.text[loc.value].label })
       return
     }
@@ -46,7 +60,7 @@ function resetAll() {
           <p class="text-ink-mid max-w-xl">{{ t('build.questionsSub') }}</p>
         </div>
         <button
-          v-if="store.hasLevel"
+          v-if="store.hasActions"
           class="shrink-0 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-danger transition-colors"
           @click="resetAll"
         >{{ t('create.btnRestart') }}</button>
@@ -62,8 +76,8 @@ function resetAll() {
               :key="v"
               :title="q.text[loc].options[v]!.title"
               :example="q.text[loc].options[v]!.example"
-              :selected="store.$state[q.key] === v"
-              @select="store.setSingle(q.key as keyof AuthorityState, v)"
+              :selected="isSelected(q, v)"
+              @select="onSelect(q, v)"
             />
           </div>
         </fieldset>
