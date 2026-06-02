@@ -66,6 +66,7 @@
     "livePanel": "Dossier en direct",
     "likelyClass": "Classe probable",
     "startHint": "Commence à poser les axes pour voir ta classe probable.",
+    "liveCheck": "Vérif en direct",
     "progress": "{done}/{total} répondu",
     "fullDossier": "Dossier complet →",
     "backToQuestions": "Retour aux questions",

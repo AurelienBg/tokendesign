@@ -74,13 +74,8 @@ const constraints = [
       </div>
     </section>
 
-    <!-- 03 Configurator -->
-    <section class="mb-12">
-      <h2 class="font-display text-xl font-semibold mb-4">{{ t('configurator.configH') }}</h2>
-      <AxisConfigurator />
-    </section>
-
-    <!-- 04 Library -->
+    <!-- Library -->
+    <!-- (The live axis configurator now lives in the Frame flow.) -->
     <section>
       <h2 class="font-display text-xl font-semibold mb-1">{{ t('configurator.libraryH') }}</h2>
       <p class="text-ink-mid text-sm mb-5 max-w-2xl">{{ t('configurator.librarySub') }}</p>

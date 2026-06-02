@@ -66,6 +66,7 @@
     "livePanel": "Live dossier",
     "likelyClass": "Likely class",
     "startHint": "Start setting the axes to see your likely class.",
+    "liveCheck": "Live check",
     "progress": "{done}/{total} answered",
     "fullDossier": "Full dossier →",
     "backToQuestions": "Back to questions",

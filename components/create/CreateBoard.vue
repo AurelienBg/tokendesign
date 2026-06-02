@@ -70,6 +70,7 @@ function restart() {
         <section class="mb-10">
           <p class="kicker mb-4">{{ t('create.identityGroup') }}</p>
           <IntakeTable :keys="visibleB1" :required-keys="requiredKeys" />
+          <FrameInsights />
         </section>
 
         <section class="mb-8">
