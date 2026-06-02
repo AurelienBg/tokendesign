@@ -123,7 +123,7 @@
     "sec3src": "lifecycle",
     "sec3sub": "Steps filtered by your class. The <b>points of no return</b> require everything upstream to be locked first.",
     "cliquet": "point of no return",
-    "stageNames": ["Conception", "Issuance", "Distribution", "Life", "End"],
+    "stageNames": ["Conception", "Structuring", "Issuance", "Distribution", "Operation", "Exit"],
     "wHeavy": "heavy · ongoing",
     "wLight": "light",
     "alsoAppT": "Your project also acts on users’ assets",

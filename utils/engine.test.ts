@@ -165,8 +165,9 @@ describe('buildChecklist — lifecycle + ratchets', () => {
 
   it('always has 5 stages with the conception items', () => {
     const stages = buildChecklist(eff(emptyState()).vector, 'utility')
-    expect(stages).toHaveLength(5)
-    expect(stages[0]!.items.map((i) => i.id)).toEqual(['c_vector', 'c_legal', 'c_value', 'c_custody'])
+    expect(stages).toHaveLength(6)
+    expect(stages[0]!.items.map((i) => i.id)).toEqual(['c_vector', 'c_legal'])
+    expect(stages[1]!.items.map((i) => i.id)).toEqual(['c_value', 'c_custody'])
   })
 
   it('heavy class (emt) requires authorization-before-issuance ratchet + reserve ops + wind-down', () => {
@@ -199,13 +200,13 @@ describe('buildChecklist — lifecycle + ratchets', () => {
     const s = state({ fongibilite: 'fongible', stabilite: 'aucune', distribution: 'pro', juridiction: 'ue', custody: 'non' })
     const { vector, cls } = qualify(s)
     const stages = buildChecklist(vector, cls)
-    expect(stages[4]!.items.map((i) => i.id)).toEqual(['f_none'])
-    expect(stages[3]!.weight).toBeNull()
+    expect(stages[5]!.items.map((i) => i.id)).toEqual(['f_none'])
+    expect(stages[4]!.weight).toBeNull()
   })
 
   it('nft life stage is weighted "light"', () => {
     const { vector, cls } = qualify(state({ fongibilite: 'non-fongible' }))
-    expect(buildChecklist(vector, cls)[3]!.weight).toBe('light')
+    expect(buildChecklist(vector, cls)[4]!.weight).toBe('light')
   })
 })
 

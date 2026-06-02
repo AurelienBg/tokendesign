@@ -39,7 +39,7 @@ const rules = [
 ]
 
 const redFlagKeys = ['security', 'algo', 'limbo', 'nftserie', 'retail', 'custody', 'juridiction', 'incoherence'] as const
-const stages = ['Conception', 'Issuance', 'Distribution', 'Life', 'End']
+const stages = ['Conception', 'Structuring', 'Issuance', 'Distribution', 'Operation', 'Exit']
 
 // Branching flow — follows the engine precedence (first match wins).
 const flow: { q: string; yes: string; tone: string }[] = [

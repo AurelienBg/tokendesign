@@ -123,7 +123,7 @@
     "sec3src": "cycle de vie",
     "sec3sub": "Étapes filtrées selon ta classe. Les <b>points de non-retour</b> exigent d'avoir tout verrouillé en amont.",
     "cliquet": "point de non-retour",
-    "stageNames": ["Conception", "Émission", "Distribution", "Vie", "Fin"],
+    "stageNames": ["Conception", "Structuration", "Émission", "Distribution", "Exploitation", "Sortie"],
     "wHeavy": "lourd · permanent",
     "wLight": "léger",
     "alsoAppT": "Ton projet agit aussi sur les actifs des utilisateurs",

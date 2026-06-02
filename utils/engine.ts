@@ -272,7 +272,7 @@ export type ChecklistItemId =
   | 'v_reserve' | 'v_audit' | 'v_reporting' | 'v_nft' | 'v_utility' | 'v_instrument' | 'v_custody'
   | 'f_winddown' | 'f_none'
 
-export type StageId = 'conception' | 'issuance' | 'distribution' | 'life' | 'end'
+export type StageId = 'conception' | 'structuration' | 'issuance' | 'distribution' | 'life' | 'end'
 export type StageWeight = 'heavy' | 'light' | null
 
 export interface ChecklistItem {
@@ -288,7 +288,8 @@ export interface Stage {
   weight: StageWeight
 }
 
-const STAGE_IDS: StageId[] = ['conception', 'issuance', 'distribution', 'life', 'end']
+const STAGE_IDS: StageId[] = ['conception', 'structuration', 'issuance', 'distribution', 'life', 'end']
+const LIFE_INDEX = 4
 
 /**
  * Build the lifecycle checklist filtered by class + launch conditions
@@ -305,9 +306,11 @@ export function buildChecklist(v: Vector, cls: TokenClass): Stage[] {
   const it = (id: ChecklistItemId, cliquet = false): ChecklistItem => ({ id, cliquet })
 
   const itemsByStage: ChecklistItem[][] = [
-    // 0 — Conception
-    [it('c_vector'), it('c_legal'), it('c_value'), it('c_custody')],
-    // 1 — Issuance
+    // 0 — Conception (what it is, which class)
+    [it('c_vector'), it('c_legal')],
+    // 1 — Structuration (value model + custody design)
+    [it('c_value'), it('c_custody')],
+    // 2 — Issuance
     [
       ...(heavy || cls === 'instrument' ? [it('e_agrement', true)] : []),
       it('e_mint'),
@@ -315,13 +318,13 @@ export function buildChecklist(v: Vector, cls: TokenClass): Stage[] {
       ...(cls === 'instrument' ? [it('e_prospectus')] : []),
       ...(retail || cust ? [it('e_kyc')] : [])
     ],
-    // 2 — Distribution
+    // 3 — Distribution
     [
       it('d_venues'),
       ...(retail ? [it('d_marketing', true)] : []),
       ...(v.juridiction !== 'ue' ? [it('d_passport')] : [])
     ],
-    // 3 — Life
+    // 4 — Life / operation
     [
       ...(heavy ? [it('v_reserve'), it('v_audit'), it('v_reporting')] : []),
       ...(cls === 'nft' ? [it('v_nft')] : []),
@@ -329,7 +332,7 @@ export function buildChecklist(v: Vector, cls: TokenClass): Stage[] {
       ...(cls === 'instrument' ? [it('v_instrument')] : []),
       ...(cust ? [it('v_custody', true)] : [])
     ],
-    // 4 — End
+    // 5 — End / exit
     [...(heavy ? [it('f_winddown')] : [it('f_none')])]
   ]
 
@@ -337,7 +340,7 @@ export function buildChecklist(v: Vector, cls: TokenClass): Stage[] {
     index,
     id: STAGE_IDS[index] as StageId,
     items,
-    weight: index === 3 ? (heavy ? 'heavy' : cls === 'nft' ? 'light' : null) : null
+    weight: index === LIFE_INDEX ? (heavy ? 'heavy' : cls === 'nft' ? 'light' : null) : null
   }))
 }
 
