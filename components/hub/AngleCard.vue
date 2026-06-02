@@ -15,7 +15,7 @@ const { t } = useI18n()
 <template>
   <NuxtLink
     :to="localePath(to)"
-    class="card-hover group block p-6 no-underline text-ink-high"
+    class="card-hover group block p-6 no-underline text-ink-high hover:-translate-y-0.5"
     :aria-disabled="available === false ? 'true' : undefined"
   >
     <div class="flex items-start justify-between gap-4">

@@ -39,6 +39,9 @@ async function revealDossier() {
     document.getElementById('dossier')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 }
+function backToQuestions() {
+  if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
+}
 function restart() {
   if (typeof window !== 'undefined' && !window.confirm(t('create.resetConfirm'))) return
   store.reset()
@@ -73,13 +76,19 @@ function restart() {
       </div>
 
       <div v-if="showDossier" id="dossier" class="border-t border-border-subtle">
+        <div class="wrap max-w-4xl pt-6 print:hidden">
+          <button
+            class="font-mono text-xs uppercase tracking-[0.14em] text-ink-low hover:text-accent transition-colors"
+            @click="backToQuestions"
+          >↑ {{ t('create.backToQuestions') }}</button>
+        </div>
         <DossierView mode="analyze" @restart="restart" />
       </div>
     </div>
 
     <!-- Sticky live summary bar -->
     <div class="fixed inset-x-0 bottom-0 z-40 border-t border-border-subtle bg-bg-card/90 backdrop-blur-md print:hidden">
-      <div class="wrap max-w-4xl flex items-center justify-between gap-4 py-3">
+      <div class="wrap max-w-4xl flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="min-w-0">
           <p v-if="untouched" class="text-[13px] text-ink-low">{{ t('create.startHint') }}</p>
           <template v-else>
@@ -94,7 +103,7 @@ function restart() {
             </p>
           </template>
         </div>
-        <div class="flex items-center gap-3 shrink-0">
+        <div class="flex items-center gap-3 shrink-0 self-end sm:self-auto">
           <button
             class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-danger transition-colors"
             @click="restart"

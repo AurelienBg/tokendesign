@@ -35,7 +35,7 @@ function print() {
 </script>
 
 <template>
-  <section class="wrap max-w-3xl py-10 sm:py-14">
+  <section class="wrap max-w-4xl py-10 sm:py-14">
     <!-- Diagnostic-mode banner -->
     <div v-if="props.mode === 'analyze'" class="card border-l-2 border-l-info p-3.5 mb-6 print:hidden">
       <p class="text-[13px] text-ink-mid"><span class="glyph text-info mr-1.5" aria-hidden="true">ⓘ</span>{{ t('analyze.banner') }}</p>
