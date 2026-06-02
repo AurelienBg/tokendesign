@@ -70,16 +70,6 @@ function restart() {
           <p class="kicker mb-4">{{ t('create.launchGroup') }}</p>
           <IntakeTable :keys="blockB2" />
         </section>
-
-        <label class="flex items-center gap-2.5 text-[13px] text-ink-mid cursor-pointer pt-3 border-t border-border-subtle">
-          <input
-            type="checkbox"
-            class="accent-accent h-4 w-4"
-            :checked="store.chemin.includes('autres')"
-            @change="store.toggleChemin('autres')"
-          >
-          <span>{{ t('create.alsoBuild') }}</span>
-        </label>
       </div>
 
       <!-- Dossier rendered BELOW the inputs (inputs stay visible above) -->
