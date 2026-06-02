@@ -3,7 +3,7 @@
  * prototype. Founder-language wording, examples, and "I don't know" options.
  * Substance over form: never asks for the technical standard (MPT/IOU/NFT).
  */
-import type { QuestionDef, QuestionKey } from './types'
+import type { QuestionDef, QuestionKey, Locale } from './types'
 
 export const INTAKE: Record<QuestionKey, QuestionDef> = {
   chemin: {
@@ -424,3 +424,45 @@ export const BLOCK_B2: QuestionKey[] = ['rendement', 'stabilite', 'distribution'
 /** Required single-choice keys for each block's validation. */
 export const REQUIRED_B1: QuestionKey[] = ['fongibilite', 'rapport', 'debiteur', 'garant', 'transfer']
 export const REQUIRED_B2: QuestionKey[] = ['rendement', 'stabilite', 'distribution', 'juridiction', 'custody']
+
+/**
+ * Short category labels for the table-style intake (configurator look): shown
+ * as the row label, with the full question in a tooltip. Distinct from
+ * `hint` (which is sometimes an instruction, e.g. "check all that apply").
+ */
+export const QUESTION_LABEL: Record<Locale, Record<QuestionKey, string>> = {
+  fr: {
+    chemin: 'Projet',
+    fongibilite: 'Fongibilité',
+    rapport: 'Rapport au sous-jacent',
+    titre_type: 'Type de sous-jacent',
+    couverture: 'Couverture',
+    debiteur: 'Débiteur',
+    garant: 'Garant',
+    transfer: 'Transférabilité',
+    fonctions: 'Fonctions',
+    droits: 'Droits',
+    rendement: 'Promesse de gain',
+    stabilite: 'Visée de stabilité',
+    distribution: 'Cible',
+    juridiction: 'Juridiction',
+    custody: 'Custody'
+  },
+  en: {
+    chemin: 'Project',
+    fongibilite: 'Fungibility',
+    rapport: 'Relation to underlying',
+    titre_type: 'Underlying type',
+    couverture: 'Coverage',
+    debiteur: 'Debtor',
+    garant: 'Guarantor',
+    transfer: 'Transferability',
+    fonctions: 'Functions',
+    droits: 'Rights',
+    rendement: 'Promised gain',
+    stabilite: 'Stability target',
+    distribution: 'Audience',
+    juridiction: 'Jurisdiction',
+    custody: 'Custody'
+  }
+}

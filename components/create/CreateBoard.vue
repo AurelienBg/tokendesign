@@ -69,17 +69,13 @@ function restart() {
       <!-- Identity -->
       <section class="mb-10">
         <p class="kicker mb-4">{{ t('create.identityGroup') }}</p>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-start">
-          <BoardField v-for="k in visibleB1" :key="k" :question-key="k" />
-        </div>
+        <IntakeTable :keys="visibleB1" />
       </section>
 
       <!-- Launch -->
       <section class="mb-8">
         <p class="kicker mb-4">{{ t('create.launchGroup') }}</p>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-start">
-          <BoardField v-for="k in blockB2" :key="k" :question-key="k" />
-        </div>
+        <IntakeTable :keys="blockB2" />
       </section>
 
       <label class="flex items-center gap-2.5 text-[13px] text-ink-mid cursor-pointer pt-3 border-t border-border-subtle">

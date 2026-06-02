@@ -1,105 +1,116 @@
 <script setup lang="ts">
 import { useAnalyzeStore } from '~/stores/project'
 import { provideProjectStore } from '~/composables/useActiveProjectStore'
-import { INTAKE, BLOCK_B1, BLOCK_B2, REQUIRED_B1, REQUIRED_B2 } from '~/utils/content/intake'
+import { useDossier } from '~/composables/useDossier'
+import { INTAKE, BLOCK_B1, BLOCK_B2 } from '~/utils/content/intake'
+import type { ProjectState } from '~/utils/engine'
+import { REQUIRED_B1, REQUIRED_B2 } from '~/utils/content/intake'
 import type { QuestionKey } from '~/utils/content/types'
-
-type Step = 'b1' | 'b2' | 'dossier'
 
 const store = useAnalyzeStore()
 provideProjectStore(store)
-const { t, locale } = useI18n()
+const { t } = useI18n()
+const localePath = useLocalePath()
+const { classInfo, flagsCount, secondaryNames } = useDossier(store)
 
-const step = ref<Step>('b1')
-const error = ref<string | null>(null)
-const activeIndex = computed(() => (step.value === 'b1' ? 0 : step.value === 'b2' ? 1 : 2))
+const view = ref<'board' | 'dossier'>('board')
+const blockB2 = BLOCK_B2
 
-function label(key: QuestionKey): string {
-  return INTAKE[key].text[locale.value === 'fr' ? 'fr' : 'en'].label
-}
-function firstMissing(keys: QuestionKey[]): QuestionKey | null {
-  for (const k of keys) {
-    if (store.$state[k as keyof typeof store.$state] == null) return k
-  }
-  return null
-}
-function requiredB1(): QuestionKey[] {
-  const req: QuestionKey[] = [...REQUIRED_B1]
+const visibleB1 = computed(() =>
+  BLOCK_B1.filter((k) => {
+    const show = INTAKE[k].show
+    return !show || show(store.$state)
+  })
+)
+
+const requiredKeys = computed<QuestionKey[]>(() => {
+  const req: QuestionKey[] = [...REQUIRED_B1, ...REQUIRED_B2]
   if (store.rapport === 'titre') req.push('titre_type')
   if (store.rapport === 'adosse' || store.rapport === 'titre') req.push('couverture')
   return req
+})
+const missing = computed(() => requiredKeys.value.filter((k) => store.$state[k as keyof ProjectState] == null).length)
+const untouched = computed(() => missing.value === requiredKeys.value.length)
+const complete = computed(() => missing.value === 0)
+
+function scrollTop() {
+  if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
 }
-function fail(key: QuestionKey) {
-  error.value = key === 'titre_type' ? t('create.alertTitre') : t('create.alertAnswer', { q: label(key) })
+function openDossier() {
+  view.value = 'dossier'
+  scrollTop()
 }
-function nextB1() {
-  const miss = firstMissing(requiredB1())
-  if (miss) return fail(miss)
-  error.value = null
-  step.value = 'b2'
-}
-function nextB2() {
-  const miss = firstMissing(REQUIRED_B2)
-  if (miss) return fail(miss)
-  error.value = null
-  step.value = 'dossier'
+function backToBoard() {
+  view.value = 'board'
+  scrollTop()
 }
 function restart() {
-  store.reset()
-  error.value = null
-  step.value = 'b1'
-}
-
-function resetAll() {
   if (typeof window !== 'undefined' && !window.confirm(t('create.resetConfirm'))) return
-  restart()
+  store.reset()
+  view.value = 'board'
+  scrollTop()
 }
-watch(step, () => {
-  error.value = null
-  if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
-})
-
-const blockB1 = BLOCK_B1
-const blockB2 = BLOCK_B2
 </script>
 
 <template>
   <div>
-    <div class="sticky top-[57px] z-30 border-b border-border-subtle/70 backdrop-blur-md print:hidden"
-         style="background-color: rgb(var(--bg-base) / 0.7)">
-      <div class="wrap max-w-3xl py-3 flex items-center justify-between gap-3">
-        <StepIndicator :active-index="activeIndex" labels-key="analyze.stepLabels" />
-        <button
-          class="shrink-0 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-danger transition-colors"
-          @click="resetAll"
-        >{{ t('create.btnRestart') }}</button>
+    <div v-if="view === 'board'" class="wrap max-w-5xl py-8 sm:py-10 pb-28">
+      <NuxtLink
+        :to="localePath('/')"
+        class="font-mono text-xs uppercase tracking-[0.14em] text-ink-low hover:text-accent no-underline"
+      >{{ t('create.backHub') }}</NuxtLink>
+
+      <div class="mt-4 mb-9">
+        <h1 class="font-display text-2xl sm:text-3xl font-semibold">{{ t('analyze.title') }}</h1>
+        <p class="text-ink-mid mt-1.5 max-w-2xl">{{ t('analyze.sub') }}</p>
+      </div>
+
+      <section class="mb-10">
+        <p class="kicker mb-4">{{ t('analyze.identH') }}</p>
+        <IntakeTable :keys="visibleB1" />
+      </section>
+
+      <section class="mb-8">
+        <p class="kicker mb-4">{{ t('analyze.condH') }}</p>
+        <IntakeTable :keys="blockB2" />
+      </section>
+
+      <!-- Sticky live summary bar -->
+      <div class="fixed inset-x-0 bottom-0 z-40 border-t border-border-subtle bg-bg-card/90 backdrop-blur-md print:hidden">
+        <div class="wrap max-w-5xl flex items-center justify-between gap-4 py-3">
+          <div class="min-w-0">
+            <p v-if="untouched" class="text-[13px] text-ink-low">{{ t('create.startHint') }}</p>
+            <template v-else>
+              <p class="text-[13px] leading-tight">
+                <span class="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-low">{{ t('create.likelyClass') }}</span>
+                <span class="ml-2 font-semibold text-ink-high">{{ classInfo.name }}</span>
+                <span v-if="!complete" class="ml-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-warn">· {{ t('create.provisional') }}</span>
+              </p>
+              <p class="text-[12px] mt-0.5" :class="flagsCount ? 'text-warn' : 'text-ok'">
+                {{ flagsCount ? `⚑ ${t('create.watchCount', { n: flagsCount })}` : t('create.vigNone') }}
+                <span v-if="secondaryNames.length" class="text-warn"> · {{ t('create.alsoPlausibleShort', { classes: secondaryNames.join(' · ') }) }}</span>
+              </p>
+            </template>
+          </div>
+          <div class="flex items-center gap-3 shrink-0">
+            <button
+              class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-danger transition-colors"
+              @click="restart"
+            >{{ t('create.btnRestart') }}</button>
+            <button class="btn-primary px-4 py-2 text-sm" @click="openDossier">{{ t('analyze.diagnose') }}</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Identity -->
-    <section v-if="step === 'b1'" class="wrap max-w-3xl py-10 sm:py-14">
-      <p class="kicker mb-2">{{ t('analyze.identH') }}</p>
-      <p class="text-ink-mid mb-9 max-w-xl">{{ t('analyze.identSub') }}</p>
-      <IntakeBlock :keys="blockB1" />
-      <p v-if="error" class="mt-6 text-sm text-danger">{{ error }}</p>
-      <div class="mt-8 flex justify-end gap-3 border-t border-border-subtle pt-6">
-        <button class="btn-primary" @click="nextB1">{{ t('create.btnContinue') }}</button>
+    <div v-else>
+      <div class="wrap max-w-3xl pt-6 print:hidden">
+        <button
+          class="font-mono text-xs uppercase tracking-[0.14em] text-ink-low hover:text-accent transition-colors"
+          @click="backToBoard"
+        >{{ t('create.backBoard') }}</button>
       </div>
-    </section>
-
-    <!-- Conditions -->
-    <section v-else-if="step === 'b2'" class="wrap max-w-3xl py-10 sm:py-14">
-      <p class="kicker mb-2">{{ t('analyze.condH') }}</p>
-      <p class="text-ink-mid mb-9 max-w-xl">{{ t('analyze.condSub') }}</p>
-      <IntakeBlock :keys="blockB2" />
-      <p v-if="error" class="mt-6 text-sm text-danger">{{ error }}</p>
-      <div class="mt-8 flex justify-between gap-3 border-t border-border-subtle pt-6">
-        <button class="btn-ghost" @click="step = 'b1'">{{ t('create.btnBack') }}</button>
-        <button class="btn-primary" @click="nextB2">{{ t('analyze.diagnose') }}</button>
-      </div>
-    </section>
-
-    <!-- Diagnosis -->
-    <DossierView v-else mode="analyze" @restart="restart" />
+      <DossierView mode="analyze" @restart="restart" />
+    </div>
   </div>
 </template>

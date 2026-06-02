@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useActiveProjectStore } from '~/composables/useActiveProjectStore'
-import { INTAKE } from '~/utils/content/intake'
+import { INTAKE, QUESTION_LABEL } from '~/utils/content/intake'
 import type { QuestionKey } from '~/utils/content/types'
 import type { ProjectState, Fonction, Droit } from '~/utils/engine'
 
@@ -8,9 +8,11 @@ const props = defineProps<{ questionKey: QuestionKey }>()
 
 const store = useActiveProjectStore()
 const { t, locale } = useI18n()
+const loc = computed<'en' | 'fr'>(() => (locale.value === 'fr' ? 'fr' : 'en'))
 
 const def = computed(() => INTAKE[props.questionKey])
-const text = computed(() => def.value.text[locale.value === 'fr' ? 'fr' : 'en'])
+const text = computed(() => def.value.text[loc.value])
+const category = computed(() => QUESTION_LABEL[loc.value][props.questionKey])
 const isMulti = computed(() => def.value.type === 'multi')
 
 const answer = computed(() => store.$state[props.questionKey as keyof ProjectState])
@@ -25,62 +27,51 @@ function select(value: string) {
     store.setSingle(props.questionKey as Exclude<QuestionKey, 'chemin' | 'fonctions' | 'droits'>, value)
   }
 }
-
-const rowBase =
-  'flex w-full items-start gap-2.5 rounded-lg border px-3 py-2 text-left text-[13.5px] leading-snug transition'
-const rowOn = 'border-accent bg-accent/10 text-ink-high'
-const rowOff = 'border-border-subtle text-ink-mid hover:border-accent/60 hover:text-ink-high'
 </script>
 
 <template>
-  <div class="card p-4">
-    <div class="mb-3">
-      <h3 class="text-[14px] font-semibold text-ink-high leading-snug">{{ text.label }}</h3>
-      <p v-if="text.hint" class="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-low mt-1">
-        {{ text.hint }}<span v-if="isMulti"> · {{ t('create.multiTag') }}</span>
-      </p>
+  <div class="grid grid-cols-1 sm:grid-cols-[210px_1fr] gap-2 sm:gap-5 sm:items-start py-3.5">
+    <!-- Category label (question in tooltip) -->
+    <div class="flex items-center gap-1.5 sm:pt-1.5">
+      <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low" :title="text.label">{{ category }}</span>
+      <span
+        class="grid h-3.5 w-3.5 place-items-center rounded-full border border-border-accent text-[9px] text-ink-low cursor-help"
+        :title="text.label"
+        aria-hidden="true"
+      >?</span>
     </div>
 
-    <div class="flex flex-col gap-1.5">
-      <template v-for="value in def.order" :key="value">
-        <button
-          v-if="text.options[value]"
-          type="button"
-          :aria-pressed="isSelected(value)"
-          :class="[rowBase, isSelected(value) ? rowOn : rowOff]"
-          @click="select(value)"
-        >
-          <!-- single → radio dot · multi → checkbox -->
-          <span
-            class="mt-0.5 grid h-4 w-4 shrink-0 place-items-center border"
-            :class="[isMulti ? 'rounded-[4px]' : 'rounded-full', isSelected(value) ? 'border-accent' : 'border-border-accent']"
-          >
-            <span
-              v-if="isSelected(value)"
-              :class="isMulti ? 'text-accent text-[10px] leading-none font-bold' : 'h-2 w-2 rounded-full bg-accent'"
-              aria-hidden="true"
-            >{{ isMulti ? '✓' : '' }}</span>
-          </span>
-          <span>
-            {{ text.options[value]!.title }}
-            <span v-if="text.options[value]!.example" class="block text-[11px] text-ink-low mt-0.5">{{ text.options[value]!.example }}</span>
-          </span>
-        </button>
-      </template>
+    <!-- Options -->
+    <div class="flex flex-wrap gap-1.5">
+      <button
+        v-for="value in def.order"
+        v-show="text.options[value]"
+        :key="value"
+        type="button"
+        :aria-label="`${category}: ${text.options[value]?.title}`"
+        :aria-pressed="isSelected(value)"
+        :title="text.options[value]?.example || undefined"
+        class="inline-flex items-center border px-2.5 py-1.5 text-[13px] transition"
+        :class="[
+          isMulti ? 'rounded-md' : 'rounded-full',
+          isSelected(value)
+            ? (isMulti ? 'border-accent text-accent bg-accent/10' : 'border-accent bg-accent text-accent-on font-medium')
+            : 'border-border-subtle text-ink-mid hover:border-accent/60 hover:text-ink-high'
+        ]"
+        @click="select(value)"
+      >
+        <span v-if="isMulti" class="font-mono text-[11px] mr-1.5 text-accent leading-none" aria-hidden="true">{{ isSelected(value) ? '✓' : '+' }}</span>
+        {{ text.options[value]?.title }}
+      </button>
 
-      <!-- "I don't know" -->
       <button
         v-if="def.unsure"
         type="button"
         :aria-pressed="isSelected('?')"
-        :class="[rowBase, isSelected('?') ? 'border-warn bg-warn/10 text-warn' : rowOff, 'italic']"
+        class="rounded-full border px-2.5 py-1.5 text-[13px] italic transition"
+        :class="isSelected('?') ? 'border-warn bg-warn/10 text-warn' : 'border-border-subtle text-ink-low hover:border-accent/60'"
         @click="select('?')"
-      >
-        <span class="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full border" :class="isSelected('?') ? 'border-warn' : 'border-border-accent'">
-          <span v-if="isSelected('?')" class="h-2 w-2 rounded-full bg-warn" aria-hidden="true" />
-        </span>
-        <span>{{ t('create.unsure') }}</span>
-      </button>
+      >{{ t('create.unsure') }}</button>
     </div>
   </div>
 </template>
