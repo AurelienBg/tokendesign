@@ -74,7 +74,7 @@ function select(value: string) {
         :aria-label="`${category}: ${text.options[value]?.title}`"
         :aria-pressed="isSelected(value)"
         :title="text.options[value]?.example || undefined"
-        class="inline-flex items-center border px-2.5 py-1.5 text-[13px] transition"
+        class="inline-flex items-center whitespace-nowrap border px-2.5 py-1.5 text-[13px] transition"
         :class="[
           isMulti ? 'rounded-md' : 'rounded-full',
           isSelected(value)
@@ -91,7 +91,7 @@ function select(value: string) {
         v-if="def.unsure"
         type="button"
         :aria-pressed="isSelected('?')"
-        class="rounded-full border px-2.5 py-1.5 text-[13px] italic transition"
+        class="rounded-full border px-2.5 py-1.5 text-[13px] italic whitespace-nowrap transition"
         :class="isSelected('?') ? 'border-warn bg-warn/10 text-warn' : 'border-border-subtle text-ink-low hover:border-accent/60'"
         @click="select('?')"
       >{{ t('create.unsure') }}</button>
