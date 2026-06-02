@@ -54,8 +54,18 @@ const redFlags: { key: RedFlagKey; trigger: string }[] = [
 ]
 const stages = ['Conception', 'Issuance', 'Distribution', 'Life', 'End']
 
-const openClass = ref<TokenClass | null>(null)
-const openFlag = ref<RedFlagKey | null>(null)
+// Default: everything expanded (the full tree is visible at a glance);
+// click a row to collapse/expand it.
+const openClasses = reactive(new Set<TokenClass>(classRules.map((r) => r.cls)))
+const openFlags = reactive(new Set<RedFlagKey>(redFlags.map((f) => f.key)))
+function toggleClass(c: TokenClass) {
+  if (openClasses.has(c)) openClasses.delete(c)
+  else openClasses.add(c)
+}
+function toggleFlag(k: RedFlagKey) {
+  if (openFlags.has(k)) openFlags.delete(k)
+  else openFlags.add(k)
+}
 </script>
 
 <template>
@@ -110,16 +120,16 @@ const openFlag = ref<RedFlagKey | null>(null)
               <button
                 type="button"
                 class="flex w-full items-center gap-3 text-left text-[14px] rounded-lg px-2 py-1.5 hover:bg-bg-elevated transition-colors"
-                :aria-expanded="openClass === r.cls"
-                @click="openClass = openClass === r.cls ? null : r.cls"
+                :aria-expanded="openClasses.has(r.cls)"
+                @click="toggleClass(r.cls)"
               >
                 <span class="font-mono text-[11px] text-ink-low">{{ r.n }}</span>
                 <span class="text-ink-mid flex-1">{{ r.cond }}</span>
                 <span class="font-mono text-ink-low" aria-hidden="true">→</span>
                 <span class="font-semibold w-28 shrink-0" :class="r.tone">{{ CLASSES[loc][r.cls].name }}</span>
-                <span class="text-ink-low text-[11px]" aria-hidden="true">{{ openClass === r.cls ? '▾' : '▸' }}</span>
+                <span class="text-ink-low text-[11px]" aria-hidden="true">{{ openClasses.has(r.cls) ? '▾' : '▸' }}</span>
               </button>
-              <div v-if="openClass === r.cls" class="ml-7 mt-1 mb-2 rounded-lg border border-border-subtle bg-bg-elevated/50 p-3">
+              <div v-if="openClasses.has(r.cls)" class="ml-7 mt-1 mb-2 rounded-lg border border-border-subtle bg-bg-elevated/50 p-3">
                 <p class="text-[13px] text-ink-mid mb-2">{{ CLASSES[loc][r.cls].reg }}</p>
                 <ul class="flex flex-col gap-1.5">
                   <li v-for="(o, i) in CLASSES[loc][r.cls].obl" :key="i" class="flex gap-2 text-[13px] text-ink-high">
@@ -140,14 +150,14 @@ const openFlag = ref<RedFlagKey | null>(null)
               <button
                 type="button"
                 class="flex w-full items-start gap-2 text-left text-[13px] rounded-lg px-2 py-1.5 hover:bg-bg-elevated transition-colors"
-                :aria-expanded="openFlag === f.key"
-                @click="openFlag = openFlag === f.key ? null : f.key"
+                :aria-expanded="openFlags.has(f.key)"
+                @click="toggleFlag(f.key)"
               >
                 <span class="text-warn" aria-hidden="true">⚑</span>
                 <span class="flex-1"><span class="font-mono text-[11px] text-ink-low">{{ f.key }}</span> — <span class="text-ink-mid">{{ f.trigger }}</span></span>
-                <span class="text-ink-low text-[11px]" aria-hidden="true">{{ openFlag === f.key ? '▾' : '▸' }}</span>
+                <span class="text-ink-low text-[11px]" aria-hidden="true">{{ openFlags.has(f.key) ? '▾' : '▸' }}</span>
               </button>
-              <div v-if="openFlag === f.key" class="ml-6 mb-2 rounded-lg border border-border-subtle bg-bg-elevated/50 p-3">
+              <div v-if="openFlags.has(f.key)" class="ml-6 mb-2 rounded-lg border border-border-subtle bg-bg-elevated/50 p-3">
                 <p class="text-[13px] font-medium text-ink-high mb-1">{{ REDFLAGS[loc][f.key].title }}</p>
                 <p class="text-[13px] text-ink-mid leading-relaxed">{{ REDFLAGS[loc][f.key].body }}</p>
               </div>

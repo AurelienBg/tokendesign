@@ -2,9 +2,8 @@
 import { useAnalyzeStore } from '~/stores/project'
 import { provideProjectStore } from '~/composables/useActiveProjectStore'
 import { useDossier } from '~/composables/useDossier'
-import { INTAKE, BLOCK_B1, BLOCK_B2 } from '~/utils/content/intake'
+import { INTAKE, BLOCK_B1, BLOCK_B2, REQUIRED_B1, REQUIRED_B2 } from '~/utils/content/intake'
 import type { ProjectState } from '~/utils/engine'
-import { REQUIRED_B1, REQUIRED_B2 } from '~/utils/content/intake'
 import type { QuestionKey } from '~/utils/content/types'
 
 const store = useAnalyzeStore()
@@ -13,7 +12,7 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const { classInfo, flagsCount, secondaryNames } = useDossier(store)
 
-const view = ref<'board' | 'dossier'>('board')
+const showDossier = ref(false)
 const blockB2 = BLOCK_B2
 
 const visibleB1 = computed(() =>
@@ -33,84 +32,76 @@ const missing = computed(() => requiredKeys.value.filter((k) => store.$state[k a
 const untouched = computed(() => missing.value === requiredKeys.value.length)
 const complete = computed(() => missing.value === 0)
 
-function scrollTop() {
-  if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
-}
-function openDossier() {
-  view.value = 'dossier'
-  scrollTop()
-}
-function backToBoard() {
-  view.value = 'board'
-  scrollTop()
+async function revealDossier() {
+  showDossier.value = true
+  await nextTick()
+  if (typeof document !== 'undefined') {
+    document.getElementById('dossier')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 }
 function restart() {
   if (typeof window !== 'undefined' && !window.confirm(t('create.resetConfirm'))) return
   store.reset()
-  view.value = 'board'
-  scrollTop()
+  showDossier.value = false
+  if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 </script>
 
 <template>
   <div>
-    <div v-if="view === 'board'" class="wrap max-w-5xl py-8 sm:py-10 pb-28">
-      <NuxtLink
-        :to="localePath('/')"
-        class="font-mono text-xs uppercase tracking-[0.14em] text-ink-low hover:text-accent no-underline"
-      >{{ t('create.backHub') }}</NuxtLink>
+    <div class="pb-28">
+      <div class="wrap max-w-5xl py-8 sm:py-10">
+        <NuxtLink
+          :to="localePath('/')"
+          class="font-mono text-xs uppercase tracking-[0.14em] text-ink-low hover:text-accent no-underline"
+        >{{ t('create.backHub') }}</NuxtLink>
 
-      <div class="mt-4 mb-9">
-        <h1 class="font-display text-2xl sm:text-3xl font-semibold">{{ t('analyze.title') }}</h1>
-        <p class="text-ink-mid mt-1.5 max-w-2xl">{{ t('analyze.sub') }}</p>
+        <div class="mt-4 mb-9">
+          <h1 class="font-display text-2xl sm:text-3xl font-semibold">{{ t('analyze.title') }}</h1>
+          <p class="text-ink-mid mt-1.5 max-w-2xl">{{ t('analyze.sub') }}</p>
+        </div>
+
+        <section class="mb-10">
+          <p class="kicker mb-4">{{ t('analyze.identH') }}</p>
+          <IntakeTable :keys="visibleB1" />
+        </section>
+
+        <section class="mb-8">
+          <p class="kicker mb-4">{{ t('analyze.condH') }}</p>
+          <IntakeTable :keys="blockB2" />
+        </section>
       </div>
 
-      <section class="mb-10">
-        <p class="kicker mb-4">{{ t('analyze.identH') }}</p>
-        <IntakeTable :keys="visibleB1" />
-      </section>
-
-      <section class="mb-8">
-        <p class="kicker mb-4">{{ t('analyze.condH') }}</p>
-        <IntakeTable :keys="blockB2" />
-      </section>
-
-      <!-- Sticky live summary bar -->
-      <div class="fixed inset-x-0 bottom-0 z-40 border-t border-border-subtle bg-bg-card/90 backdrop-blur-md print:hidden">
-        <div class="wrap max-w-5xl flex items-center justify-between gap-4 py-3">
-          <div class="min-w-0">
-            <p v-if="untouched" class="text-[13px] text-ink-low">{{ t('create.startHint') }}</p>
-            <template v-else>
-              <p class="text-[13px] leading-tight">
-                <span class="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-low">{{ t('create.likelyClass') }}</span>
-                <span class="ml-2 font-semibold text-ink-high">{{ classInfo.name }}</span>
-                <span v-if="!complete" class="ml-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-warn">· {{ t('create.provisional') }}</span>
-              </p>
-              <p class="text-[12px] mt-0.5" :class="flagsCount ? 'text-warn' : 'text-ok'">
-                {{ flagsCount ? `⚑ ${t('create.watchCount', { n: flagsCount })}` : t('create.vigNone') }}
-                <span v-if="secondaryNames.length" class="text-warn"> · {{ t('create.alsoPlausibleShort', { classes: secondaryNames.join(' · ') }) }}</span>
-              </p>
-            </template>
-          </div>
-          <div class="flex items-center gap-3 shrink-0">
-            <button
-              class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-danger transition-colors"
-              @click="restart"
-            >{{ t('create.btnRestart') }}</button>
-            <button class="btn-primary px-4 py-2 text-sm" @click="openDossier">{{ t('analyze.diagnose') }}</button>
-          </div>
-        </div>
+      <div v-if="showDossier" id="dossier" class="border-t border-border-subtle">
+        <DossierView mode="analyze" @restart="restart" />
       </div>
     </div>
 
-    <div v-else>
-      <div class="wrap max-w-3xl pt-6 print:hidden">
-        <button
-          class="font-mono text-xs uppercase tracking-[0.14em] text-ink-low hover:text-accent transition-colors"
-          @click="backToBoard"
-        >{{ t('create.backBoard') }}</button>
+    <!-- Sticky live summary bar -->
+    <div class="fixed inset-x-0 bottom-0 z-40 border-t border-border-subtle bg-bg-card/90 backdrop-blur-md print:hidden">
+      <div class="wrap max-w-5xl flex items-center justify-between gap-4 py-3">
+        <div class="min-w-0">
+          <p v-if="untouched" class="text-[13px] text-ink-low">{{ t('create.startHint') }}</p>
+          <template v-else>
+            <p class="text-[13px] leading-tight">
+              <span class="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-low">{{ t('create.likelyClass') }}</span>
+              <span class="ml-2 font-semibold text-ink-high">{{ classInfo.name }}</span>
+              <span v-if="!complete" class="ml-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-warn">· {{ t('create.provisional') }}</span>
+            </p>
+            <p class="text-[12px] mt-0.5" :class="flagsCount ? 'text-warn' : 'text-ok'">
+              {{ flagsCount ? `⚑ ${t('create.watchCount', { n: flagsCount })}` : t('create.vigNone') }}
+              <span v-if="secondaryNames.length" class="text-warn"> · {{ t('create.alsoPlausibleShort', { classes: secondaryNames.join(' · ') }) }}</span>
+            </p>
+          </template>
+        </div>
+        <div class="flex items-center gap-3 shrink-0">
+          <button
+            class="font-mono text-[11px] uppercase tracking-[0.12em] text-ink-low hover:text-danger transition-colors"
+            @click="restart"
+          >{{ t('create.btnRestart') }}</button>
+          <button class="btn-primary px-4 py-2 text-sm" @click="revealDossier">{{ t('analyze.diagnose') }}</button>
+        </div>
       </div>
-      <DossierView mode="analyze" @restart="restart" />
     </div>
   </div>
 </template>
