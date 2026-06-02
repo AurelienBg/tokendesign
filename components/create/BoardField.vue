@@ -70,7 +70,7 @@ function select(value: string) {
         :key="value"
         type="button"
         :aria-pressed="isSelected(value)"
-        class="border px-2.5 py-1.5 text-[13px] transition"
+        class="border px-2.5 py-1 text-[12px] whitespace-nowrap transition"
         :class="[
           isMulti ? 'inline-flex items-center rounded-md' : 'rounded-full',
           isSelected(value)
@@ -86,7 +86,7 @@ function select(value: string) {
         v-if="def.unsure"
         type="button"
         :aria-pressed="isSelected('?')"
-        class="rounded-full border px-2.5 py-1.5 text-[13px] italic transition"
+        class="rounded-full border px-2.5 py-1 text-[12px] italic whitespace-nowrap transition"
         :class="isSelected('?') ? 'border-warn bg-warn/10 text-warn' : 'border-border-subtle text-ink-low hover:border-border-accent'"
         @click="select('?')"
       >{{ t('create.unsure') }}</button>
