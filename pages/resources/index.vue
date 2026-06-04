@@ -46,7 +46,7 @@ const b2 = BLOCK_B2
       <p class="kicker mb-2">Draft · to export to Grounds</p>
       <h2 class="font-display text-2xl font-semibold mb-1">Upstream gates — blockchain? / token?</h2>
       <p class="text-ink-mid text-sm mb-6 max-w-2xl">The two necessity switches the macro map attributes to Grounds (the router). Go/no-go, not classification. Bilingual &amp; self-contained — lift into Grounds when ready.</p>
-      <div class="grid lg:grid-cols-2 gap-5 items-start">
+      <div class="flex flex-col gap-8">
         <GateGuide v-for="g in GATES" :key="g.id" :gate="g" />
       </div>
     </section>
