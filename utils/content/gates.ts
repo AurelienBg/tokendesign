@@ -77,6 +77,11 @@ export const BLOCKCHAIN_GATE: Gate = {
       leaf: { tone: 'no', label: { en: 'Centralized database', fr: 'Base de données centralisée' }, note: { en: 'A classic DB does the job. No chain.', fr: 'Une base classique suffit. Pas de chaîne.' }, example: { en: 'a classic SaaS, an internal CRM', fr: 'un SaaS classique, un CRM interne' } }
     },
     {
+      q: { en: 'Do the writing parties trust each other?', fr: 'Les parties qui écrivent se font-elles confiance ?' },
+      exitWhen: { en: 'Yes — mutual trust', fr: 'Oui — confiance mutuelle' },
+      leaf: { tone: 'no', label: { en: 'Shared / co-managed database', fr: 'Base de données partagée / co-gérée' }, note: { en: 'Mutually trusting writers can just share a database. No chain.', fr: 'Des rédacteurs qui se font confiance peuvent simplement partager une base. Pas de chaîne.' }, example: { en: 'a shared spreadsheet, a B2B EDI database', fr: 'un tableur partagé, une base EDI B2B' } }
+    },
+    {
       q: { en: 'Is an always-available, trusted third party acceptable to arbitrate?', fr: 'Un tiers de confiance toujours disponible est-il acceptable pour arbitrer ?' },
       exitWhen: { en: 'Yes', fr: 'Oui' },
       leaf: { tone: 'no', label: { en: 'Use that intermediary (web2)', fr: 'Utilise cet intermédiaire (web2)' }, note: { en: 'A trusted TTP removes the need for a chain.', fr: 'Un tiers de confiance enlève le besoin de chaîne.' }, example: { en: 'Stripe for payments, a bank’s ledger', fr: 'Stripe pour les paiements, le registre d’une banque' } }
@@ -99,8 +104,8 @@ export const BLOCKCHAIN_GATE: Gate = {
     { tone: 'warn', text: { en: 'Beware “blockchain because hype”. If a database does the job, use a database — cheaper, faster, simpler.', fr: 'Méfie-toi de la « blockchain par hype ». Si une base fait le travail, utilise une base — moins cher, plus rapide, plus simple.' } }
   ],
   sources: {
-    en: 'Adapted from Wüst & Gervais, “Do you need a Blockchain?” (ETH Zurich, 2018) and the WEF Blockchain decision tool.',
-    fr: 'Adapté de Wüst & Gervais, « Do you need a Blockchain? » (ETH Zurich, 2018) et de l’outil de décision blockchain du WEF.'
+    en: 'Adapted from Wüst & Gervais, “Do you need a Blockchain?” (ETH Zurich, 2018); the WEF Blockchain decision tool (2019); Birch–Brown–Parulava (fintech); and IEEE / Gartner enterprise frameworks.',
+    fr: 'Adapté de Wüst & Gervais, « Do you need a Blockchain? » (ETH Zurich, 2018) ; de l’outil de décision blockchain du WEF (2019) ; de Birch–Brown–Parulava (fintech) ; et des cadres entreprise IEEE / Gartner.'
   },
   resources: [
     {
