@@ -30,7 +30,8 @@ export interface GateSplit {
 }
 
 export interface GateCallout { tone: 'warn' | 'info'; text: Bi }
-export interface GateResource { label: Bi; href: string }
+/** href is per-locale so deep-links land on the right localized route. */
+export interface GateResource { label: Bi; href: Bi }
 
 export interface Gate {
   id: string
@@ -102,7 +103,10 @@ export const BLOCKCHAIN_GATE: Gate = {
     fr: 'Adapté de Wüst & Gervais, « Do you need a Blockchain? » (ETH Zurich, 2018) et de l’outil de décision blockchain du WEF.'
   },
   resources: [
-    { label: { en: 'xrpl-builder · decision tree map', fr: 'xrpl-builder · carte des arbres' }, href: 'https://xrpl-builder.vercel.app/decision-tree-map' }
+    {
+      label: { en: 'xrpl-builder · route your use case (once on-chain)', fr: 'xrpl-builder · route ton cas d’usage (une fois on-chain)' },
+      href: { en: 'https://xrpl-builder.vercel.app/en/decision-tree-map', fr: 'https://xrpl-builder.vercel.app/decision-tree-map' }
+    }
   ]
 }
 
@@ -142,22 +146,36 @@ export const TOKEN_GATE: Gate = {
   final: {
     q: { en: 'Will it carry real value, or is a secondary market planned?', fr: 'Va-t-il porter de la vraie valeur, ou un marché secondaire est-il prévu ?' },
     yesWhen: { en: 'Yes', fr: 'Oui' },
-    yes: { tone: 'warn', label: { en: 'Token justified — but heavily regulated', fr: 'Token justifié — mais très régulé' }, note: { en: 'Real value / secondary market → likely a security (Howey) and within MiCA. Verify before issuing.', fr: 'Valeur réelle / marché secondaire → probablement un security (Howey) et dans MiCA. Vérifie avant d’émettre.' } },
+    yes: { tone: 'warn', label: { en: 'Token justified — but heavily regulated', fr: 'Token justifié — mais très régulé' }, note: { en: 'Real value or secondary market → likely a security (Howey test) and within MiCA. A grey zone may apply if sufficiently decentralized (cf. SEC v. Ripple). Verify before issuing.', fr: 'Valeur réelle ou marché secondaire → probablement un security (test de Howey) et dans MiCA. Zone grise possible si suffisamment décentralisé (cf. SEC v. Ripple). Vérifie avant d’émettre.' } },
     noWhen: { en: 'No', fr: 'Non' },
     no: { tone: 'yes', label: { en: 'Token justified — lighter utility', fr: 'Token justifié — utility plus léger' }, note: { en: 'Still classify it precisely — some utilities are regulated too.', fr: 'Classe-le quand même précisément — certains utilities sont régulés aussi.' } }
   },
   callouts: [
     { tone: 'warn', text: { en: 'Red flag: a token whose only real purpose is to raise money or to pump. Regulators (and users) see through it.', fr: 'Red flag : un token dont le seul vrai but est de lever des fonds ou de pumper. Les régulateurs (et les users) le voient.' } },
-    { tone: 'info', text: { en: 'Prefer existing assets or off-chain credits whenever they fit — fewer legal obligations, less complexity.', fr: 'Préfère les actifs existants ou les crédits off-chain dès qu’ils conviennent — moins d’obligations légales, moins de complexité.' } }
+    { tone: 'info', text: { en: 'Prefer existing assets or off-chain credits whenever they fit — fewer legal obligations, less complexity.', fr: 'Préfère les actifs existants ou les crédits off-chain dès qu’ils conviennent — moins d’obligations légales, moins de complexité.' } },
+    { tone: 'info', text: { en: 'Once justified, classify it: its type — Fungible / Stablecoin / MPT / NFT (tokenlab) — and its EU regulatory class (Frame).', fr: 'Une fois justifié, classe-le : son type — Fongible / Stablecoin / MPT / NFT (tokenlab) — et sa classe réglementaire UE (Frame).' } }
   ],
   sources: {
-    en: 'Regulatory branch follows the Howey test (US securities) and MiCA (EU).',
-    fr: 'La branche réglementaire suit le test de Howey (securities US) et MiCA (UE).'
+    en: 'Regulatory branch follows the Howey test (US securities) and MiCA (EU); grey zone per SEC v. Ripple.',
+    fr: 'La branche réglementaire suit le test de Howey (securities US) et MiCA (UE) ; zone grise selon SEC v. Ripple.'
   },
   resources: [
-    { label: { en: 'regul8 · Howey quick test', fr: 'regul8 · test de Howey rapide' }, href: 'https://regul8app.vercel.app/en/assess/quick/howey' },
-    { label: { en: 'tokenlab · token type (module 0)', fr: 'tokenlab · type de token (module 0)' }, href: 'https://tokenlabapp.vercel.app' },
-    { label: { en: 'xrpl-builder · decision tree map', fr: 'xrpl-builder · carte des arbres' }, href: 'https://xrpl-builder.vercel.app/decision-tree-map' }
+    {
+      label: { en: 'regul8 · Howey test (security?)', fr: 'regul8 · test de Howey (security ?)' },
+      href: { en: 'https://regul8app.vercel.app/en/assess/quick/howey', fr: 'https://regul8app.vercel.app/fr/assess/quick/howey' }
+    },
+    {
+      label: { en: 'regul8 · CASP licence?', fr: 'regul8 · licence CASP ?' },
+      href: { en: 'https://regul8app.vercel.app/en/assess/quick/casp', fr: 'https://regul8app.vercel.app/fr/assess/quick/casp' }
+    },
+    {
+      label: { en: 'tokenlab · which token type?', fr: 'tokenlab · quel type de token ?' },
+      href: { en: 'https://tokenlabapp.vercel.app', fr: 'https://tokenlabapp.vercel.app' }
+    },
+    {
+      label: { en: 'xrpl-builder · pick your XRPL stack', fr: 'xrpl-builder · choisis ta stack XRPL' },
+      href: { en: 'https://xrpl-builder.vercel.app/en/decision-tree', fr: 'https://xrpl-builder.vercel.app/decision-tree' }
+    }
   ],
   ctaTo: '/create',
   ctaLabel: { en: 'Define its class → Frame', fr: 'Définir sa classe → Frame' }

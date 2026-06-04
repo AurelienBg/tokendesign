@@ -111,8 +111,8 @@ const LEAF: Record<GateTone, string> = {
       <p v-if="gate.sources" class="text-[12px] text-ink-low mb-2.5 leading-snug">{{ gate.sources[loc] }}</p>
       <div v-if="gate.resources?.length" class="flex flex-wrap gap-2">
         <a
-          v-for="r in gate.resources" :key="r.href"
-          :href="r.href" target="_blank" rel="noopener noreferrer"
+          v-for="r in gate.resources" :key="r.href[loc]"
+          :href="r.href[loc]" target="_blank" rel="noopener noreferrer"
           class="inline-flex items-center rounded-full border border-border-subtle bg-bg-elevated px-3 py-1 font-mono text-[11px] text-ink-mid hover:border-accent hover:text-accent no-underline transition-colors"
         >{{ r.label[loc] }} ↗</a>
       </div>
