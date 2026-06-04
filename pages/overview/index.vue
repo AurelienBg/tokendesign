@@ -186,7 +186,19 @@ const toc = [
           </thead>
           <tbody>
             <tr v-for="row in SUITE" :key="row.name" class="border-b border-border-subtle align-top">
-              <td class="py-3 px-2 font-mono font-medium text-[13px] whitespace-nowrap" :class="TAG[row.color].split(' ')[1]">{{ row.name }}</td>
+              <td class="py-3 px-2 whitespace-nowrap">
+                <a
+                  v-if="row.url.startsWith('http')"
+                  :href="row.url" target="_blank" rel="noopener noreferrer"
+                  class="font-mono font-medium text-[13px] no-underline hover:underline"
+                  :class="TAG[row.color].split(' ')[1]"
+                >{{ row.name }} ↗</a>
+                <NuxtLink
+                  v-else :to="localePath(row.url)"
+                  class="font-mono font-medium text-[13px] no-underline hover:underline"
+                  :class="TAG[row.color].split(' ')[1]"
+                >{{ row.name }}</NuxtLink>
+              </td>
               <td class="py-3 px-2 text-[14px] text-ink-high min-w-[260px]">{{ row.desc[loc] }}</td>
               <td class="py-3 px-2 whitespace-nowrap">
                 <span v-if="stepsFor(row.name).length" class="font-mono text-[12px] text-ink-mid">{{ stepsFor(row.name).join(', ') }}</span>

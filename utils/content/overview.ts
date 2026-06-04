@@ -170,49 +170,49 @@ export const TRANSVERSE_NOTE: Bi = {
 }
 
 // ── Section 2: the suite ──
-export interface SuiteRow { name: string; color: AppColor; desc: Bi }
+export interface SuiteRow { name: string; color: AppColor; url: string; desc: Bi }
 export const SUITE: SuiteRow[] = [
   {
-    name: 'grounds', color: 'transverse',
+    name: 'grounds', color: 'transverse', url: 'https://groundscoach.vercel.app',
     desc: {
       en: 'The macro vision / orchestration: the overall journey (this very map) and the upstream switches (blockchain? token?).',
       fr: "La vision macro / l'orchestration : le parcours d'ensemble (recouvre cette carte) et les aiguillages amont (blockchain ? token ?)."
     }
   },
   {
-    name: 'Onchaindesign', color: 'host',
+    name: 'Onchaindesign', color: 'host', url: '/',
     desc: {
       en: 'The on-chain structure: authority & custody — the power taken over users’ assets (read → propose → authorize → deposit) and over the token (freeze/clawback); and — if token — its nature, class, lifecycle.',
       fr: "La structure on-chain : l'autorité & custody — le pouvoir pris sur les actifs des users (lire → proposer → autoriser → déposer) et sur le token (gel/clawback) ; et — si token — sa nature, sa classe, son cycle."
     }
   },
   {
-    name: 'regul8', color: 'regul8',
+    name: 'regul8', color: 'regul8', url: 'https://regul8app.vercel.app',
     desc: {
       en: 'Regulation of the activity (operator): licences, CASP/VASP, AML, jurisdictions.',
       fr: "La régulation de l'activité (opérateur) : licences, CASP/VASP, AML, juridictions."
     }
   },
   {
-    name: 'tokenlab', color: 'tokenlab',
+    name: 'tokenlab', color: 'tokenlab', url: 'https://tokenlabapp.vercel.app',
     desc: {
       en: 'The token economy: tokenomics, value flow, supply, vesting, TGE. (Its compliance module points back to regul8 + Onchaindesign.)',
       fr: "L'économie du token : tokenomics, value flow, supply, vesting, TGE. (Son module compliance renvoie à regul8 + Onchaindesign.)"
     }
   },
   {
-    name: 'gameframe', color: 'transverse',
+    name: 'gameframe', color: 'transverse', url: 'https://gameframeapp.vercel.app',
     desc: {
       en: 'Gamification: improving features and stakeholder incentives.',
       fr: 'La gamification : améliorer les features et les incitations des parties prenantes.'
     }
   },
   {
-    name: '7powers', color: 'transverse',
+    name: '7powers', color: 'transverse', url: 'https://7powers.vercel.app',
     desc: { en: 'Defensibility / the moat.', fr: 'La défendabilité / le moat.' }
   },
   {
-    name: 'pitchcraft', color: 'transverse',
+    name: 'pitchcraft', color: 'transverse', url: 'https://pitchcraftapp.vercel.app',
     desc: { en: 'The pitch / the raise.', fr: 'Le pitch / la levée.' }
   }
 ]
