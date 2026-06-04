@@ -9,16 +9,18 @@ const localePath = useLocalePath()
 const route = useRoute()
 const { t, tm, rt } = useI18n()
 
-interface NavLink { to: string; label: string }
+interface NavLink { to: string; label: string; external?: boolean }
 const links = computed<NavLink[]>(() => [
   { to: '/', label: t('hub.navHome') },
+  { to: '/overview', label: t('hub.navOverview') },
   { to: '/create', label: t('angles.create.title') },
   { to: '/build', label: t('angles.build.title') },
   { to: '/configurator', label: t('configurator.kicker') },
   { to: '/learn/frame', label: t('hub.guideFrame') },
   { to: '/learn/build', label: t('hub.guideBuild') },
   { to: '/dossiers', label: t('cloud.myDossiers') },
-  { to: '/resources', label: t('hub.navResources') }
+  { to: '/resources', label: t('hub.navResources') },
+  { to: 'https://aurelienbg.github.io/assetcustody/', label: t('hub.navCustody'), external: true }
 ])
 
 const stages = computed(() => (tm('create.stageNames') as unknown[]).map((m) => rt(m as Parameters<typeof rt>[0])))
@@ -64,13 +66,21 @@ watch(() => route.fullPath, () => (open.value = false))
       class="absolute right-0 top-full mt-2 w-64 rounded-xl border border-border-subtle bg-bg-card shadow-lg z-50 overflow-hidden"
     >
       <nav class="p-2">
-        <NuxtLink
-          v-for="l in links"
-          :key="l.to"
-          :to="localePath(l.to)"
-          class="block rounded-lg px-3 py-2 text-[14px] no-underline transition-colors"
-          :class="isActive(l.to) ? 'bg-accent/10 text-accent font-medium' : 'text-ink-mid hover:bg-bg-elevated hover:text-ink-high'"
-        >{{ l.label }}</NuxtLink>
+        <template v-for="l in links" :key="l.to">
+          <a
+            v-if="l.external"
+            :href="l.to"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block rounded-lg px-3 py-2 text-[14px] no-underline transition-colors text-ink-mid hover:bg-bg-elevated hover:text-ink-high"
+          >{{ l.label }}</a>
+          <NuxtLink
+            v-else
+            :to="localePath(l.to)"
+            class="block rounded-lg px-3 py-2 text-[14px] no-underline transition-colors"
+            :class="isActive(l.to) ? 'bg-accent/10 text-accent font-medium' : 'text-ink-mid hover:bg-bg-elevated hover:text-ink-high'"
+          >{{ l.label }}</NuxtLink>
+        </template>
       </nav>
 
       <div class="border-t border-border-subtle p-3">
