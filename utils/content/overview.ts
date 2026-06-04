@@ -19,7 +19,7 @@ export const PILLARS: { key: 'operator' | 'instrument'; color: AppColor; title: 
   {
     key: 'operator',
     color: 'regul8',
-    title: { en: 'The operator', fr: "L'opérateur" },
+    title: { en: 'The operator (the app)', fr: "L'opérateur (l'app)" },
     desc: {
       en: 'The product / app: features, connection, whether it touches users’ assets (custody/authority), interop. → drives the regulation of the activity.',
       fr: "Le produit / l'app : features, connexion, est-ce qu'il touche les actifs des users (custody/autorité), interop. → pilote la régulation de l'activité."
@@ -28,7 +28,7 @@ export const PILLARS: { key: 'operator' | 'instrument'; color: AppColor; title: 
   {
     key: 'instrument',
     color: 'host',
-    title: { en: 'The instrument', fr: "L'instrument" },
+    title: { en: 'The instrument (the token)', fr: "L'instrument (le token)" },
     desc: {
       en: 'The token, if there is one: its nature, its class, its economy. → drives classification and tokenomics.',
       fr: "Le token, s'il y en a un : sa nature, sa classe, son économie. → pilote la classification et la tokenomics."
