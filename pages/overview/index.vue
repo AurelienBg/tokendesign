@@ -35,6 +35,16 @@ const DOT: Record<AppColor, string> = {
   host: 'bg-accent', regul8: 'bg-ok', tokenlab: 'bg-warn', transverse: 'bg-ink-low'
 }
 
+/** Numbered (non-gate) journey steps where a suite app intervenes. */
+function stepsFor(appName: string): string[] {
+  const ns: string[] = []
+  for (const s of JOURNEY) {
+    if (s.kind === 'gate') continue
+    if (s.apps.some((a) => a.name === appName || a.name.startsWith(appName + ' '))) ns.push(s.n)
+  }
+  return ns
+}
+
 const toc = [
   { id: 's1', n: '01', key: 'tocMacro' },
   { id: 's2', n: '02', key: 'tocSuite' },
@@ -105,35 +115,45 @@ const toc = [
 
       <p class="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-low mt-6 mb-3">{{ t('overview.s1Detail') }}</p>
 
-      <!-- journey -->
-      <ol class="flex flex-col">
-        <li
-          v-for="(s, i) in JOURNEY" :key="i"
-          class="flex gap-4 py-3.5" :class="i > 0 ? 'border-t border-border-subtle' : ''"
-        >
-          <span
-            class="shrink-0 grid h-8 w-8 place-items-center rounded-lg border font-mono text-[13px]"
-            :class="NUM[s.kind]"
-          >{{ s.n }}</span>
-          <div class="min-w-0">
-            <div class="flex items-center gap-2 flex-wrap">
-              <span class="font-semibold text-[15.5px]">{{ s.title[loc] }}</span>
-              <span
-                v-if="s.optional"
-                class="font-mono text-[10px] uppercase tracking-[0.08em] text-ink-low border border-dashed border-border-accent rounded px-1.5 py-px"
-              >{{ t('overview.optional') }}</span>
-            </div>
-            <p class="text-[13.5px] text-ink-mid mt-0.5">{{ s.desc[loc] }}</p>
-            <div class="flex flex-wrap gap-1.5 mt-2">
-              <span
-                v-for="a in s.apps" :key="a.name"
-                class="font-mono text-[10.5px] tracking-[0.04em] rounded-md border px-2 py-0.5"
-                :class="TAG[a.color]"
-              >{{ a.name }}</span>
-            </div>
-          </div>
-        </li>
-      </ol>
+      <!-- journey table -->
+      <div class="overflow-x-auto -mx-1">
+        <table class="w-full border-collapse text-left">
+          <thead>
+            <tr class="border-b border-border-accent">
+              <th class="py-2 px-2 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-low font-medium w-10">{{ t('overview.colStep') }}</th>
+              <th class="py-2 px-2 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-low font-medium">{{ t('overview.colName') }}</th>
+              <th class="py-2 px-2 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-low font-medium">{{ t('overview.colDesc') }}</th>
+              <th class="py-2 px-2 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-low font-medium">{{ t('overview.colApps') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(s, i) in JOURNEY" :key="i" class="border-b border-border-subtle align-top">
+              <td class="py-3 px-2">
+                <span class="grid h-7 w-7 place-items-center rounded-lg border font-mono text-[12px]" :class="NUM[s.kind]">{{ s.n }}</span>
+              </td>
+              <td class="py-3 px-2">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="font-medium text-[14px]">{{ s.title[loc] }}</span>
+                  <span
+                    v-if="s.optional"
+                    class="font-mono text-[9px] uppercase tracking-[0.08em] text-ink-low border border-dashed border-border-accent rounded px-1 py-px"
+                  >{{ t('overview.optional') }}</span>
+                </div>
+              </td>
+              <td class="py-3 px-2 text-[13px] text-ink-mid min-w-[220px]">{{ s.desc[loc] }}</td>
+              <td class="py-3 px-2">
+                <div class="flex flex-wrap gap-1">
+                  <span
+                    v-for="a in s.apps" :key="a.name"
+                    class="font-mono text-[10px] rounded-md border px-1.5 py-0.5 whitespace-nowrap"
+                    :class="TAG[a.color]"
+                  >{{ a.name }}</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <!-- legend -->
       <div class="flex flex-wrap gap-4 mt-5 font-mono text-[12px] text-ink-mid">
@@ -155,14 +175,26 @@ const toc = [
         <h2 class="font-display text-xl sm:text-2xl font-semibold">{{ t('overview.s2Title') }}</h2>
       </div>
       <p class="text-ink-mid text-[15px] max-w-3xl mb-6">{{ t('overview.s2Lead') }}</p>
-      <div class="flex flex-col gap-2.5">
-        <div
-          v-for="row in SUITE" :key="row.name"
-          class="card p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3"
-        >
-          <span class="font-mono font-medium text-[13px] sm:w-32 shrink-0" :class="TAG[row.color].split(' ')[1]">{{ row.name }}</span>
-          <span class="text-[14px] text-ink-high">{{ row.desc[loc] }}</span>
-        </div>
+      <div class="overflow-x-auto -mx-1">
+        <table class="w-full border-collapse text-left">
+          <thead>
+            <tr class="border-b border-border-accent">
+              <th class="py-2 px-2 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-low font-medium">{{ t('overview.colName') }}</th>
+              <th class="py-2 px-2 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-low font-medium">{{ t('overview.colDesc') }}</th>
+              <th class="py-2 px-2 font-mono text-[10px] uppercase tracking-[0.1em] text-ink-low font-medium">{{ t('overview.colSteps') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="row in SUITE" :key="row.name" class="border-b border-border-subtle align-top">
+              <td class="py-3 px-2 font-mono font-medium text-[13px] whitespace-nowrap" :class="TAG[row.color].split(' ')[1]">{{ row.name }}</td>
+              <td class="py-3 px-2 text-[14px] text-ink-high min-w-[260px]">{{ row.desc[loc] }}</td>
+              <td class="py-3 px-2 whitespace-nowrap">
+                <span v-if="stepsFor(row.name).length" class="font-mono text-[12px] text-ink-mid">{{ stepsFor(row.name).join(', ') }}</span>
+                <span v-else class="font-mono text-[11px] uppercase tracking-[0.08em] text-ink-low">{{ t('overview.colTransverse') }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
