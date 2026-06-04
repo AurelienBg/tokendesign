@@ -12,7 +12,7 @@ type Bi = Record<Locale, string>
 /** Colour buckets → mapped to design tokens in the page. */
 export type AppColor = 'host' | 'regul8' | 'tokenlab' | 'transverse'
 
-export interface AppTag { name: string; color: AppColor }
+export interface AppTag { name: string; note?: Bi; color: AppColor }
 
 // ── Section 1: the two pillars ──
 export const PILLARS: { key: 'operator' | 'instrument'; color: AppColor; title: Bi; desc: Bi }[] = [
@@ -88,7 +88,7 @@ export const JOURNEY: JourneyStep[] = [
       en: 'Given the product, does a chain add anything? If not → classic web2 product, you leave the suite.',
       fr: 'Au vu du produit, une chaîne apporte-t-elle quelque chose ? Si non → produit web2 classique, on sort de la suite.'
     },
-    apps: [{ name: 'grounds · switch', color: 'transverse' }]
+    apps: [{ name: 'grounds', note: { en: 'router', fr: 'aiguilleur' }, color: 'transverse' }]
   },
   {
     n: '2', kind: 'host',
@@ -106,7 +106,7 @@ export const JOURNEY: JourneyStep[] = [
       en: 'The switch toward the instrument pillar. If not → skip steps 3 and 5.',
       fr: "L'aiguillage vers le pilier instrument. Si non → on saute les étapes 3 et 5."
     },
-    apps: [{ name: 'grounds · switch', color: 'transverse' }]
+    apps: [{ name: 'grounds', note: { en: 'router', fr: 'aiguilleur' }, color: 'transverse' }]
   },
   {
     n: '3', kind: 'host', optional: true,
@@ -115,7 +115,7 @@ export const JOURNEY: JourneyStep[] = [
       en: 'Characteristics → legal class deduced → implementation. The design loop (§3).',
       fr: 'Caractéristiques → classe juridique déduite → implémentation. La boucle de design (§3).'
     },
-    apps: [{ name: 'Onchaindesign · create / analyze', color: 'host' }]
+    apps: [{ name: 'Onchaindesign', note: { en: 'create / analyze', fr: 'create / analyze' }, color: 'host' }]
   },
   {
     n: '4', kind: 'regul8',
@@ -142,7 +142,7 @@ export const JOURNEY: JourneyStep[] = [
       en: 'If on-chain: contract audit, key management, risk surface. A launch prerequisite — audits run by third parties.',
       fr: 'Si on-chain : audit des contrats, gestion des clés, surface de risque. Pré-requis au lancement — audit réalisé par des tiers.'
     },
-    apps: [{ name: 'Onchaindesign', color: 'host' }, { name: 'external audit', color: 'transverse' }]
+    apps: [{ name: 'Onchaindesign', color: 'host' }, { name: 'audit', note: { en: 'third-party', fr: 'tiers' }, color: 'transverse' }]
   },
   {
     n: '7', kind: 'plain',
@@ -151,7 +151,7 @@ export const JOURNEY: JourneyStep[] = [
       en: 'Putting the product on the market. The TGE is its token sub-event (if token). Within the step-4 gates.',
       fr: "Mise sur le marché du produit. La TGE en est le sous-événement token (si token). Dans les gates de l'étape 4."
     },
-    apps: [{ name: 'Onchaindesign · cycle', color: 'host' }, { name: 'tokenlab · TGE', color: 'tokenlab' }, { name: 'regul8', color: 'regul8' }]
+    apps: [{ name: 'Onchaindesign', note: { en: 'cycle', fr: 'cycle' }, color: 'host' }, { name: 'tokenlab', note: { en: 'TGE', fr: 'TGE' }, color: 'tokenlab' }, { name: 'regul8', color: 'regul8' }]
   },
   {
     n: '8', kind: 'plain',

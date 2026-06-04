@@ -147,7 +147,7 @@ const toc = [
                     v-for="a in s.apps" :key="a.name"
                     class="font-mono text-[10px] rounded-md border px-1.5 py-0.5 whitespace-nowrap"
                     :class="TAG[a.color]"
-                  >{{ a.name }}</span>
+                  >{{ a.name }}<template v-if="a.note"> · {{ a.note[loc] }}</template></span>
                 </div>
               </td>
             </tr>
