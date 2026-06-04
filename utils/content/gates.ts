@@ -17,7 +17,7 @@ type Bi = Record<Locale, string>
 
 export type GateTone = 'no' | 'warn' | 'private' | 'yes'
 
-export interface GateLeaf { label: Bi; tone: GateTone; note?: Bi }
+export interface GateLeaf { label: Bi; tone: GateTone; note?: Bi; example?: Bi }
 
 /** A decision node that branches off to a leaf; the spine continues otherwise. */
 export interface GateStep { q: Bi; exitWhen: Bi; leaf: GateLeaf }
@@ -69,30 +69,30 @@ export const BLOCKCHAIN_GATE: Gate = {
     {
       q: { en: 'Do you need to store shared state at all (a database)?', fr: 'As-tu besoin de stocker un état partagé (une base de données) ?' },
       exitWhen: { en: 'No', fr: 'Non' },
-      leaf: { tone: 'no', label: { en: 'No blockchain', fr: 'Pas de blockchain' }, note: { en: 'You don’t even need a shared database.', fr: 'Tu n’as même pas besoin d’une base partagée.' } }
+      leaf: { tone: 'no', label: { en: 'No blockchain', fr: 'Pas de blockchain' }, note: { en: 'You don’t even need a shared database.', fr: 'Tu n’as même pas besoin d’une base partagée.' }, example: { en: 'a calculator, a static marketing site', fr: 'une calculatrice, un site vitrine statique' } }
     },
     {
       q: { en: 'Are there several parties writing / updating that data?', fr: 'Plusieurs parties écrivent / mettent à jour ces données ?' },
       exitWhen: { en: 'No — single writer', fr: 'Non — un seul rédacteur' },
-      leaf: { tone: 'no', label: { en: 'Centralized database', fr: 'Base de données centralisée' }, note: { en: 'A classic DB does the job. No chain.', fr: 'Une base classique suffit. Pas de chaîne.' } }
+      leaf: { tone: 'no', label: { en: 'Centralized database', fr: 'Base de données centralisée' }, note: { en: 'A classic DB does the job. No chain.', fr: 'Une base classique suffit. Pas de chaîne.' }, example: { en: 'a classic SaaS, an internal CRM', fr: 'un SaaS classique, un CRM interne' } }
     },
     {
       q: { en: 'Is an always-available, trusted third party acceptable to arbitrate?', fr: 'Un tiers de confiance toujours disponible est-il acceptable pour arbitrer ?' },
       exitWhen: { en: 'Yes', fr: 'Oui' },
-      leaf: { tone: 'no', label: { en: 'Use that intermediary (web2)', fr: 'Utilise cet intermédiaire (web2)' }, note: { en: 'A trusted TTP removes the need for a chain.', fr: 'Un tiers de confiance enlève le besoin de chaîne.' } }
+      leaf: { tone: 'no', label: { en: 'Use that intermediary (web2)', fr: 'Utilise cet intermédiaire (web2)' }, note: { en: 'A trusted TTP removes the need for a chain.', fr: 'Un tiers de confiance enlève le besoin de chaîne.' }, example: { en: 'Stripe for payments, a bank’s ledger', fr: 'Stripe pour les paiements, le registre d’une banque' } }
     },
     {
       q: { en: 'Are all the writers known in advance?', fr: 'Tous les rédacteurs sont-ils connus à l’avance ?' },
       exitWhen: { en: 'No — open set', fr: 'Non — ensemble ouvert' },
-      leaf: { tone: 'yes', label: { en: 'Permissionless (public) blockchain', fr: 'Blockchain publique (permissionless)' }, note: { en: 'Anyone can write → disintermediation, user-owned assets, public verifiability.', fr: 'N’importe qui peut écrire → désintermédiation, actifs détenus par les users, vérifiabilité publique.' } }
+      leaf: { tone: 'yes', label: { en: 'Permissionless (public) blockchain', fr: 'Blockchain publique (permissionless)' }, note: { en: 'Anyone can write → disintermediation, user-owned assets, public verifiability.', fr: 'N’importe qui peut écrire → désintermédiation, actifs détenus par les users, vérifiabilité publique.' }, example: { en: 'a public DEX, an open NFT marketplace, a DeFi protocol', fr: 'un DEX public, une marketplace NFT ouverte, un protocole DeFi' } }
     }
   ],
   final: {
     q: { en: 'Is public verifiability of the ledger required?', fr: 'La vérifiabilité publique du registre est-elle requise ?' },
     yesWhen: { en: 'Yes', fr: 'Oui' },
-    yes: { tone: 'private', label: { en: 'Public permissioned blockchain', fr: 'Blockchain permissionnée publique' }, note: { en: 'Known validators, but anyone can audit.', fr: 'Validateurs connus, mais tout le monde peut auditer.' } },
+    yes: { tone: 'private', label: { en: 'Public permissioned blockchain', fr: 'Blockchain permissionnée publique' }, note: { en: 'Known validators, but anyone can audit.', fr: 'Validateurs connus, mais tout le monde peut auditer.' }, example: { en: 'a central-bank DLT pilot publishing proofs', fr: 'un pilote DLT de banque centrale publiant des preuves' } },
     noWhen: { en: 'No', fr: 'Non' },
-    no: { tone: 'private', label: { en: 'Private / consortium blockchain', fr: 'Blockchain privée / consortium' }, note: { en: 'Known validators, restricted visibility — often a shared DB in disguise; re-check you truly need a chain.', fr: 'Validateurs connus, visibilité restreinte — souvent une base partagée déguisée ; revérifie que tu as vraiment besoin d’une chaîne.' } }
+    no: { tone: 'private', label: { en: 'Private / consortium blockchain', fr: 'Blockchain privée / consortium' }, note: { en: 'Known validators, restricted visibility — often a shared DB in disguise; re-check you truly need a chain.', fr: 'Validateurs connus, visibilité restreinte — souvent une base partagée déguisée ; revérifie que tu as vraiment besoin d’une chaîne.' }, example: { en: 'a supply-chain ledger (Hyperledger Fabric)', fr: 'un registre supply-chain (Hyperledger Fabric)' } }
   },
   callouts: [
     { tone: 'info', text: { en: 'Founder lens: also lean on-chain if end-users must truly OWN their assets, or if composability / interop with other protocols is core.', fr: 'Regard fondateur : penche aussi pour l’on-chain si les utilisateurs doivent vraiment POSSÉDER leurs actifs, ou si la composabilité / interop est au cœur du produit.' } },
@@ -125,30 +125,30 @@ export const TOKEN_GATE: Gate = {
     {
       q: { en: 'Does the asset need to be transferable between users?', fr: 'L’actif a-t-il besoin d’être transférable entre utilisateurs ?' },
       exitWhen: { en: 'No', fr: 'Non' },
-      leaf: { tone: 'no', label: { en: 'No token', fr: 'Pas de token' }, note: { en: 'A database entry suffices.', fr: 'Une entrée en base suffit.' } }
+      leaf: { tone: 'no', label: { en: 'No token', fr: 'Pas de token' }, note: { en: 'A database entry suffices.', fr: 'Une entrée en base suffit.' }, example: { en: 'in-app XP that never leaves the account', fr: 'des XP in-app qui ne quittent jamais le compte' } }
     },
     {
       q: { en: 'Can an existing asset (fiat, a stablecoin, ETH, off-chain points) do the job?', fr: 'Un actif existant (fiat, un stablecoin, ETH, des points off-chain) peut-il faire le travail ?' },
       exitWhen: { en: 'Yes', fr: 'Oui' },
-      leaf: { tone: 'no', label: { en: 'Use the existing asset', fr: 'Utilise l’actif existant' }, note: { en: 'No new token — fewer obligations.', fr: 'Pas de nouveau token — moins d’obligations.' } }
+      leaf: { tone: 'no', label: { en: 'Use the existing asset', fr: 'Utilise l’actif existant' }, note: { en: 'No new token — fewer obligations.', fr: 'Pas de nouveau token — moins d’obligations.' }, example: { en: 'price in USDC, accept ETH', fr: 'facture en USDC, accepte l’ETH' } }
     },
     {
       q: { en: 'Is the token necessary to the protocol’s mechanism / incentives?', fr: 'Le token est-il nécessaire au mécanisme / aux incitations du protocole ?' },
       exitWhen: { en: 'No', fr: 'Non' },
-      leaf: { tone: 'warn', label: { en: '“Token washing”', fr: '« Token washing »' }, note: { en: 'Decorative or fundraising-only → no token.', fr: 'Décoratif ou seulement pour lever → pas de token.' } }
+      leaf: { tone: 'warn', label: { en: '“Token washing”', fr: '« Token washing »' }, note: { en: 'Decorative or fundraising-only → no token.', fr: 'Décoratif ou seulement pour lever → pas de token.' }, example: { en: 'a “community coin” bolted on for a raise', fr: 'un « community coin » ajouté juste pour lever' } }
     },
     {
       q: { en: 'Do users need sovereignty / true ownership over it?', fr: 'Les utilisateurs ont-ils besoin de souveraineté / vraie propriété dessus ?' },
       exitWhen: { en: 'No', fr: 'Non' },
-      leaf: { tone: 'no', label: { en: 'A centralized DB suffices', fr: 'Une base centralisée suffit' }, note: { en: 'No need for a token.', fr: 'Pas besoin de token.' } }
+      leaf: { tone: 'no', label: { en: 'A centralized DB suffices', fr: 'Une base centralisée suffit' }, note: { en: 'No need for a token.', fr: 'Pas besoin de token.' }, example: { en: 'loyalty points in a company database', fr: 'des points de fidélité dans une base d’entreprise' } }
     }
   ],
   final: {
     q: { en: 'Will it carry real value, or is a secondary market planned?', fr: 'Va-t-il porter de la vraie valeur, ou un marché secondaire est-il prévu ?' },
     yesWhen: { en: 'Yes', fr: 'Oui' },
-    yes: { tone: 'warn', label: { en: 'Token justified — but heavily regulated', fr: 'Token justifié — mais très régulé' }, note: { en: 'Real value or secondary market → likely a security (Howey test) and within MiCA. A grey zone may apply if sufficiently decentralized (cf. SEC v. Ripple). Verify before issuing.', fr: 'Valeur réelle ou marché secondaire → probablement un security (test de Howey) et dans MiCA. Zone grise possible si suffisamment décentralisé (cf. SEC v. Ripple). Vérifie avant d’émettre.' } },
+    yes: { tone: 'warn', label: { en: 'Token justified — but heavily regulated', fr: 'Token justifié — mais très régulé' }, note: { en: 'Real value or secondary market → likely a security (Howey test) and within MiCA. A grey zone may apply if sufficiently decentralized (cf. SEC v. Ripple). Verify before issuing.', fr: 'Valeur réelle ou marché secondaire → probablement un security (test de Howey) et dans MiCA. Zone grise possible si suffisamment décentralisé (cf. SEC v. Ripple). Vérifie avant d’émettre.' }, example: { en: 'a revenue-share token, a tokenized bond', fr: 'un token de partage de revenus, une obligation tokenisée' } },
     noWhen: { en: 'No', fr: 'Non' },
-    no: { tone: 'yes', label: { en: 'Token justified — lighter utility', fr: 'Token justifié — utility plus léger' }, note: { en: 'Still classify it precisely — some utilities are regulated too.', fr: 'Classe-le quand même précisément — certains utilities sont régulés aussi.' } }
+    no: { tone: 'yes', label: { en: 'Token justified — lighter utility', fr: 'Token justifié — utility plus léger' }, note: { en: 'Still classify it precisely — some utilities are regulated too.', fr: 'Classe-le quand même précisément — certains utilities sont régulés aussi.' }, example: { en: 'a gas/fee token, a live protocol’s governance token', fr: 'un token de gas/frais, le token de gouvernance d’un protocole en prod' } }
   },
   callouts: [
     { tone: 'warn', text: { en: 'Red flag: a token whose only real purpose is to raise money or to pump. Regulators (and users) see through it.', fr: 'Red flag : un token dont le seul vrai but est de lever des fonds ou de pumper. Les régulateurs (et les users) le voient.' } },
